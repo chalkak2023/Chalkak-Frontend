@@ -1,9 +1,14 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModalName, setShow } from '../../store/modal.slice';
+import MeetupsCreateModal from './MeetupsCreateModal';
 
 const MeetupsList = () => {
   const [meetups, setMeetups] = useState([]);
+  let state = useSelector((state)=> state );
+  let dispatch = useDispatch();
 
   useEffect(() => {
     getMeetups();
@@ -11,6 +16,8 @@ const MeetupsList = () => {
 
   return (
     <>
+      { state.modal.modalName === 'create' && <MeetupsCreateModal /> }
+
       <Container>
         <div>
           <h2>같이 찍어요</h2>
@@ -20,10 +27,10 @@ const MeetupsList = () => {
           </InputGroup>
         </div>
 
-        <Stack direction="horizontal" gap={1}>
+        <Stack direction="horizontal" gap={1} className="mb-2">
           <h2 >#전체 / 검색결과내용</h2>
           <Button className="ms-auto" variant="outline-dark">나의 모임</Button>
-          <Button variant="outline-dark">모임 추가</Button>
+          <Button variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
         </Stack>
 
         <Row xs={1} md={3} className="g-3">
@@ -42,6 +49,11 @@ const MeetupsList = () => {
       </Container>
     </>
   )
+
+  function showModal(modalName){
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
 
   function getMeetups() {
     axios
