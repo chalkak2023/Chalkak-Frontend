@@ -33,7 +33,7 @@ function AuthSignupModal() {
               <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
             <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
-            <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocu onChange={(e) => { setConfirmPassword(e.target.value); }}s />
+            <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocus onChange={(e) => { setConfirmPassword(e.target.value); }} />
           </Form.Group>
         </Form>
       </Modal.Body>
