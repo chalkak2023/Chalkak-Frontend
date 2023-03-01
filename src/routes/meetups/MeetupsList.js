@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { setModalName, setShow } from '../../store/modal.slice';
 import MeetupsCreateModal from './MeetupsCreateModal';
+import MeetupsDetailModal from './MeetupsDetailModal';
+import { setModalName, setShow } from '../../store/modal.slice';
+import { setMeetup } from '../../store/meetup.slice';
 
 const MeetupsList = () => {
   const [meetups, setMeetups] = useState([]);
@@ -17,6 +19,7 @@ const MeetupsList = () => {
   return (
     <>
       { state.modal.modalName === 'create' && <MeetupsCreateModal /> }
+      { state.modal.modalName === 'detail' && <MeetupsDetailModal /> }
 
       <Container>
         <div>
@@ -35,7 +38,7 @@ const MeetupsList = () => {
 
         <Row xs={1} md={3} className="g-3">
           {meetups.map((meetup, i) => (
-            <Col key={i}>
+            <Col key={i} onClick={()=>{showDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
               <Card border="dark">
                 <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
                 <Card.Body style={{ height: '8rem' }}>
@@ -50,7 +53,26 @@ const MeetupsList = () => {
     </>
   )
 
-  function showModal(modalName){
+  function showDetail(meetupId) {
+    axios
+      .get(`http://localhost:8080/api/meetups/${meetupId}`, {})
+      .then((response) => {
+        const statusCode = response.status;
+        console.log('status code: ' + statusCode);
+        if (statusCode === 200) {
+          const meetup = response.data;
+          dispatch(setMeetup(meetup));
+          dispatch(setModalName('detail'));
+          dispatch(setShow(true));
+        }
+      })
+      .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
+      });
+  }
+
+  function showModal(modalName) {
     dispatch(setModalName(modalName));
     dispatch(setShow(true));
   }

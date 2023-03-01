@@ -5,9 +5,11 @@ import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import modal from './modal.slice';
+import meetup from './meetup.slice';
 
 const reducers = combineReducers({
   modal: modal.reducer,
+  meetup: meetup.reducer,
 });
 
 const persistConfig = {
