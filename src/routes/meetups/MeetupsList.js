@@ -32,8 +32,14 @@ const MeetupsList = () => {
 
         <Stack direction="horizontal" gap={1} className="mb-2">
           <h2 >#전체 / 검색결과내용</h2>
-          <Button className="ms-auto" variant="outline-dark">나의 모임</Button>
-          <Button variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
+          {
+            Object.keys(state.user.data).length > 0 ?
+            <>
+              <Button className="ms-auto" variant="outline-dark">나의 모임</Button>
+              <Button variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
+            </> : ''
+          }
+          
         </Stack>
 
         <Row xs={1} md={3} className="g-3">

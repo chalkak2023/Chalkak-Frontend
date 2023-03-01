@@ -21,7 +21,7 @@ const Header = () => {
             <h1>찰칵</h1>
           </Navbar.Brand>
           {
-            state.user.data.email ?
+            Object.keys(state.user.data).length > 0 ?
             <h3>{state.user.data.email.split('@')[0]}</h3> : 
             <Button variant="outline-dark" onClick={()=>{showModal('signin')}}>로그인</Button>
           }
