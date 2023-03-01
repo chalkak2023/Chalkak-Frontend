@@ -8,7 +8,9 @@ const Header = () => {
     <>
       <Navbar>
         <Container fluid>
-          <Navbar.Brand onClick={()=>{navigate('/')}}><h1>찰칵</h1></Navbar.Brand>
+          <Navbar.Brand onClick={()=>{navigate('/')}} style={{ cursor: 'pointer' }}>
+            <h1>찰칵</h1>
+          </Navbar.Brand>
           <Button variant="outline-dark">로그인</Button>
         </Container>
       </Navbar>
