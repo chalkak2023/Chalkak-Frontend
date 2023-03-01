@@ -1,12 +1,10 @@
-import { Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
-  let navigate = useNavigate();
-
   return (
     <>
-      <Button variant="primary" onClick={()=>{navigate('/sample')}}>샘플페이지</Button>
+      <h2>메인페이지</h2>
     </>
   )
 };
