@@ -1,12 +1,10 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
-import { setShow } from '../store/modal.slice';
+import { setModalName, setShow } from '../../store/modal.slice';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useState } from "react";
-import { setModalName } from "../store/modal.slice";
-import axios from "axios";
 
-function SignupModal() {
+function AuthSignupModal() {
   const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,37 +14,40 @@ function SignupModal() {
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
 
-  const handleClose = () => {
-    dispatch(setModalName(''));
-    dispatch(setShow(false));
-  };
+  const handleClose = () => dispatch(setShow(false));
 
   return (
-    <Modal size="sm" show={state.modal.show && state.modal.modalName === 'signup'} onHide={handleClose} centered>
+    <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>회원가입</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-              <InputGroup className="mb-2">
-                <Form.Control id="email" name="email" type="email" placeholder='이메일' autoFocus onChange={(e) => { setEmail(e.target.value); setIsVerified(false); }}/>
-                <Button variant="success" onClick={()=>{ sendEmail(); }}>인증번호 전송</Button>
-              </InputGroup>
-              <InputGroup className="mb-2">
-                <Form.Control id="confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
-                <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
-              </InputGroup>
-              <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
-              <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocu onChange={(e) => { setConfirmPassword(e.target.value); }}s />
+            <InputGroup className="mb-2">
+              <Form.Control id="email" name="email" type="email" placeholder='이메일' autoFocus onChange={(e) => { setEmail(e.target.value); setIsVerified(false); }}/>
+              <Button variant="success" onClick={()=>{ sendEmail(); }}>인증번호 전송</Button>
+            </InputGroup>
+            <InputGroup className="mb-2">
+              <Form.Control id="confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
+              <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
+            </InputGroup>
+            <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
+            <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocu onChange={(e) => { setConfirmPassword(e.target.value); }}s />
           </Form.Group>
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" onClick={()=>{ register(); }}>회원가입</Button>
+        <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signin');}}>이미 가입하셨다면?</Button>
       </div>
     </Modal>
   )
+
+  function showModal(modalName) {
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
 
   function confirmEmail() {
     axios
@@ -111,4 +112,4 @@ function SignupModal() {
   }
 }
 
-export default SignupModal;
+export default AuthSignupModal;
