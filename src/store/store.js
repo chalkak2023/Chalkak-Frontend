@@ -3,7 +3,7 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
-
+import photospotModal from './createPhotospot/photospot.slice';
 import modal from './modal.slice';
 import meetup from './meetup.slice';
 import user from './user.slice';
@@ -14,6 +14,7 @@ const reducers = combineReducers({
   meetup: meetup.reducer,
   user: user.reducer,
   nav: nav.reducer,
+  photospotModal: photospotModal.reducer,
 });
 
 const persistConfig = {

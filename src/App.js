@@ -4,6 +4,7 @@ import SampleList from './routes/sample/List';
 import MeetupsList from './routes/meetups/MeetupsList';
 import Header from './routes/components/Header';
 import NavSideBar from './routes/components/NavSideBar';
+import CreatePhtospot from './routes/phtospot/createPhotospot/CreatePhotospot';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Main />}></Route>
         <Route path="/sample" element={<SampleList />}></Route>
         <Route path="/meetups" element={<MeetupsList />}></Route>
+        <Route path="/photospot" element={<CreatePhtospot />}></Route>
       </Routes>
     </div>
   );

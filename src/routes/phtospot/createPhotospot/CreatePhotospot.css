@@ -1,0 +1,16 @@
+#map {
+  position: relative;
+}
+
+.keywordSearch {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+
+  background-color: #fff;
+
+  padding: 20px;
+
+  border-radius: 5px;
+}
