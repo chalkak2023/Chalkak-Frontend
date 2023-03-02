@@ -18,8 +18,8 @@ const MeetupsList = () => {
 
   return (
     <>
-      { state.modal.modalName === 'create' && <MeetupsCreateModal /> }
-      { state.modal.modalName === 'detail' && <MeetupsDetailModal /> }
+      { state.modal.modalName === 'create' && <MeetupsCreateModal getMeetups={getMeetups}/> }
+      { state.modal.modalName === 'detail' && <MeetupsDetailModal showDetail={showDetail} getMeetups={getMeetups}/> }
 
       <Container>
         <div>
@@ -48,8 +48,8 @@ const MeetupsList = () => {
               <Card border="dark">
                 <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
                 <Card.Body style={{ height: '8rem' }}>
+                  <Card.Text>주최자: {meetup.user.email}</Card.Text>
                   <Card.Title>{meetup.content}</Card.Title>
-                  {/* <Card.Text>내용</Card.Text> */}
                 </Card.Body>
               </Card>
             </Col>
@@ -61,10 +61,10 @@ const MeetupsList = () => {
 
   function showDetail(meetupId) {
     axios
-      .get(`http://localhost:8080/api/meetups/${meetupId}`, {})
+      .get(`http://localhost:8080/api/meetups/${meetupId}`)
       .then((response) => {
         const statusCode = response.status;
-        console.log('status code: ' + statusCode);
+        // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
           const meetup = response.data;
           dispatch(setMeetup(meetup));
@@ -85,10 +85,10 @@ const MeetupsList = () => {
 
   function getMeetups() {
     axios
-      .get('http://localhost:8080/api/meetups', {})
+      .get('http://localhost:8080/api/meetups')
       .then((response) => {
         const statusCode = response.status;
-        console.log('status code: ' + statusCode);
+        // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
           const meetups = response.data;
           setMeetups(meetups);
