@@ -15,6 +15,9 @@ import { createSlice } from '@reduxjs/toolkit';
  *     user: {
  *       email: 참여한 유저 이메일
  *     }
+ *   },
+ *   user: {
+ *     email: 모임 개최자 email
  *   }
  * }
  */
