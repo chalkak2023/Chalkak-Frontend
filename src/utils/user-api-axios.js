@@ -2,6 +2,7 @@ import axios from "axios";
 
 const userApiAxios = axios.create({
   baseURL: "http://localhost:8080/api",
+  withCredentials: true
 });
 
 userApiAxios.interceptors.response.use(
@@ -22,9 +23,7 @@ userApiAxios.interceptors.response.use(
 
     const {
       data: { accessToken },
-    } = await userApiAxios.get("/auth/refresh", {
-      withCredentials: true,
-    });
+    } = await userApiAxios.get("/auth/refresh");
 
     if (!accessToken) {
       return Promise.reject(err);
