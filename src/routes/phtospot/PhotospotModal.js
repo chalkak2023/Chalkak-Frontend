@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   setModalName,
   setShow,
-} from '../../../store/createPhotospot/photospot.slice';
+} from '../../store/photospot.slice';
 import axios from 'axios';
 
 const PhotospotModal = () => {
@@ -33,25 +33,11 @@ const PhotospotModal = () => {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicTitle">
             <Form.Label>제목</Form.Label>
-            <Form.Control
-              size="sm"
-              type="text"
-              placeholder="Title"
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-            />
+            <Form.Control size="sm" type="text" placeholder="Title" onChange={(e) => {setTitle(e.target.value);}}/>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicDescription">
             <Form.Label>간단 설명</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Description"
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
-            />
+            <Form.Control as="textarea" rows={3} placeholder="Description" onChange={(e) => {setDescription(e.target.value);}}/>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicImageFile">
             <Form.Label>사진</Form.Label>
@@ -84,7 +70,8 @@ const PhotospotModal = () => {
       withCredentials: true,
     })
       .then((response) => {
-        navigate('/photospot');
+        dispatch(setShow(false));
+        window.location.href = "/photospot";
       })
       .catch((response) => {
         navigate('/photospot');
