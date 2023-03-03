@@ -8,7 +8,7 @@ import {
 } from '../../store/photospot.slice';
 import axios from 'axios';
 
-const PhotospotModal = () => {
+const PhotospotCreateModal = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState([]);
@@ -22,7 +22,7 @@ const PhotospotModal = () => {
   return (
     <Modal
       size="sm"
-      show={state.photospotModal.show}
+      show={state.photospotSlice.show}
       onHide={handleClose}
       centered
     >
@@ -43,7 +43,7 @@ const PhotospotModal = () => {
             <Form.Label>사진</Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
           </Form.Group>
-          <Button variant="primary" onClick={() => {createPhotospot(title, description, imageFile, state.photospotModal.lat, state.photospotModal.lng);}}>
+          <Button variant="primary" onClick={() => {createPhotospot(title, description, imageFile, state.photospotSlice.lat, state.photospotSlice.lng);}}>
             생성
           </Button>
         </Form>
@@ -79,4 +79,4 @@ const PhotospotModal = () => {
   }
 };
 
-export default PhotospotModal;
+export default PhotospotCreateModal;

@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-let photospotModal = createSlice({
-  name: 'photospotModal',
+let photospotSlice = createSlice({
+  name: 'photospot',
   initialState: {
     modalName: '',
     show: false,
     lat: 0,
     lng: 0,
+    photospot: {}
   },
   reducers: {
     setModalName(state, action) {
@@ -20,8 +21,11 @@ let photospotModal = createSlice({
     },
     setLng(state, action) {
       state.lng = action.payload;
+    },
+    setPhotospot(state, action) {
+      state.photospot = action.payload;
     }
   },
 });
-export let { setModalName, setShow, setLat, setLng } = photospotModal.actions;
-export default photospotModal;
+export let { setModalName, setShow, setLat, setLng, setPhotospot } = photospotSlice.actions;
+export default photospotSlice;

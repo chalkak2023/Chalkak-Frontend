@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form, InputGroup, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import PhotospotModal from './PhotospotModal';
+import PhotospotCreateModal from './PhotospotCreateModal';
+import PhotospotDetailModal from './PhotospotDetailModal';
 import {
   setModalName,
   setShow,
   setLat,
   setLng,
+  setPhotospot
 } from '../../store/photospot.slice';
 import './Photospot.css'
 import axios from 'axios';
 
-const Phtospot = () => {
+const Photospot = () => {
   const { kakao } = window;
   const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [photospots, setPhotospots] = useState([]);
+
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
-  function setKakaoMapping() {
+  async function setKakaoMapping() {
     const container = document.getElementById('map');
     const options = {
       center: new kakao.maps.LatLng(37.4812845080678, 126.952713197762),
@@ -29,7 +32,7 @@ const Phtospot = () => {
     };
     const map = new kakao.maps.Map(container, options);
     setKakaoMap(map)
-    getPhotospots();
+    await getPhotospots();
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -50,19 +53,21 @@ const Phtospot = () => {
     marker.setMap(map);
 
     kakao.maps.event.addListener(map, 'click', function (e) {
+      console.log('클릭!!!!!!');
       const latlng = e.latLng;
       marker.setPosition(latlng);
     });
 
     kakao.maps.event.addListener(marker, 'click', function () {
+      console.log('추가!!!!!!!!');
       clickMarker(
-        'photospotModal',
+        'PhotospotCreateModal',
         marker.getPosition().getLng(),
         marker.getPosition().getLat()
       );
     });
 
-    function getPhotospots() {
+    async function getPhotospots() {
       axios({
         method: 'get',
         url: 'http://localhost:8080/api/collections/1',
@@ -116,13 +121,30 @@ const Phtospot = () => {
     }
   }
 
+  function photospotModify(modalName, id) {
+    console.log(photospots, id);
+    const result = photospots.find((photospot) => photospot.id === id);
+    dispatch(setPhotospot(result));
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
+
+  function photospotDetail(modalName, id) {
+    console.log(photospots, id);
+    const result = photospots.find((photospot) => photospot.id === id);
+    dispatch(setPhotospot(result));
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
+
   useEffect(() => {
     setKakaoMapping();
   }, []);
 
   return (
     <>
-      {state.photospotModal.modalName === 'photospotModal' && (<PhotospotModal />)}
+      {state.photospotSlice.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
+      {state.photospotSlice.modalName === 'PhotospotDetailModal' && (<PhotospotDetailModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
         <Form className='keywordSearch'>
@@ -137,22 +159,22 @@ const Phtospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
-        {
-          photospots.map((photospot, i) => (
-            <Card className='photospotList' style={{ width: '300px' }}>
+        <div className='photospotList'>
+        {photospots.map((photospot) => (
+            <Card key={photospot.id} className="photospot" onClick={() => {photospotDetail('PhotospotDetailModal', photospot.id)}}>
             <div className='photospotBox'>
             <img className='imageSize' src={photospot.imagePath} alt=""/>
             <Card.Body>
-              <Card.Title>{photospot.title}</Card.Title>
-              <Card.Text>
+              <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
+              <Card.Text className='textOverflow'>
                 {photospot.description}
               </Card.Text>
   
             </Card.Body>
             </div>
           </Card>
-          ))
-        }
+          ))}
+        </div>
       </div>
     </>
   );
@@ -165,4 +187,4 @@ const Phtospot = () => {
   }
 };
 
-export default Phtospot;
+export default Photospot;

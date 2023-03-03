@@ -18,20 +18,13 @@
 .photospotList {
   position: absolute;
   top: 10px;
-  left: 84%;
+  right: 20px;
   z-index: 10;
 
-  background-color: #fff;
-
-  padding: 20px;
-
-  border-radius: 5px;
-}
-
-.photospotList {
-  margin-bottom: 10px;
   width: 300px;
-  max-height: 130px;
+  height: 750px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .photospotBox {
@@ -41,6 +34,44 @@
 
   width: 250px;
   height: 100px;
+}
+
+.detailBox {
+  width: 100%;
+}
+
+.detailBox > img {
+  display: block;
+
+  width: 600px;
+  margin: 0 auto;
+}
+
+.photospot {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+}
+
+.photospot.card {
+  width: 300px;
+  height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+
+.description {
+  font-size: 18px;
+  font-weight: 600;
+
+  width: 600px;
+
+  margin: 0 auto;
+  margin-top: 30px;
 }
 
 .imageSize {
@@ -84,4 +115,11 @@
   width: 22px;
   height: 12px;
   background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png');
+}
+
+.textOverflow {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
