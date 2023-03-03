@@ -1,9 +1,7 @@
 import { Offcanvas } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setNavShow } from '../../store/nav.slice';
-import './NavSideBar.css';
-import { setUser } from '../../store/user.slice';
+import userApiAxios from "../../utils/user-api-axios";
 
 const NavSideBar = () => {
   const handleClose = () => dispatch(setNavShow(false));
@@ -39,13 +37,19 @@ const NavSideBar = () => {
   )
 
   function signout() {
-    // TODO: 백엔드 서버에 signout API를 통해 캐시(or Redis)에 저장된
-    // refreshToken 지우는 작업 필요. 
-    // 위 요청 성공 시 아래 함수들 실행하게 변경 필요.
-    alert("로그아웃 완료");
-    deleteCookie('accessToken');
-    deleteCookie('refreshToken');
-    dispatch(setUser({}));
+    userApiAxios
+      .post("/auth/signout", { withCredentials: true })
+      .then((response) => {
+        alert("로그아웃 완료");
+        deleteCookie("accessToken");
+        deleteCookie("refreshToken");
+        dispatch(setUser({}));
+      })
+      .catch((err) => {
+        alert("로그인된 상태가 아닙니다.");
+        dispatch(setUser({}));
+      });
+
     // TODO: 로그아웃 시 비회원이 볼 수 없는 페이지에 있는 상황에 대한 조치 필요
   };
   
