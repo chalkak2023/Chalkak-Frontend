@@ -1,24 +1,41 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import MeetupsCreateModal from './MeetupsCreateModal';
 import MeetupsDetailModal from './MeetupsDetailModal';
 import { setModalName, setShow } from '../../store/modal.slice';
 import { setMeetup } from '../../store/meetup.slice';
+import Loading from '../components/loading/Loading';
 
 const MeetupsList = () => {
-  const [meetups, setMeetups] = useState([]);
-  const [nextPage, setNextPage] = useState(1);
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
 
+  const [meetups, setMeetups] = useState([]);
+  const target = useRef(null);
+  const page = useRef(1);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    getMeetups(nextPage);
+    observer.observe(target.current);
+    return () => observer.disconnect();
   }, []);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      if (loading) return;
+
+      getMeetups(page.current);
+      page.current += 1;
+    });
+  });
 
   return (
     <>
+      { loading && <Loading /> }
+
       { state.modal.modalName === 'create' && <MeetupsCreateModal getMeetups={getMeetups}/> }
       { state.modal.modalName === 'detail' && 
         <MeetupsDetailModal 
@@ -60,20 +77,39 @@ const MeetupsList = () => {
             </Col>
           ))}
         </Row>
-        <div className="col-md-12 text-center">
-          <Button className="nextPageBtn mb-5" onClick={()=>{getMeetups(nextPage)}} variant="outline-dark">더 보기</Button>
-        </div>
+        <div id="scrollEnd" style={{ height: "1px" }} ref={target}></div>
       </Container>
     </>
   )
+
+  function getMeetups(p) {
+    setLoading(true);
+    console.log('p: ', p);
+    axios
+      .get(`http://localhost:8080/api/meetups?p=${p}`)
+      .then(({ status, data }) => {
+        if (status === 200) {
+          const newMeetups = data;
+          if (newMeetups.length === 0) {
+            console.log('더 불러올 데이터가 없습니다.');
+            document.querySelector('#scrollEnd').hidden = true;
+          } else {
+            setMeetups((prev) => [...prev, ...newMeetups]);
+          }
+        }
+      }).catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
+      }).finally(() => {
+        setLoading(false);
+      })
+  }
 
   function showDetail(meetupId) {
     axios
       .get(`http://localhost:8080/api/meetups/${meetupId}`)
       .then((response) => {
-        const statusCode = response.status;
-        // console.log('status code: ' + statusCode);
-        if (statusCode === 200) {
+        if (response.status === 200) {
           const meetup = response.data;
           dispatch(setMeetup(meetup));
           dispatch(setModalName('detail'));
@@ -89,29 +125,6 @@ const MeetupsList = () => {
   function showModal(modalName) {
     dispatch(setModalName(modalName));
     dispatch(setShow(true));
-  }
-
-  function getMeetups(page) {
-    axios
-      .get(`http://localhost:8080/api/meetups?p=${page}`)
-      .then((response) => {
-        const statusCode = response.status;
-        // console.log('status code: ' + statusCode);
-        if (statusCode === 200) {
-          const newMeetups = response.data;
-          if (newMeetups.length === 0) {
-            alert('더 불러올 데이터가 없습니다.');
-            document.querySelector('.nextPageBtn').hidden = true;
-          } else {
-            setMeetups([...meetups, ...newMeetups]);
-            setNextPage(page + 1);
-          }
-        }
-      })
-      .catch((e) => {
-        console.log('axios 통신실패');
-        console.log(e);
-      });
   }
 }
 
