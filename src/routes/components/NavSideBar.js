@@ -1,6 +1,9 @@
 import { Offcanvas } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setNavShow } from '../../store/nav.slice';
+import './NavSideBar.css';
+import { setUser } from '../../store/user.slice';
 import userApiAxios from "../../utils/user-api-axios";
 
 const NavSideBar = () => {
