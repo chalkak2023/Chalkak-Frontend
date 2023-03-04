@@ -4,7 +4,7 @@ import { setShow } from '../../store/modal.slice';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useState } from "react";
 
-function MeetupsCreateModal() {
+function MeetupsCreateModal(props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [place, setPlace] = useState('');
@@ -43,7 +43,29 @@ function MeetupsCreateModal() {
   )
 
   function createMeetup() {
-    console.log(title, content, place, scheduleDate, scheduleTime, headcount);
+    axios
+      .post('http://localhost:8080/api/meetups',
+        {
+          title, 
+          content, 
+          place, 
+          schedule: `${scheduleDate} ${scheduleTime}`, 
+          headcount
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        const statusCode = response.status;
+        // console.log('status code: ' + statusCode);
+        if (statusCode === 201) {
+          handleClose();
+          props.getMeetups();
+        }
+      })
+      .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
+      });
   }
 }
 
