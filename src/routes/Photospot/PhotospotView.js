@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Card } from 'react-bootstrap';
+import { Button, Modal, Form, InputGroup, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import PhotospotCreateModal from './PhotospotCreateModal';
-import PhotospotModifyModal from './PhotospotModifyModal';
+import PhotospotDetailModal from './PhotospotDetailModal';
 import {
   setModalName,
   setShow,
-  setLat,
-  setLng,
   setPhotospot
 } from '../../store/photospot.slice';
 import './Photospot.css'
@@ -47,23 +44,6 @@ const Photospot = () => {
       map.setCenter(locPosition);
     }
     // 지도 중심좌표를 접속위치로 변경합니다
-
-    const marker = new kakao.maps.Marker();
-
-    marker.setMap(map);
-
-    kakao.maps.event.addListener(map, 'click', function (e) {
-      const latlng = e.latLng;
-      marker.setPosition(latlng);
-    });
-
-    kakao.maps.event.addListener(marker, 'click', function () {
-      clickMarker(
-        'PhotospotCreateModal',
-        marker.getPosition().getLng(),
-        marker.getPosition().getLat()
-      );
-    });
 
     async function getPhotospots() {
       axios({
@@ -118,8 +98,7 @@ const Photospot = () => {
       }
     }
   }
-
-  function photospotModify(modalName, id) {
+  function photospotDetail(modalName, id) {
     const result = photospots.find((photospot) => photospot.id === id);
     dispatch(setPhotospot(result));
     dispatch(setModalName(modalName));
@@ -132,8 +111,7 @@ const Photospot = () => {
 
   return (
     <>
-      {state.photospotSlice.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
-      {state.photospotSlice.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
+      {state.photospotSlice.modalName === 'PhotospotDetailModal' && (<PhotospotDetailModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
         <Form className='keywordSearch'>
@@ -150,7 +128,7 @@ const Photospot = () => {
         </Form>
         <div className='photospotList'>
         {photospots.map((photospot) => (
-            <Card key={photospot.id} className="photospot" onClick={() => {photospotModify('PhotospotModifyModal', photospot.id)}}>
+            <Card key={photospot.id} className="photospot" onClick={() => {photospotDetail('PhotospotDetailModal', photospot.id)}}>
             <div className='photospotBox'>
             <img className='imageSize' src={photospot.imagePath} alt=""/>
             <Card.Body>
@@ -167,13 +145,6 @@ const Photospot = () => {
       </div>
     </>
   );
-
-  function clickMarker(modalName, lat, lng) {
-    dispatch(setLat(lat));
-    dispatch(setLng(lng));
-    dispatch(setModalName(modalName));
-    dispatch(setShow(true));
-  }
 };
 
 export default Photospot;

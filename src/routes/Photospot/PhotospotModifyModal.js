@@ -9,13 +9,12 @@ import {
 import axios from 'axios';
 
 const PhotospotModifyModal = () => {
-  const [title, setTitle] = useState(state.photospotSlice.photospot.title);
-  const [description, setDescription] = useState(state.photospotSlice.photospot.description);
-  const [imageFile, setImageFile] = useState([]);
-
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  const [title, setTitle] = useState(state.photospotSlice.photospot.title);
+  const [description, setDescription] = useState(state.photospotSlice.photospot.description);
+  const [imageFile, setImageFile] = useState([]);
 
   const handleClose = () => dispatch(setShow(false));
 
@@ -39,10 +38,10 @@ const PhotospotModifyModal = () => {
             <Form.Label>사진</Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
           </Form.Group>
-          <Button variant="primary" onClick={() => {modifyPhotospot(title, description, imageFile, state.photospotModal.lat, state.photospotModal.lng);}}>
+          <Button variant="primary" onClick={() => {modifyPhotospot(title, description, imageFile, state.photospotSlice.photospot.id);}}>
             수정
           </Button>
-          <Button variant="primary" onClick={() => {modifyPhotospot(title, description, imageFile, state.photospotModal.lat, state.photospotModal.lng);}}>
+          <Button variant="primary" onClick={() => {deletePhotospot(state.photospotSlice.photospot.id);}}>
             삭제
           </Button>
         </Form>
@@ -50,33 +49,46 @@ const PhotospotModifyModal = () => {
     </Modal>
   );
 
-  function modifyPhotospot(title, description, imageFile) {
+  function modifyPhotospot(title, description, imageFile, id) {
     const formData = new FormData();
-    console.log(title, description, imageFile)
+    console.log(title, description, imageFile, id);
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('image', imageFile[0]);
+    if (imageFile.length) {
+      formData.append('image', imageFile[0]);
+    }
 
-  //   axios({
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //     method: 'post',
-  //     url: 'http://localhost:8080/api/collections/1/photospots',
-  //     data: formData,
-  //     withCredentials: true,
-  //   })
-  //     .then((response) => {
-  //       dispatch(setShow(false));
-  //       window.location.href = "/photospot";
-  //     })
-  //     .catch((response) => {
-  //       navigate('/photospot');
-  //     });
+    axios({
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      method: 'put',
+      url: `http://localhost:8080/api/collections/1/photospots/${id}`,
+      data: formData,
+      withCredentials: true,
+    })
+      .then(() => {
+        dispatch(setShow(false));
+        window.location.href = '/photospot';
+      })
+      .catch(() => {
+        navigate('/photospot');
+      });
   }
 
-  function deletePhotospot() {
-
+  function deletePhotospot(id) {
+    axios({
+      method: 'delete',
+      url: `http://localhost:8080/api/collections/1/photospots/${id}`,
+      withCredentials: true,
+    })
+      .then(() => {
+        dispatch(setShow(false));
+        window.location.href = '/photospot';
+      })
+      .catch(() => {
+        navigate('/photospot');
+      });
   }
 };
 
