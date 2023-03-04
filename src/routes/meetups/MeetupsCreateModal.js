@@ -59,7 +59,7 @@ function MeetupsCreateModal(props) {
         // console.log('status code: ' + statusCode);
         if (statusCode === 201) {
           handleClose();
-          props.getMeetups();
+          window.location.reload();
         }
       })
       .catch((e) => {
