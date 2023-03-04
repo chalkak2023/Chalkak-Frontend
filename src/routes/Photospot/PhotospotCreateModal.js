@@ -42,7 +42,7 @@ const PhotospotCreateModal = () => {
             <Form.Label>사진</Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
           </Form.Group>
-          <Button variant="primary" onClick={() => {createPhotospot(title, description, imageFile, state.photospotSlice.lat, state.photospotSlice.lng);}}>
+          <Button variant="primary" onClick={() => {createPhotospot();}}>
             생성
           </Button>
         </Form>
@@ -50,13 +50,13 @@ const PhotospotCreateModal = () => {
     </Modal>
   );
 
-  function createPhotospot(title, description, imageFile, lat, lng) {
+  function createPhotospot() {
     const formData = new FormData();
 
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('latitude', lat);
-    formData.append('longitude', lng);
+    formData.append('latitude', state.photospotSlice.lat);
+    formData.append('longitude', state.photospotSlice.lng);
     formData.append('image', imageFile[0]);
 
     axios({
