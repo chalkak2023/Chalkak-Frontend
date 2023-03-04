@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setNavShow } from '../../store/nav.slice';
 import './NavSideBar.css';
 import { setUser } from '../../store/user.slice';
-import userApiAxios from "../../utils/user-api-axios";
+import apiAxios from "../../utils/api-axios";
 
 const NavSideBar = () => {
   const handleClose = () => dispatch(setNavShow(false));
@@ -40,7 +40,7 @@ const NavSideBar = () => {
   )
 
   function signout() {
-    userApiAxios
+    apiAxios
       .post("/api/auth/signout", { withCredentials: true })
       .then((response) => {
         alert("로그아웃 완료");
