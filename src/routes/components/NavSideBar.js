@@ -41,7 +41,7 @@ const NavSideBar = () => {
 
   function signout() {
     userApiAxios
-      .post("/auth/signout", { withCredentials: true })
+      .post("/api/auth/signout", { withCredentials: true })
       .then((response) => {
         alert("로그아웃 완료");
         deleteCookie("accessToken");
