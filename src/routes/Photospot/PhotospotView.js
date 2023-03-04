@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Modal, Form, InputGroup, Card } from 'react-bootstrap';
+import { Button, Form, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {

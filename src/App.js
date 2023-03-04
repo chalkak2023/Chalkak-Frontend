@@ -6,8 +6,11 @@ import Header from './routes/components/Header';
 import NavSideBar from './routes/components/NavSideBar';
 import Photospot from './routes/Photospot/Photospot';
 import PhotospotView from './routes/Photospot/PhotospotView';
+import Auth from './routes/hoc/auth'
 
 function App() {
+  const AuthPhotospot = Auth(Photospot);
+
   return (
     <div className="App">
       <Header />
@@ -16,7 +19,7 @@ function App() {
         <Route path="/" element={<Main />}></Route>
         <Route path="/sample" element={<SampleList />}></Route>
         <Route path="/meetups" element={<MeetupsList />}></Route>
-        <Route path="/photospot" element={<Photospot />}></Route>
+        <Route path="/photospot" element={<AuthPhotospot />}></Route>
         <Route path="/photospot-view" element={<PhotospotView />}></Route>
       </Routes>
     </div>

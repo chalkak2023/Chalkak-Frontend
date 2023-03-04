@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import {
-  setModalName,
   setShow,
 } from '../../store/photospot.slice';
 import axios from 'axios';
