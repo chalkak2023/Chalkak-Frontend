@@ -12,14 +12,14 @@ function PhotospotDetailModal() {
   let dispatch = useDispatch();
 
   return (
-    <Modal size="lg" show={state.photospotSlice.show} onHide={handleClose} centered>
+    <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{state.photospotSlice.photospot.title}</Modal.Title>
+        <Modal.Title>{state.photospot.data.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="detailBox">
-          <img src={state.photospotSlice.photospot.imagePath}></img>
-          <p className="description">{state.photospotSlice.photospot.description}</p>
+          <img style={{width: "500px"}} src={state.photospot.data.imagePath}></img>
+          <p className="description">{state.photospot.data.description}</p>
         </div>
       </Modal.Body>
     </Modal>
