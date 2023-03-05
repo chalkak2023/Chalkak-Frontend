@@ -33,6 +33,7 @@ const Photospot = () => {
     const map = new kakao.maps.Map(container, options);
     setKakaoMap(map)
     await getPhotospots();
+
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -73,6 +74,14 @@ const Photospot = () => {
         .then((response) => {
           if (response.status === 200) {
             const photospots = response.data;
+            console.log(photospots);
+            map.setCenter(
+              new kakao.maps.LatLng(
+                photospots[0].longitude,
+                photospots[0].latitude
+              )
+            );
+            console.log(photospots[0].longitude, photospots[0].latitude);
             setPhotospots(response.data);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
@@ -148,7 +157,7 @@ const Photospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
-        <div className='photospotList'>
+        <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotModify('PhotospotModifyModal', photospot.id)}}>
             <div className='photospotBox'>
@@ -158,7 +167,6 @@ const Photospot = () => {
               <Card.Text className='textOverflow'>
                 {photospot.description}
               </Card.Text>
-  
             </Card.Body>
             </div>
           </Card>

@@ -123,3 +123,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.photospotEmpty {
+  color: tomato;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
