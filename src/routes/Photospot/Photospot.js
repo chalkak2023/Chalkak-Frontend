@@ -22,7 +22,6 @@ const Photospot = () => {
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
-  let navigate = useNavigate();
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -74,7 +73,6 @@ const Photospot = () => {
         .then((response) => {
           if (response.status === 200) {
             const photospots = response.data;
-            console.log(photospots);
             map.setCenter(
               new kakao.maps.LatLng(
                 photospots[0].longitude,
@@ -129,6 +127,9 @@ const Photospot = () => {
 
   function photospotModify(modalName, id) {
     const result = photospots.find((photospot) => photospot.id === id);
+    kakaoMap.setCenter(
+      new kakao.maps.LatLng(result.longitude, result.latitude)
+    );
     dispatch(setPhotospot(result));
     dispatch(setModalName(modalName));
     dispatch(setShow(true));
@@ -140,8 +141,8 @@ const Photospot = () => {
 
   return (
     <>
-      {state.photospotSlice.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
-      {state.photospotSlice.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
+      {state.photospot.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
+      {state.photospot.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
         <Form className='keywordSearch'>
