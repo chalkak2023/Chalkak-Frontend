@@ -48,7 +48,7 @@ function AuthSigninModal() {
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
-        if (statusCode === 201) {
+        if (statusCode === 200) {
           alert("로그인 완료");
 
           const accessToken = response.data.accessToken;
