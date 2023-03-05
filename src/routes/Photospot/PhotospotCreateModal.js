@@ -11,6 +11,7 @@ const PhotospotCreateModal = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState([]);
+  const [photospotEmptyShow, setPhotospotEmptyShow] = useState(true)
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
@@ -42,7 +43,8 @@ const PhotospotCreateModal = () => {
             <Form.Label>사진</Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
           </Form.Group>
-          <Button variant="primary" onClick={() => {createPhotospot();}}>
+          <div className="photospotEmpty" style={photospotEmptyShow ? {display: 'none'} : {display: 'block'}}>제목, 설명, 사진을 모두 입력하셔야 합니다</div>
+          <Button variant="primary" onClick={(e) => {createPhotospot(e);}}>
             생성
           </Button>
         </Form>
@@ -50,7 +52,13 @@ const PhotospotCreateModal = () => {
     </Modal>
   );
 
-  function createPhotospot() {
+  function createPhotospot(e) {
+    if (!title || !description || !imageFile.length) {
+      e.preventDefault();
+      setPhotospotEmptyShow(false)
+      return;
+    }
+    
     const formData = new FormData();
 
     formData.append('title', title);

@@ -81,7 +81,6 @@ const Photospot = () => {
                 photospots[0].latitude
               )
             );
-            console.log(photospots[0].longitude, photospots[0].latitude);
             setPhotospots(response.data);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
