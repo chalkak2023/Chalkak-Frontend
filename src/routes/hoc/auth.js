@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +9,9 @@ function Auth(SpecificComponent) {
         let state = useSelector((state) => state);
 
         useEffect(() => {
+          // authValidation();
           if (!state.user.data.id) {
-            console.log(state.user, !state.user.id)
+            alert('로그인 후 이용 가능합니다.')
             navigate('/')
           };
         }, [])
@@ -19,6 +21,12 @@ function Auth(SpecificComponent) {
         )
     }
     return AuthenticationCheck
+
+    // function authValidation() {
+    //   axios.get('http://localhost:8080/api/auth/refresh').then((response) => {
+    //     console.log(response);
+    //   })
+    // }
 }
 
 export default Auth;
