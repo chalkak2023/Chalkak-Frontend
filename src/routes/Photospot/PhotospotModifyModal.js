@@ -22,7 +22,7 @@ const PhotospotModifyModal = () => {
     <Modal
       size="sm" show={state.photospotSlice.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>포토스팟 추가하기</Modal.Title>
+        <Modal.Title>포토스팟 수정하기</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -38,10 +38,10 @@ const PhotospotModifyModal = () => {
             <Form.Label>사진</Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
           </Form.Group>
-          <Button variant="primary" onClick={() => {modifyPhotospot(title, description, imageFile, state.photospotSlice.photospot.id);}}>
+          <Button variant="primary" onClick={(e) => {modifyPhotospot();}}>
             수정
           </Button>
-          <Button variant="primary" onClick={() => {deletePhotospot(state.photospotSlice.photospot.id);}}>
+          <Button variant="primary" onClick={() => {deletePhotospot();}}>
             삭제
           </Button>
         </Form>
@@ -49,9 +49,9 @@ const PhotospotModifyModal = () => {
     </Modal>
   );
 
-  function modifyPhotospot(title, description, imageFile, id) {
+  function modifyPhotospot() {
     const formData = new FormData();
-    console.log(title, description, imageFile, id);
+
     formData.append('title', title);
     formData.append('description', description);
     if (imageFile.length) {
@@ -63,7 +63,7 @@ const PhotospotModifyModal = () => {
         'Content-Type': 'multipart/form-data',
       },
       method: 'put',
-      url: `http://localhost:8080/api/collections/1/photospots/${id}`,
+      url: `http://localhost:8080/api/collections/1/photospots/${state.photospotSlice.photospot.id}`,
       data: formData,
       withCredentials: true,
     })
@@ -76,10 +76,10 @@ const PhotospotModifyModal = () => {
       });
   }
 
-  function deletePhotospot(id) {
+  function deletePhotospot() {
     axios({
       method: 'delete',
-      url: `http://localhost:8080/api/collections/1/photospots/${id}`,
+      url: `http://localhost:8080/api/collections/1/photospots/${state.photospotSlice.photospot.id}`,
       withCredentials: true,
     })
       .then(() => {
