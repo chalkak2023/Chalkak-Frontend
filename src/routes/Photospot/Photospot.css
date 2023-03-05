@@ -25,6 +25,8 @@
   height: 750px;
   overflow: hidden;
   overflow-y: auto;
+
+  background-color: rgba(195, 195, 195, 0.5);
 }
 
 .photospotBox {
@@ -38,6 +40,7 @@
 
 .detailBox {
   width: 100%;
+  
 }
 
 .detailBox > img {
@@ -47,7 +50,7 @@
   margin: 0 auto;
 }
 
-.photospot {
+.photospotList {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -62,7 +65,10 @@
   flex-direction: row;
   justify-content: flex-start;
   padding-left: 20px;
+
+  background-color: white;
 }
+
 
 .description {
   font-size: 18px;
