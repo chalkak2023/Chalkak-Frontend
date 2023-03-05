@@ -1,7 +1,15 @@
+import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { setShow } from "../../store/modal.slice";
+import { setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
 
 const NaverLogin = () => {
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
+
   useEffect(() => {
     const temp = {};
     new URLSearchParams(window.location.search).forEach((value, key) => {
@@ -14,9 +22,17 @@ const NaverLogin = () => {
           code: temp.code,
           state: temp.state,
         })
-        .then((res) => {
-          console.log(res);
+        .then((response) => {
           alert("로그인 성공");
+          const accessToken = response.data.accessToken;
+          const refreshToken = response.data.refreshToken;
+          document.cookie = `accessToken=${accessToken}; path=/;`;
+          document.cookie = `refreshToken=${refreshToken}; path=/;`;
+
+          const userInfo = jwt_decode(accessToken);
+          dispatch(setUser(userInfo));
+          dispatch(setShow(false));
+          navigate('/')
         })
         .catch((err) => {
           console.log(err);
