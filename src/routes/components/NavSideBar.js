@@ -27,6 +27,8 @@ const NavSideBar = () => {
         <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>개인정보처리방침</p>
         <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>이용약관</p>
         <p className="menu" onClick={()=>{navigate('/sample'); handleClose();}}>샘플페이지</p>
+        <p className="menu" onClick={()=>{navigate('/photospot'); handleClose();}}>포토스팟편집</p>
+        <p className="menu" onClick={()=>{navigate('/photospot-view'); handleClose();}}>포토스팟보기</p>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
