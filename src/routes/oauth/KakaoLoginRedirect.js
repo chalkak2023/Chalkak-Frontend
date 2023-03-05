@@ -6,7 +6,7 @@ import { setShow } from "../../store/modal.slice";
 import { setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
 
-const KaKaoLogin = () => {
+const KaKaoLoginRedirect = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
 
@@ -43,4 +43,4 @@ const KaKaoLogin = () => {
   return <div>카카오 소셜 로그인 리다이렉트 페이지</div>;
 };
 
-export default KaKaoLogin;
+export default KaKaoLoginRedirect;

@@ -6,7 +6,7 @@ import { setShow } from "../../store/modal.slice";
 import { setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
 
-const NaverLogin = () => {
+const NaverLoginRedirect = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
 
@@ -48,4 +48,4 @@ const NaverLogin = () => {
   )
 };
 
-export default NaverLogin;
+export default NaverLoginRedirect;
