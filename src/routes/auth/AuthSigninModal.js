@@ -5,6 +5,7 @@ import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
 import { setUser } from '../../store/user.slice';
+import social from '../../environments/social';
 
 function AuthSigninModal() {
   const [email, setEmail] = useState("");
@@ -33,6 +34,8 @@ function AuthSigninModal() {
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
+        <Button variant="outline-dark" onClick={() => {naverLogin()}}>네이버 로그인</Button>
+        <Button variant="outline-dark" onClick={() => {kakaoLogin()}}>카카오 로그인</Button>
       </div>
     </Modal>
   );
@@ -67,6 +70,21 @@ function AuthSigninModal() {
         alert(e.response.data.message);
       });
   }
+
+  function naverLogin() {
+    window.open(
+      `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${social.naverClientId}&redirect_uri=${social.naverRedirectId}`,
+      "_self"
+    );
+  }
+
+  function kakaoLogin() {
+    window.open(
+      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${social.kakaoClientId}&redirect_uri=${social.kakaoRedirectId}`,
+      "_self"
+    );
+  }
+
 }
 
 export default AuthSigninModal;
