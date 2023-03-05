@@ -37,6 +37,7 @@ function MeetupsDetailModal(props) {
         // console.log('status code: ' + statusCode);
         if (statusCode === 201) {
           props.showDetail(meetupId);
+          props.resetMeetups();
         }
       })
       .catch((e) => {
@@ -56,6 +57,7 @@ function MeetupsDetailModal(props) {
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
           props.showDetail(meetupId);
+          props.resetMeetups();
         }
       })
       .catch((e) => {
@@ -76,7 +78,7 @@ function MeetupsDetailModal(props) {
           // console.log('status code: ' + statusCode);
           if (statusCode === 200) {
             handleClose();
-            window.location.reload();
+            props.resetMeetups();
           }
         })
         .catch((e) => {

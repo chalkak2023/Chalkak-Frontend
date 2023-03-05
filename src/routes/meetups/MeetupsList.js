@@ -40,6 +40,7 @@ const MeetupsList = () => {
       { state.modal.modalName === 'detail' && 
         <MeetupsDetailModal 
           showDetail={showDetail} 
+          resetMeetups={resetMeetups}
         /> 
       }
 
@@ -81,6 +82,15 @@ const MeetupsList = () => {
       </Container>
     </>
   )
+
+   async function resetMeetups() {
+    let arr = [];
+    for (let i = 1; i < page.current; i++) {
+      const { data } = await axios.get(`http://localhost:8080/api/meetups?p=${i}`);
+      arr = [...arr, ...data];
+    }
+    setMeetups(arr);
+  }
 
   function getMeetups(p) {
     setLoading(true);
