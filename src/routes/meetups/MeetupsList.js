@@ -13,9 +13,11 @@ const MeetupsList = () => {
   let dispatch = useDispatch();
 
   const [meetups, setMeetups] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [inputKeyword, setInputKeyword] = useState('');
   const target = useRef(null);
   const page = useRef(1);
-  const [loading, setLoading] = useState(false);
+  const keyword = useRef('');
 
   useEffect(() => {
     observer.observe(target.current);
@@ -27,7 +29,7 @@ const MeetupsList = () => {
       if (!entry.isIntersecting) return;
       if (loading) return;
 
-      getMeetups(page.current);
+      getMeetups(page.current, keyword.current);
       page.current += 1;
     });
   });
@@ -36,24 +38,24 @@ const MeetupsList = () => {
     <>
       { loading && <Loading /> }
 
-      { state.modal.modalName === 'create' && <MeetupsCreateModal getMeetups={getMeetups}/> }
+      { state.modal.modalName === 'create' && <MeetupsCreateModal /> }
       { state.modal.modalName === 'detail' && 
         <MeetupsDetailModal 
-          showDetail={showDetail} 
+          getMeetupDetail={getMeetupDetail} 
+          resetMeetups={resetMeetups}
         /> 
       }
-
       <Container>
         <div>
           <h2 onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>같이 찍어요</h2>
           <InputGroup className="mb-5" style={{ width: '25rem' }}>
-            <Form.Control type='text' placeholder='키워드를 검색해보세요.'/>
-            <Button variant="outline-dark">검색</Button>
+            <Form.Control type='text' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
+            <Button variant="outline-dark" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
 
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2 >#전체 / 검색결과내용</h2>
+          <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
           {
             Object.keys(state.user.data).length > 0 ?
             <>
@@ -65,28 +67,55 @@ const MeetupsList = () => {
         </Stack>
 
         <Row xs={1} md={3} className="g-3 mb-3">
-          {meetups.map((meetup, i) => (
-            <Col key={i} onClick={()=>{showDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
-              <Card border="dark">
-                <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
-                <Card.Body style={{ height: '8rem' }}>
+          {
+            meetups.length > 0 ?
+            meetups.map((meetup, i) => (
+              <Col key={i} onClick={()=>{getMeetupDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
+                <Card border="dark">
+                  <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
+                  <Card.Body style={{ height: '8rem' }}>
                   <Card.Text>주최자: {meetup.user.username}</Card.Text>
-                  <Card.Title>{meetup.content}</Card.Title>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                    <Card.Title>{meetup.content}</Card.Title>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )) :
+            <h3>데이터가 없습니다.</h3>
+          }
         </Row>
         <div id="scrollEnd" style={{ height: "1px" }} ref={target}></div>
       </Container>
     </>
   )
 
-  function getMeetups(p) {
+  function pressEnterHandler(e) {
+    if(e.key === 'Enter') {
+      goSearch();
+    }
+  }
+
+  async function goSearch() {
+    keyword.current = inputKeyword;
+    page.current = 2;
+    document.querySelector('#scrollEnd').hidden = false;
+    resetMeetups();
+  }
+
+  async function resetMeetups() {
+    let arr = [];
+    for (let i = 1; i < page.current; i++) {
+      console.log(`page: ${i}, keyword: ${keyword.current}`);
+      const { data } = await axios.get(`http://localhost:8080/api/meetups?p=${i}&keyword=${keyword.current}`);
+      arr = [...arr, ...data];
+    }
+    setMeetups(arr);
+  }
+
+  function getMeetups(p, k) {
     setLoading(true);
-    console.log('p: ', p);
+    console.log(`page: ${p}, keyword: ${k}`);
     axios
-      .get(`http://localhost:8080/api/meetups?p=${p}`)
+      .get(`http://localhost:8080/api/meetups?p=${p}&keyword=${keyword.current}`)
       .then(({ status, data }) => {
         if (status === 200) {
           const newMeetups = data;
@@ -105,7 +134,7 @@ const MeetupsList = () => {
       })
   }
 
-  function showDetail(meetupId) {
+  function getMeetupDetail(meetupId) {
     axios
       .get(`http://localhost:8080/api/meetups/${meetupId}`)
       .then((response) => {
