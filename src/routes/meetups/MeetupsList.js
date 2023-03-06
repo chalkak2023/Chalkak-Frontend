@@ -70,7 +70,7 @@ const MeetupsList = () => {
               <Card border="dark">
                 <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
                 <Card.Body style={{ height: '8rem' }}>
-                  <Card.Text>주최자: {meetup.user.email}</Card.Text>
+                  <Card.Text>주최자: {meetup.user.username}</Card.Text>
                   <Card.Title>{meetup.content}</Card.Title>
                 </Card.Body>
               </Card>
