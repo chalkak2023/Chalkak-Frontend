@@ -13,12 +13,16 @@ let user = createSlice({
   name: 'user',
   initialState: {
     data: {},
+    loginState: false
   },
   reducers: {
     setUser(state, action) {
       state.data = action.payload;
     },
+    setLogin(state, action) {
+      state.loginState = action.payload;
+    }
   },
 });
-export let { setUser } = user.actions;
+export let { setUser, setLogin } = user.actions;
 export default user;

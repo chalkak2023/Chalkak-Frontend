@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { setShow } from "../../store/modal.slice";
-import { setUser } from '../../store/user.slice';
+import { setLogin, setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
 
 const NaverLoginRedirect = () => {
@@ -31,6 +31,7 @@ const NaverLoginRedirect = () => {
 
           const userInfo = jwt_decode(accessToken);
           dispatch(setUser(userInfo));
+          dispatch(setLogin(true));
           dispatch(setShow(false));
           navigate('/')
         })
