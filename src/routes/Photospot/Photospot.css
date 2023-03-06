@@ -1,0 +1,137 @@
+#map {
+  position: relative;
+}
+
+.keywordSearch {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+
+  background-color: #fff;
+
+  padding: 20px;
+
+  border-radius: 5px;
+}
+
+.photospotList {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 10;
+
+  width: 300px;
+  height: 750px;
+  overflow: hidden;
+  overflow-y: auto;
+
+  background-color: rgba(195, 195, 195, 0.5);
+}
+
+.photospotBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 250px;
+  height: 100px;
+}
+
+.detailBox {
+  width: 100%;
+  
+}
+
+.detailBox > img {
+  display: block;
+
+  width: 600px;
+  margin: 0 auto;
+}
+
+.photospotList {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+}
+
+.photospot.card {
+  width: 300px;
+  height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 20px;
+
+  background-color: white;
+}
+
+
+.description {
+  font-size: 18px;
+  font-weight: 600;
+
+  width: 600px;
+
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.imageSize {
+  width: 100px;
+}
+
+.customoverlay {
+  position: relative;
+  width: 150px;
+  bottom: 65px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  border-bottom: 2px solid #ddd;
+
+  text-align: center;
+}
+
+.customoverlay .title {
+  display: block;
+  width: 150px;
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 10px 5px;
+}
+
+.customoverlay:nth-of-type(n) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+
+.customoverlay:after {
+  content: '';
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: -12px;
+  width: 22px;
+  height: 12px;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png');
+}
+
+.textOverflow {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.photospotEmpty {
+  color: tomato;
+  font-size: 13px;
+  margin-bottom: 15px;
+}

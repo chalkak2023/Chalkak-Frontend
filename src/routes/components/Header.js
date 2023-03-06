@@ -25,7 +25,7 @@ const Header = () => {
           <div>
             {
               Object.keys(state.user.data).length > 0 ?
-              <h3>{state.user.data.email.split('@')[0]}</h3> : 
+              <h3>{state.user.data.username}</h3> : 
               <Button variant="outline-dark" onClick={()=>{showModal('signin')}}>로그인</Button>
             }
             <Button variant="outline-dark" onClick={()=>{showNav()}}>nav</Button>

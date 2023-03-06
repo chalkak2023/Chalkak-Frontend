@@ -15,7 +15,7 @@ function MeetupsDetailModal(props) {
         <Modal.Title>{state.meetup.data.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>주최자: {state.meetup.data.user.email}</p>
+        <p>주최자: {state.meetup.data.user.username}</p>
         <p>{state.meetup.data.content}</p>
         <p>장소: {state.meetup.data.place}</p>
         <p>날짜/시간: {new Date(state.meetup.data.schedule).toLocaleString()}</p>
