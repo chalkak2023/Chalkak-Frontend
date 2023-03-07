@@ -1,7 +1,11 @@
 import AdminPage from "../hoc/AdminPage";
 
 const AdminFAQ = () => {
-  return <></>;
+  return (
+    <>
+      <h3>자주찾는질문 관리 페이지</h3>
+    </>
+  );
 };
 
 export default AdminPage(AdminFAQ);
