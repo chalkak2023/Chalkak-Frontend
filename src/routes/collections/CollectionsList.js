@@ -82,8 +82,10 @@ const CollectionsList = () => {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
       console.log(`page: ${i}, keyword: ${keyword.current}`);
-      const { data } = await axios.get(`http://localhost:8080/api/collections?p=${i}&keyword=${keyword.current}`);
-      arr = [...arr, ...data];
+
+      const searchData = await axios.get(`http://localhost:8080/api/collections?p=${i}&keyword=${keyword.current}`);
+      const searchResult = searchData.data.data
+      arr = [...arr, ...searchResult];
     }
     setCollections(arr);
   }
