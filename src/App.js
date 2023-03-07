@@ -14,20 +14,26 @@ import AdminCollection from './routes/admin/AdminCollection';
 import AdminFAQ from './routes/admin/AdminFAQ';
 import AdminAccount from './routes/admin/AdminAccount';
 import AdminMeetup from './routes/admin/AdminMeetup';
+import UserPage from './routes/hoc/UserPage'
 
 function App() {
+  const UserSampleList = UserPage(SampleList);
+  const UserMeetupsList = UserPage(MeetupsList);
+  const UserPhotospot = UserPage(Photospot);
+  const UserPhotospotView = UserPage(PhotospotView);
+  const UserCollectionsList = UserPage(CollectionsList);
 
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Main />}></Route>
-        <Route path="/sample" element={<SampleList />}></Route>
-        <Route path="/meetups" element={<MeetupsList />}></Route>
-        <Route path="/photospot" element={Auth(Photospot)}></Route>
-        <Route path="/photospot-view" element={<PhotospotView />}></Route>
+        <Route path="/" element={UserPage(Main)}></Route>
+        <Route path="/sample" element={UserSampleList}></Route>
+        <Route path="/meetups" element={UserMeetupsList}></Route>
+        <Route path="/photospot" element={Auth(UserPhotospot)}></Route>
+        <Route path="/photospot-view" element={UserPhotospotView}></Route>
         <Route path="/login/naver" element={<NaverLoginRedirect />}></Route>
         <Route path="/login/kakao" element={<KakaoLoginRedirect />}></Route>
-        <Route path="/collections" element={<CollectionsList />}></Route>
+        <Route path="/collections" element={UserCollectionsList}></Route>
         <Route path="/admin" element={AdminPage(Main)}></Route>
         <Route path="/admin/users" element={AdminUser}></Route>
         <Route path="/admin/collections" element={AdminCollection}></Route>
