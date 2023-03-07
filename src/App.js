@@ -9,6 +9,7 @@ import KakaoLoginRedirect from './routes/oauth/KakaoLoginRedirect';
 import Photospot from './routes/Photospot/Photospot';
 import PhotospotView from './routes/Photospot/PhotospotView';
 import Auth from './routes/hoc/auth'
+import CollectionsList from "./routes/collections/CollectionsList";
 
 function App() {
   const AuthPhotospot = Auth(Photospot);
@@ -25,6 +26,7 @@ function App() {
         <Route path="/photospot-view" element={<PhotospotView />}></Route>
         <Route path="/login/naver" element={<NaverLoginRedirect />}></Route>
         <Route path="/login/kakao" element={<KakaoLoginRedirect />}></Route>
+        <Route path="/collections" element={<CollectionsList />}></Route>
       </Routes>
     </div>
   );
