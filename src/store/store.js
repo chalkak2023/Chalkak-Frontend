@@ -8,6 +8,7 @@ import modal from './modal.slice';
 import meetup from './meetup.slice';
 import user from './user.slice';
 import nav from './nav.slice';
+import collection from "./collection.slice";
 
 const reducers = combineReducers({
   modal: modal.reducer,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   user: user.reducer,
   nav: nav.reducer,
   photospot: photospot.reducer,
+  collection: collection.reducer,
 });
 
 const persistConfig = {
