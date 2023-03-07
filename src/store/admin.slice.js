@@ -19,7 +19,7 @@ let admin = createSlice({
       state.data = action.payload;
     },
     setAdminLogin(state, action) {
-      state.admin = action.payload;
+      state.loginState = action.payload;
     }
   },
 });
