@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setModalName, setShow } from '../../store/modal.slice';
 import { setCollection } from '../../store/collection.slice';
 import Loading from '../components/loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 const CollectionsList = () => {
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
+  let navigate = useNavigate();
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [inputKeyword, setInputKeyword] = useState('');
@@ -29,7 +31,7 @@ const CollectionsList = () => {
       page.current += 1;
     });
   });
- 
+
   return (
     <>
       { loading && <Loading /> }
@@ -55,7 +57,7 @@ const CollectionsList = () => {
 
         <Row xs={1} md={3} className="g-3 mb-3">
           {collections.map((collection, i) => (
-            <Col key={i} onClick={()=>{getCollectionDetail(collection.id)}} style={{ cursor: 'pointer' }}>
+            <Col key={i} onClick={()=>{photospot(collection.id)}} style={{ cursor: 'pointer' }}>
               <Card border="dark">
               <Card.Body style={{ height: '8rem' }}>
                 <Card.Header>{collection.title}</Card.Header>
@@ -95,6 +97,12 @@ const CollectionsList = () => {
     setCollections(arr);
   }
 
+  function photospot(id) {
+    const result = collections.find((collection) => collection.id === id);
+    dispatch(setCollection(result));
+    navigate((result.userId === state.user.data.id) ? '/photospot' : '/photospot-view');
+  }
+
   function getCollections(p, k) {
     setLoading(true);
     console.log(`page: ${p}, keyword: ${k}`);
@@ -116,23 +124,6 @@ const CollectionsList = () => {
       }).finally(() => {
         setLoading(false);
       })
-  }
-
-  function getCollectionDetail(collectionId) {
-    axios
-      .get(`http://localhost:8080/api/collections/${collectionId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          const collection = response.data;
-          dispatch(setCollection(collection));
-          dispatch(setModalName('detail'));
-          dispatch(setShow(true));
-        }
-      })
-      .catch((e) => {
-        console.log('axios 통신실패');
-        console.log(e);
-      });
   }
 }
 

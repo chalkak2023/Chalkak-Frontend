@@ -64,7 +64,7 @@ const PhotospotCreateModal = () => {
 
     axios({
       method: 'post',
-      url: 'http://localhost:8080/api/collections/1/photospots',
+      url: `http://localhost:8080/api/collections/${state.collection.data.id}/photospots`,
       data: formData,
       withCredentials: true,
     })

@@ -68,7 +68,7 @@ const Photospot = () => {
     async function getPhotospots() {
       axios({
         method: 'get',
-        url: 'http://localhost:8080/api/collections/1',
+        url: `http://localhost:8080/api/collections/${state.collection.data.id}/photospots`,
       })
         .then((response) => {
           if (response.status === 200) {
