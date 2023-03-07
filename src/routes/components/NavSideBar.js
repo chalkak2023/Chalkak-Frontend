@@ -21,7 +21,7 @@ const NavSideBar = () => {
         </Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
-        <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>마이콜렉션</p>
+        <p className="menu" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</p>
         <p className="menu" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</p>
         <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>자주하는질문</p>
         <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>개인정보처리방침</p>
