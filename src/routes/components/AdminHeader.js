@@ -6,7 +6,7 @@ import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
 import AdminSigninModal from "../admin/AdminSigninModal";
 
-const Header = () => {
+const AdminHeader = () => {
   let state = useSelector((state) => state);
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -79,4 +79,4 @@ const Header = () => {
   }
 };
 
-export default Header;
+export default AdminHeader;

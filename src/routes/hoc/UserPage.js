@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import NavSideBar from '../components/NavSideBar';
 
-function UserPage(MainComponent) {
+function UserPage({ MainComponent }) {
   return (
     <>
       <Header />

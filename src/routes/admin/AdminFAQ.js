@@ -1,5 +1,3 @@
-import AdminPage from "../hoc/AdminPage";
-
 const AdminFAQ = () => {
   return (
     <>
@@ -8,4 +6,4 @@ const AdminFAQ = () => {
   );
 };
 
-export default AdminPage(AdminFAQ);
+export default AdminFAQ;

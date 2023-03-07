@@ -1,6 +1,6 @@
 import AdminHeader from "../components/AdminHeader";
 
-function AdminPage(MainComponent) {
+function AdminPage({ MainComponent }) {
   return (
     <>
       <AdminHeader />

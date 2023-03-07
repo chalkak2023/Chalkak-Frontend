@@ -15,31 +15,27 @@ import AdminFAQ from './routes/admin/AdminFAQ';
 import AdminAccount from './routes/admin/AdminAccount';
 import AdminMeetup from './routes/admin/AdminMeetup';
 import UserPage from './routes/hoc/UserPage'
+import AdminMain from './routes/admin/AdminMain';
 
 function App() {
-  const UserSampleList = UserPage(SampleList);
-  const UserMeetupsList = UserPage(MeetupsList);
-  const UserPhotospot = UserPage(Photospot);
-  const UserPhotospotView = UserPage(PhotospotView);
-  const UserCollectionsList = UserPage(CollectionsList);
 
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={UserPage(Main)}></Route>
-        <Route path="/sample" element={UserSampleList}></Route>
-        <Route path="/meetups" element={UserMeetupsList}></Route>
-        <Route path="/photospot" element={Auth(UserPhotospot)}></Route>
-        <Route path="/photospot-view" element={UserPhotospotView}></Route>
+        <Route path="/" element={<UserPage MainComponent={Main} />}></Route>
+        <Route path="/sample" element={<UserPage MainComponent={SampleList} />}></Route>
+        <Route path="/meetups" element={<UserPage MainComponent={MeetupsList} />}></Route>
+        <Route path="/photospot" element={<UserPage MainComponent={Auth(Photospot)} />}></Route>
+        <Route path="/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>
         <Route path="/login/naver" element={<NaverLoginRedirect />}></Route>
         <Route path="/login/kakao" element={<KakaoLoginRedirect />}></Route>
-        <Route path="/collections" element={UserCollectionsList}></Route>
-        <Route path="/admin" element={AdminPage(Main)}></Route>
-        <Route path="/admin/users" element={AdminUser}></Route>
-        <Route path="/admin/collections" element={AdminCollection}></Route>
-        <Route path="/admin/meetups" element={AdminMeetup}></Route>
-        <Route path="/admin/faqs" element={AdminFAQ}></Route>
-        <Route path="/admin/accounts" element={AdminAccount}></Route>
+        <Route path="/collections" element={<UserPage MainComponent={CollectionsList} />}></Route>
+        <Route path="/admin" element={<AdminPage MainComponent={AdminMain} />}></Route>
+        <Route path="/admin/users" element={<AdminPage MainComponent={AdminUser} />}></Route>
+        <Route path="/admin/collections" element={<AdminPage MainComponent={AdminCollection} />}></Route>
+        <Route path="/admin/meetups" element={<AdminPage MainComponent={AdminMeetup} />}></Route>
+        <Route path="/admin/faqs" element={<AdminPage MainComponent={AdminFAQ} />}></Route>
+        <Route path="/admin/accounts" element={<AdminPage MainComponent={AdminAccount} />}></Route>
       </Routes>
     </div>
   );
