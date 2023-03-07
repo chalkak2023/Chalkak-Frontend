@@ -4,11 +4,13 @@ import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'reac
 import { useDispatch, useSelector } from 'react-redux';
 import { setModalName, setShow } from '../../store/modal.slice';
 import { setCollection } from '../../store/collection.slice';
+import Loading from '../components/loading/Loading';
 
 const CollectionsList = () => {
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
   const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [inputKeyword, setInputKeyword] = useState('');
   const target = useRef(null);
   const page = useRef(1);
@@ -22,6 +24,7 @@ const CollectionsList = () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
+      if (loading) return;
       getCollections(page.current);
       page.current += 1;
     });
@@ -29,6 +32,8 @@ const CollectionsList = () => {
  
   return (
     <>
+      { loading && <Loading /> }
+
       <Container>
         <div>
           <h2 onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>콜렉션</h2>
@@ -91,6 +96,7 @@ const CollectionsList = () => {
   }
 
   function getCollections(p, k) {
+    setLoading(true);
     console.log(`page: ${p}, keyword: ${k}`);
     axios
       .get(`http://localhost:8080/api/collections?p=${p}&keyword=${keyword.current}`)
@@ -108,6 +114,7 @@ const CollectionsList = () => {
         console.log('axios 통신실패');
         console.log(e);
       }).finally(() => {
+        setLoading(false);
       })
   }
 
