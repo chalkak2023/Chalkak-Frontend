@@ -1,32 +1,38 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { setLogin } from '../../store/user.slice';
+import apiAxios from '../../utils/api-axios';
 
 function Auth(SpecificComponent) {
-    function AuthenticationCheck() {
-        const navigate = useNavigate();
-        let state = useSelector((state) => state);
-
-        useEffect(() => {
-          // authValidation();
-          if (!state.user.data.id) {
-            alert('로그인 후 이용 가능합니다.')
-            navigate('/')
-          };
-        }, [])
-
-        return (
-            <SpecificComponent />
-        )
+  let state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const componentList = ['/photospot']
+  useEffect(() => {
+    const fetchData = async () => {
+      await apiAxios
+        .get('/api/auth/islogin', {
+          withCredentials: true,
+        })
+        .then((response) => {
+          dispatch(setLogin(true));
+        })
+        .catch((e) => {
+          console.log(e);
+          dispatch(setLogin(false));
+        });
+    };
+    if (componentList.includes(location.pathname)) {
+      fetchData();
     }
-    return AuthenticationCheck
+  }, [location]);
 
-    // function authValidation() {
-    //   axios.get('http://localhost:8080/api/auth/refresh').then((response) => {
-    //     console.log(response);
-    //   })
-    // }
+  if (state.user.loginState) {
+    return <SpecificComponent />;
+  } else {
+    return <Navigate to="/" />;
+  }
 }
 
 export default Auth;

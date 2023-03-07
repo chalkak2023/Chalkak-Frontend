@@ -4,7 +4,7 @@ import { setModalName, setShow } from "../../store/modal.slice";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
-import { setUser } from '../../store/user.slice';
+import { setUser, setLogin } from '../../store/user.slice';
 import social from '../../environments/social';
 import KakaoLoginImage from './kakao_login.png'
 import NaverLoginImage from './naver_login.png'
@@ -70,7 +70,7 @@ function AuthSigninModal() {
 
           const userInfo = jwt_decode(accessToken);
           dispatch(setUser(userInfo));
-
+          dispatch(setLogin(true));
           handleClose();
         }
       })
