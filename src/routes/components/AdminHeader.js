@@ -1,13 +1,18 @@
 import { Button, Container, Navbar } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setModalName, setShow } from "../../store/modal.slice";
+import AdminSigninModal from "../admin/AdminSigninModal";
 
 const Header = () => {
   let state = useSelector((state) => state);
   let navigate = useNavigate();
+  let dispatch = useDispatch();
 
   return (
     <>
+       { state.modal.modalName === 'admin-signin' && <AdminSigninModal /> }
+
       <Navbar>
         <Container fluid>
           <Navbar.Brand
@@ -40,13 +45,18 @@ const Header = () => {
             {state.admin.loginState ? (
               <Button vairant="outline-dark">로그아웃</Button>
               ) : (
-              <Button vairant="outline-dark">로그인</Button>
+              <Button vairant="outline-dark" onClick={() => showModal('admin-signin')}>로그인</Button>
             )}
           </div>
         </Container>
       </Navbar>
     </>
   );
+
+  function showModal(modalName) {
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
 };
 
 export default Header;
