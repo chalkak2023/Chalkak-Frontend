@@ -9,8 +9,10 @@ const CollectionsList = () => {
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
   const [collections, setCollections] = useState([]);
+  const [inputKeyword, setInputKeyword] = useState('');
   const target = useRef(null);
   const page = useRef(1);
+  const keyword = useRef('');
 
   useEffect(() => {
     observer.observe(target.current);
@@ -24,20 +26,20 @@ const CollectionsList = () => {
       page.current += 1;
     });
   });
-
+ 
   return (
     <>
       <Container>
         <div>
           <h2 onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>콜렉션</h2>
           <InputGroup className="mb-5" style={{ width: '25rem' }}>
-            <Form.Control type='text' placeholder='키워드를 검색해보세요.'/>
-            <Button variant="outline-dark">검색</Button>
+            <Form.Control type='text' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
+            <Button variant="outline-dark" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
 
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2 >#전체</h2>
+          <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
           {
             Object.keys(state.user.data).length > 0 ?
             <>
@@ -48,7 +50,7 @@ const CollectionsList = () => {
 
         <Row xs={1} md={3} className="g-3 mb-3">
           {collections.map((collection, i) => (
-            <Col key={i} onClick={()=>{showDetail(collection.id)}} style={{ cursor: 'pointer' }}>
+            <Col key={i} onClick={()=>{getCollectionDetail(collection.id)}} style={{ cursor: 'pointer' }}>
               <Card border="dark">
               <Card.Body style={{ height: '8rem' }}>
                 <Card.Header>{collection.title}</Card.Header>
@@ -62,13 +64,36 @@ const CollectionsList = () => {
         </Container>
     </>
   )
+  
+  function pressEnterHandler(e) {
+    if(e.key === 'Enter') {
+      goSearch();
+    }
+  }
 
-  function getCollections(p) {
+  async function goSearch() {
+    keyword.current = inputKeyword;
+    page.current = 2;
+    document.querySelector('#scrollEnd').hidden = false;
+    resetCollections();
+  }
+
+  async function resetCollections() {
+    let arr = [];
+    for (let i = 1; i < page.current; i++) {
+      console.log(`page: ${i}, keyword: ${keyword.current}`);
+      const { data } = await axios.get(`http://localhost:8080/api/collections?p=${i}&keyword=${keyword.current}`);
+      arr = [...arr, ...data];
+    }
+    setCollections(arr);
+  }
+
+  function getCollections(p, k) {
+    console.log(`page: ${p}, keyword: ${k}`);
     axios
-      .get(`http://localhost:8080/api/collections?p=${p}`)
+      .get(`http://localhost:8080/api/collections?p=${p}&keyword=${keyword.current}`)
       .then(({ status, data }) => {
         if (status === 200) {
-          console.log('data.data', data.data);
           const newCollections = data.data;
           if (newCollections.length === 0) {
             console.log('더 불러올 데이터가 없습니다.');
@@ -84,7 +109,7 @@ const CollectionsList = () => {
       })
   }
 
-  function showDetail(collectionId) {
+  function getCollectionDetail(collectionId) {
     axios
       .get(`http://localhost:8080/api/collections/${collectionId}`)
       .then((response) => {
