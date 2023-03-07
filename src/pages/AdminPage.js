@@ -1,4 +1,4 @@
-import AdminHeader from "../components/AdminHeader";
+import AdminHeader from "../routes/components/AdminHeader";
 
 function AdminPage({ MainComponent }) {
   return (

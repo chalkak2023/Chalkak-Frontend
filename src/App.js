@@ -8,13 +8,13 @@ import Photospot from './routes/Photospot/Photospot';
 import PhotospotView from './routes/Photospot/PhotospotView';
 import Auth from './routes/hoc/auth'
 import CollectionsList from "./routes/collections/CollectionsList";
-import AdminPage from './routes/hoc/AdminPage';
+import AdminPage from './pages/AdminPage';
 import AdminUser from './routes/admin/AdminUser';
 import AdminCollection from './routes/admin/AdminCollection';
 import AdminFAQ from './routes/admin/AdminFAQ';
 import AdminAccount from './routes/admin/AdminAccount';
 import AdminMeetup from './routes/admin/AdminMeetup';
-import UserPage from './routes/hoc/UserPage'
+import UserPage from './pages/UserPage'
 import AdminMain from './routes/admin/AdminMain';
 
 function App() {

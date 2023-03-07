@@ -1,5 +1,5 @@
-import Header from '../components/Header'
-import NavSideBar from '../components/NavSideBar';
+import Header from '../routes/components/Header'
+import NavSideBar from '../routes/components/NavSideBar';
 
 function UserPage({ MainComponent }) {
   return (
