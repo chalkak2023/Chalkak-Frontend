@@ -11,7 +11,8 @@ import AdminSearch from "./components/AdminSearch";
 import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
 
 const AdminAccount = () => {
-  const { header, width, transform, itemPerPage } = adminEnvironments["account"];
+  const { header, width, transform, itemPerPage } =
+    adminEnvironments["account"];
 
   let [data, setData] = useState([]);
   let [original, setOriginal] = useState([]);
@@ -43,7 +44,12 @@ const AdminAccount = () => {
         done={done}
         TableButtons={[AdminAccountDeleteButtons]}
       />
-      <PaginationButtonList current={page} total={total} itemPerPage={itemPerPage} changePage={setPage} />
+      <PaginationButtonList
+        current={page}
+        total={total}
+        itemPerPage={itemPerPage}
+        changePage={setPage}
+      />
       <Button variant="primary" onClick={adminSignup}>
         추가
       </Button>
@@ -58,7 +64,7 @@ const AdminAccount = () => {
         const mappingData = accounts.map((account) =>
           transform.map((fn) => fn(account))
         );
-        setTotal(total)
+        setTotal(total);
         setOriginal(accounts);
         setData(mappingData);
       })
@@ -72,9 +78,8 @@ const AdminAccount = () => {
     if (!order) {
       goSearch();
     } else {
-      setData([...data.filter((value, index) => index !== order)]);
-      setOriginal([...original.filter((value, index) => index !== order)]);
-      console.log(data.length, original.length);
+      setData(data.filter((value, index) => index !== order));
+      setOriginal(original.filter((value, index) => index !== order));
     }
   }
 
