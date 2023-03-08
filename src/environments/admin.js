@@ -6,6 +6,7 @@ const providerMap = {
 
 const adminEnvironments = {
   account: {
+    itemPerPage: 6,
     header: ["ID", "계정", "이름", "등록일자", "삭제"],
     width: [10, 30, 30, 20, 10],
     transform: [
@@ -16,6 +17,7 @@ const adminEnvironments = {
     ],
   },
   collection: {
+    itemPerPage: 6,
     header: ["ID", "콜렉션명", "한줄 소개", "키워드", "등록일자", "삭제"],
     width: [10, 20, 20, 20, 20, 10],
     transform: [
@@ -27,6 +29,7 @@ const adminEnvironments = {
     ],
   },
   faq: {
+    itemPerPage: 6,
     header: ["ID", "제목", "최초등록일시", "삭제"],
     width: [10, 65, 15, 10],
     transform: [
@@ -36,6 +39,7 @@ const adminEnvironments = {
     ],
   },
   meetup: {
+    itemPerPage: 6,
     header: [
       "ID",
       "모임명",
@@ -58,6 +62,7 @@ const adminEnvironments = {
     ],
   },
   user: {
+    itemPerPage: 6,
     header: [
       "ID",
       "이메일",
