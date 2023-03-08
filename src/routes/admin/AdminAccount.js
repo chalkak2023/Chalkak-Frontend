@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalName, setShow } from "../../store/modal.slice";
 import adminEnvironments from "../../environments/admin";
+import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
+import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
+import AdminAccountDeleteButtons from "./components/AdminAccountDeleteButton";
 import AdminSearch from "./components/AdminSearch";
 import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
-import AdminAccountDeleteButtons from "./components/AdminAccountDeleteButton";
 
 const AdminAccount = () => {
-  const { header, width, transform } = adminEnvironments["account"];
+  const { header, width, transform, itemPerPage } = adminEnvironments["account"];
 
   let [data, setData] = useState([]);
   let [original, setOriginal] = useState([]);
   let [keyword, setkeyword] = useState("");
   let [page, setPage] = useState(1);
+  let [total, setTotal] = useState(1);
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -41,7 +43,10 @@ const AdminAccount = () => {
         done={done}
         TableButtons={[AdminAccountDeleteButtons]}
       />
-      <Button variant="primary" onClick={adminSignup}>추가</Button>
+      <PaginationButtonList current={page} total={total} itemPerPage={itemPerPage} changePage={setPage} />
+      <Button variant="primary" onClick={adminSignup}>
+        추가
+      </Button>
     </>
   );
 
@@ -49,10 +54,11 @@ const AdminAccount = () => {
     apiAxios
       .get("/admin/auth", { params: { keyword, p: page } })
       .then(({ status, data }) => {
-        const { data: accounts, total, page, lastPage } = data;
+        const { data: accounts, total } = data;
         const mappingData = accounts.map((account) =>
           transform.map((fn) => fn(account))
         );
+        setTotal(total)
         setOriginal(accounts);
         setData(mappingData);
       })
