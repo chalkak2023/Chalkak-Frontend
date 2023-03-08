@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
-import AdminSigninModal from "../admin/AdminSigninModal";
+import AdminSigninModal from "../admin/modals/AdminSigninModal";
 
 const AdminHeader = () => {
   let state = useSelector((state) => state);

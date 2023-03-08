@@ -3,8 +3,8 @@ import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin, setAdminLogin } from '../../store/admin.slice';
-import { setShow } from "../../store/modal.slice";
+import { setAdmin, setAdminLogin } from '../../../store/admin.slice';
+import { setShow } from "../../../store/modal.slice";
 
 function AdminSigninModal() {
   const [account, setAccount] = useState("");
