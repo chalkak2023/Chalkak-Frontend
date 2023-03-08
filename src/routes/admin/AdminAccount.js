@@ -60,12 +60,12 @@ const AdminAccount = () => {
     apiAxios
       .get("/admin/auth", { params: { keyword, p: page } })
       .then(({ status, data }) => {
-        const { data: accounts, total } = data;
-        const mappingData = accounts.map((account) =>
-          transform.map((fn) => fn(account))
+        const { data: items, total } = data;
+        const mappingData = items.map((item) =>
+          transform.map((fn) => fn(item))
         );
         setTotal(total);
-        setOriginal(accounts);
+        setOriginal(items);
         setData(mappingData);
       })
       .catch((err) => {
