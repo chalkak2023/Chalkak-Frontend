@@ -23,8 +23,9 @@ const AdminTable = ({ header, data, original, width, done, TableButtons }) => {
             ))}
             <td key={header.length - 1}>
               {TableButtons
-                ? TableButtons.map((TableButton) => (
+                ? TableButtons.map((TableButton, buttonIndex) => (
                     <TableButton
+                      key={buttonIndex}
                       id={slice[0]}
                       order={order}
                       entity={original[order]}
