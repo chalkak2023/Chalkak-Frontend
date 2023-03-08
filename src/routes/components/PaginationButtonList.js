@@ -8,7 +8,7 @@ const PaginationButtonList = ({ current, total, changePage, itemPerPage }) => {
   let [end, setEnd] = useState(1);
 
   useEffect(() => {
-    setEnd(Math.floor(total / itemPerPage) + 1);
+    setEnd(total % itemPerPage === 0 ? Math.floor(total / itemPerPage) : Math.floor(total / itemPerPage) + 1);
   }, [total])
 
   useEffect(() => {
@@ -34,14 +34,15 @@ const PaginationButtonList = ({ current, total, changePage, itemPerPage }) => {
       </Pagination.Item>
       {leftElipsis ? <Pagination.Ellipsis /> : ""}
 
-      {pages.map((page, index) => (
+      {pages?.length ? pages.map((page, index) => (
         <Pagination.Item
+          key={page}
           onClick={() => changePage(page)}
           active={current === page}
         >
           {page}
         </Pagination.Item>
-      ))}
+      )) : ''}
 
       {rightElipsis ? <Pagination.Ellipsis /> : ""}
       {end > 1 ? (
