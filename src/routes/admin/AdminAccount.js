@@ -11,7 +11,7 @@ import AdminSearch from "./components/AdminSearch";
 import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
 
 const AdminAccount = () => {
-  const { header, width, transform, itemPerPage } =
+  const { ko: koName, header, width, transform, itemPerPage } =
     adminEnvironments["account"];
 
   let [data, setData] = useState([]);
@@ -31,7 +31,7 @@ const AdminAccount = () => {
     <>
       {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal />}
 
-      <h3>관리자 계정관리</h3>
+      <h3>{koName} 관리</h3>
       <AdminSearch
         onClick={goSearch}
         onChange={(e) => setkeyword(e.target.value)}
