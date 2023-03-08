@@ -70,7 +70,7 @@ const AdminHeader = () => {
         // TODO: 쿠키를 클라이언트에서 없애려면 여기서 해야함
         dispatch(setAdmin({}));
         dispatch(setAdminLogin(false));
-        navigate("/");
+        navigate("/admin");
       })
       .catch((err) => {
         alert("로그인된 상태가 아닙니다.");
