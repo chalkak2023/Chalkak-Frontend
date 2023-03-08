@@ -11,7 +11,7 @@ import AdminSearch from "./components/AdminSearch";
 import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
 
 const AdminAccount = () => {
-  const { ko: koName, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
     adminEnvironments["account"];
 
   let [data, setData] = useState([]);
@@ -58,7 +58,7 @@ const AdminAccount = () => {
 
   function goSearch() {
     apiAxios
-      .get("/admin/auth", { params: { keyword, p: page } })
+      .get(getItemPath, { params: { keyword, p: page } })
       .then(({ status, data }) => {
         const { data: items, total } = data;
         const mappingData = items.map((item) =>

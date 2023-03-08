@@ -6,7 +6,8 @@ const providerMap = {
 
 const adminEnvironments = {
   account: {
-    ko: '관리자계정', 
+    ko: '관리자계정',
+    getItemPath: '/admin/auth',
     itemPerPage: 6,
     header: ["ID", "계정", "이름", "등록일자", "삭제"],
     width: [10, 30, 30, 20, 10],
@@ -19,6 +20,7 @@ const adminEnvironments = {
   },
   collection: {
     ko: '콜렉션', 
+    getItemPath: '/admin/collections',
     itemPerPage: 6,
     header: ["ID", "콜렉션명", "한줄 소개", "키워드", "등록일자", "삭제"],
     width: [10, 20, 20, 20, 20, 10],
@@ -32,6 +34,7 @@ const adminEnvironments = {
   },
   faq: {
     ko: '자주찾는질문', 
+    getItemPath: '/admin/faq',
     itemPerPage: 6,
     header: ["ID", "제목", "최초등록일시", "삭제"],
     width: [10, 65, 15, 10],
@@ -43,6 +46,7 @@ const adminEnvironments = {
   },
   meetup: {
     ko: '모임', 
+    getItemPath: '/admin/meetups',
     itemPerPage: 6,
     header: [
       "ID",
@@ -67,6 +71,7 @@ const adminEnvironments = {
   },
   user: {
     ko: '유저', 
+    getItemPath: '/admin/users',
     itemPerPage: 6,
     header: [
       "ID",
