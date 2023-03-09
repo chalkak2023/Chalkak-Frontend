@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'react-bootstrap';
+import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import MeetupsCreateModal from './MeetupsCreateModal';
 import MeetupsDetailModal from './MeetupsDetailModal';
@@ -15,6 +15,9 @@ const MeetupsList = () => {
   const [meetups, setMeetups] = useState([]);
   const [loading, setLoading] = useState(false);
   const [inputKeyword, setInputKeyword] = useState('');
+  const [checkedMine, setCheckedMine] = useState(false);
+  const [tempMeetups, setTempMeetups] = useState([]);
+
   const target = useRef(null);
   const page = useRef(1);
   const keyword = useRef('');
@@ -23,6 +26,22 @@ const MeetupsList = () => {
     observer.observe(target.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (checkedMine) {
+      const myMeetups = meetups.filter((meetup) => {
+        return meetup.userId === state.user.data.id;
+      });
+      setTempMeetups(meetups);
+      setMeetups(myMeetups);
+      document.querySelector('#scrollEnd').hidden = true;
+    } else if (!checkedMine) {
+      setMeetups(tempMeetups);
+      setTimeout(() => {
+        document.querySelector('#scrollEnd').hidden = false;
+      }, 500);
+    }
+  }, [checkedMine])
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -59,11 +78,10 @@ const MeetupsList = () => {
           {
             Object.keys(state.user.data).length > 0 ?
             <>
-              <Button className="ms-auto" variant="outline-dark">나의 모임</Button>
+              <ToggleButton className="ms-auto" id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>나의 모임</ToggleButton>
               <Button variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
             </> : ''
           }
-          
         </Stack>
 
         <Row xs={1} md={3} className="g-3 mb-3">
