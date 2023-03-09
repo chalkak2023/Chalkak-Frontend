@@ -39,12 +39,12 @@ function AuthSigninModal() {
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
-        <a href={naverLoginUri} target="_self">
-          <img src={NaverLoginImage} />
-        </a>
-        <a href={kakaoLoginUri} target="_self">
-          <img src={KakaoLoginImage} />
-        </a>
+        <div onClick={() => socialLogin(naverLoginUri)} style={{cursor: 'pointer'}}>
+          <img src={NaverLoginImage} alt="네이버 로그인 버튼" />
+        </div>
+        <div onClick={() => socialLogin(kakaoLoginUri)} style={{cursor: 'pointer'}}>
+          <img src={KakaoLoginImage} alt="카카오 로그인 버튼" />
+        </div>
       </div>
     </Modal>
   );
@@ -79,6 +79,26 @@ function AuthSigninModal() {
         alert(e.response.data.message);
       });
   }
+  
+  function afterSocialLogin({ accessToken, refreshToken, err }) {
+    if (err) {
+      return ;
+    }
+    dispatch(setShow(false));
+
+    document.cookie = `accessToken=${accessToken}; path=/;`;
+    document.cookie = `refreshToken=${refreshToken}; path=/;`;
+
+    const userInfo = jwt_decode(accessToken);
+    dispatch(setUser(userInfo));
+    dispatch(setLogin(true));
+  }
+
+  function socialLogin(url) {
+    window.afterSocialLogin = afterSocialLogin
+    window.open(url, 'social', 'width=600,height=600')
+  }
+
 }
 
 export default AuthSigninModal;
