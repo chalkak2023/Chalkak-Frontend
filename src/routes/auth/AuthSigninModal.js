@@ -91,11 +91,9 @@ function AuthSigninModal() {
 
   function handleSocialLoginMessage({ accessToken, refreshToken, err }) {
     if (err) {
-      alert('로그인 실패')
       return ;
     }
     dispatch(setShow(false));
-    alert('로그인 성공')
 
     document.cookie = `accessToken=${accessToken}; path=/;`;
     document.cookie = `refreshToken=${refreshToken}; path=/;`;
