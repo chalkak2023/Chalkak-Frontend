@@ -71,7 +71,10 @@ const AdminCollection = () => {
         setData(mappingData);
       })
       .catch((err) => {
-        navigate('/admin');
+        console.log(err.response.status)
+        if (err.response.status === 401) {
+          navigate('/admin');
+        }
         alert("실패");
       });
   }

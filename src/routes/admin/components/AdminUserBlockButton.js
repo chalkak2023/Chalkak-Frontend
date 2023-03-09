@@ -23,7 +23,9 @@ const AdminUserBlockButton = ({ id, order, entity, done }) => {
         }
       })
       .catch((err) => {
-        navigate('/admin');
+         if (err.response.status === 401) {
+          navigate('/admin');
+        }
         alert("실패");
       });
   }
