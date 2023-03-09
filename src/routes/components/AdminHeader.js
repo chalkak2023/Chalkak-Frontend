@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
 import AdminSigninModal from "../admin/modals/AdminSigninModal";
-import styles from './AdminHeader.module.css'
+import './AdminHeader.css'
 
 const AdminHeader = () => {
   let state = useSelector((state) => state);
@@ -39,11 +39,11 @@ const AdminHeader = () => {
       <Navbar className="bg-black">
         <Container fluid>
           <div>
-            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/users'} onClick={() => navigate("/admin/users")}>유저 관리</Button>
-            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/meetups'} onClick={() => navigate("/admin/meetups")}>모임 관리</Button>
-            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/collections'} onClick={() => navigate("/admin/collections")}>콜렉션 관리</Button>
-            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/faqs'} onClick={() => navigate("/admin/faqs")}>자주찾는질문 관리</Button>
-            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/accounts'} onClick={() => navigate("/admin/accounts")}>관리자 계정관리</Button>
+            <Button className="header-link" variant="link" active={location.pathname === '/admin/users'} onClick={() => navigate("/admin/users")}>유저 관리</Button>
+            <Button className="header-link" variant="link" active={location.pathname === '/admin/meetups'} onClick={() => navigate("/admin/meetups")}>모임 관리</Button>
+            <Button className="header-link" variant="link" active={location.pathname === '/admin/collections'} onClick={() => navigate("/admin/collections")}>콜렉션 관리</Button>
+            <Button className="header-link" variant="link" active={location.pathname === '/admin/faqs'} onClick={() => navigate("/admin/faqs")}>자주찾는질문 관리</Button>
+            <Button className="header-link" variant="link" active={location.pathname === '/admin/accounts'} onClick={() => navigate("/admin/accounts")}>관리자 계정관리</Button>
           </div>
           <div>
             {state.admin.loginState ? (
