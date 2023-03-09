@@ -13,7 +13,13 @@ apiAxios.interceptors.response.use(
     const refreshUrl = isAdminApi ? "/admin/auth/signin" : "/api/auth/refresh";
 
     if (
-      config.url === refreshUrl ||
+      config.url === refreshUrl
+    ) {
+      err.response.status = 401
+      return Promise.reject(err);
+    }
+
+    if (
       err.response.status !== 401 ||
       config.sent
     ) {

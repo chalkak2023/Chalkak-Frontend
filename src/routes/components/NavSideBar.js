@@ -29,6 +29,8 @@ const NavSideBar = () => {
         <p className="menu" onClick={()=>{navigate('/sample'); handleClose();}}>샘플페이지</p>
         <p className="menu" onClick={()=>{navigate('/photospot'); handleClose();}}>포토스팟편집</p>
         <p className="menu" onClick={()=>{navigate('/photospot-view'); handleClose();}}>포토스팟보기</p>
+        {/* 임시로 관리자 페이지 추가. 나중에 삭제 */}
+        <p className="menu" onClick={()=>{navigate('/admin'); handleClose();}}>관리자 페이지</p>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
