@@ -39,10 +39,10 @@ function AuthSigninModal() {
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
-        <a href={naverLoginUri} target="_self">
+        <a onClick={() => socialLogin(naverLoginUri)}>
           <img src={NaverLoginImage} />
         </a>
-        <a href={kakaoLoginUri} target="_self">
+        <a onClick={() => socialLogin(kakaoLoginUri)}>
           <img src={KakaoLoginImage} />
         </a>
       </div>
@@ -78,6 +78,32 @@ function AuthSigninModal() {
         console.log("axios 통신실패");
         alert(e.response.data.message);
       });
+  }
+
+  function socialLogin(url) {
+    window.addEventListener("message", SocialLoginListenerFn)
+    window.open(url, 'social')
+  }
+
+  function SocialLoginListenerFn(e) {
+    handleSocialLoginMessage(e.data)
+  }
+
+  function handleSocialLoginMessage({ accessToken, refreshToken, err }) {
+    if (err) {
+      alert('로그인 실패')
+      return ;
+    }
+    dispatch(setShow(false));
+    alert('로그인 성공')
+
+    document.cookie = `accessToken=${accessToken}; path=/;`;
+    document.cookie = `refreshToken=${refreshToken}; path=/;`;
+
+    const userInfo = jwt_decode(accessToken);
+    dispatch(setUser(userInfo));
+    dispatch(setLogin(true));
+    window.removeEventListener("message", SocialLoginListenerFn)
   }
 }
 

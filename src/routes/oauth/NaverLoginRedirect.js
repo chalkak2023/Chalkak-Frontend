@@ -23,22 +23,16 @@ const NaverLoginRedirect = () => {
           state: temp.state,
         })
         .then((response) => {
-          alert("로그인 성공");
           const accessToken = response.data.accessToken;
           const refreshToken = response.data.refreshToken;
-          document.cookie = `accessToken=${accessToken}; path=/;`;
-          document.cookie = `refreshToken=${refreshToken}; path=/;`;
-
-          const userInfo = jwt_decode(accessToken);
-          dispatch(setUser(userInfo));
-          dispatch(setLogin(true));
-          dispatch(setShow(false));
-          navigate('/')
+          window.opener?.postMessage({accessToken, refreshToken}, '*')
         })
         .catch((err) => {
-          console.log(err);
-          alert("로그인 실패");
-        });
+          window.opener?.postMessage({err}, '*')
+        })
+        .finally(() => {
+          window.close()
+        })
     }
   }, []);
 
