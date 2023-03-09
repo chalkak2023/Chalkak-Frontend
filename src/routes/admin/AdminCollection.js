@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
@@ -27,6 +28,7 @@ const AdminCollection = () => {
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     goSearch();
@@ -69,7 +71,7 @@ const AdminCollection = () => {
         setData(mappingData);
       })
       .catch((err) => {
-        console.log(err);
+        navigate('/admin');
         alert("실패");
       });
   }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import apiAxios from "../../utils/api-axios";
 import PaginationButtonList from "../components/PaginationButtonList";
@@ -19,6 +20,7 @@ const AdminMeetup = () => {
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     goSearch();
@@ -61,7 +63,7 @@ const AdminMeetup = () => {
         setData(mappingData);
       })
       .catch((err) => {
-        console.log(err);
+        navigate('/admin');
         alert("실패");
       });
   }

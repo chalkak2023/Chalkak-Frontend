@@ -1,8 +1,10 @@
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import apiAxios from "../../../utils/api-axios";
 // import { showModal } from "../../../store/modal.slice";
 
 const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Button variant="primary" onClick={() => deleteAccount(id)}>
@@ -21,7 +23,7 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        navigate('/admin');
         alert("실패");
       });
   }

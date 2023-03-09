@@ -22,6 +22,7 @@ const AdminAccount = () => {
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useDispatch();
 
   useEffect(() => {
     goSearch();
@@ -69,7 +70,7 @@ const AdminAccount = () => {
         setData(mappingData);
       })
       .catch((err) => {
-        console.log(err);
+        navigate('/admin')
         alert("실패");
       });
   }

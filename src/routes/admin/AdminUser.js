@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import apiAxios from "../../utils/api-axios";
 import PaginationButtonList from "../components/PaginationButtonList";
@@ -15,6 +16,7 @@ const AdminUser = () => {
   let [keyword, setkeyword] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     goSearch();
@@ -57,7 +59,7 @@ const AdminUser = () => {
         setData(mappingData);
       })
       .catch((err) => {
-        console.log(err);
+        navigate('/admin');
         alert("실패");
       });
   }
