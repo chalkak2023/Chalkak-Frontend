@@ -17,15 +17,12 @@ const KaKaoLoginRedirect = () => {
         .then((response) => {
           const accessToken = response.data.accessToken;
           const refreshToken = response.data.refreshToken;
-          if (window.opener) {
-            window.opener.postMessage({accessToken, refreshToken}, '*')
-          }
+          window.close()
+          window.opener?.afterSocialLogin({accessToken, refreshToken})
         })
         .catch((err) => {
-          window.opener?.postMessage({err}, '*')
-        })
-        .finally(() => {
           window.close()
+          window.opener?.afterSocialLogin({err})
         })
     }
   }, []);

@@ -79,17 +79,8 @@ function AuthSigninModal() {
         alert(e.response.data.message);
       });
   }
-
-  function socialLogin(url) {
-    window.addEventListener("message", SocialLoginListenerFn)
-    window.open(url, 'social')
-  }
-
-  function SocialLoginListenerFn(e) {
-    handleSocialLoginMessage(e.data)
-  }
-
-  function handleSocialLoginMessage({ accessToken, refreshToken, err }) {
+  
+  function afterSocialLogin({ accessToken, refreshToken, err }) {
     if (err) {
       return ;
     }
@@ -101,8 +92,13 @@ function AuthSigninModal() {
     const userInfo = jwt_decode(accessToken);
     dispatch(setUser(userInfo));
     dispatch(setLogin(true));
-    window.removeEventListener("message", SocialLoginListenerFn)
   }
+
+  function socialLogin(url) {
+    window.afterSocialLogin = afterSocialLogin
+    window.open(url, 'social', 'width=700px,height=800px,scrollbars=no')
+  }
+
 }
 
 export default AuthSigninModal;
