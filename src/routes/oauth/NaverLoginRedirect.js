@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import apiAxios from "../../utils/api-axios";
+import Loading from '../components/loading/Loading'
 
 const NaverLoginRedirect = () => {
 
@@ -18,19 +19,20 @@ const NaverLoginRedirect = () => {
         .then((response) => {
           const accessToken = response.data.accessToken;
           const refreshToken = response.data.refreshToken;
-          window.close()
           window.opener?.afterSocialLogin({accessToken, refreshToken})
         })
         .catch((err) => {
-          window.close()
           window.opener?.afterSocialLogin({err})
+        })
+        .finally(() => {
+          window.close()
         })
     }
   }, []);
 
   return (
     <div>
-      네이버 소셜 로그인 리다이렉트 페이지
+      <Loading />
     </div>
   )
 };

@@ -96,7 +96,7 @@ function AuthSigninModal() {
 
   function socialLogin(url) {
     window.afterSocialLogin = afterSocialLogin
-    window.open(url, 'social', 'width=700px,height=800px,scrollbars=no')
+    window.open(url, 'social', 'width=600,height=600')
   }
 
 }
