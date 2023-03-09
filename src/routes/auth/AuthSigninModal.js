@@ -39,12 +39,12 @@ function AuthSigninModal() {
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
-        <a onClick={() => socialLogin(naverLoginUri)}>
-          <img src={NaverLoginImage} />
-        </a>
-        <a onClick={() => socialLogin(kakaoLoginUri)}>
-          <img src={KakaoLoginImage} />
-        </a>
+        <div onClick={() => socialLogin(naverLoginUri)} style={{cursor: 'pointer'}}>
+          <img src={NaverLoginImage} alt="네이버 로그인 버튼" />
+        </div>
+        <div onClick={() => socialLogin(kakaoLoginUri)} style={{cursor: 'pointer'}}>
+          <img src={KakaoLoginImage} alt="카카오 로그인 버튼" />
+        </div>
       </div>
     </Modal>
   );
