@@ -6,13 +6,18 @@ import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
-import AdminAccountDeleteButtons from "./components/AdminAccountDeleteButton";
+import AdminCollectionDeleteButtons from "./components/AdminCollectionDeleteButton";
 import AdminSearch from "./components/AdminSearch";
-import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
 
 const AdminCollection = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
-    adminEnvironments["collection"];
+  const {
+    ko: koName,
+    getItemPath,
+    header,
+    width,
+    transform,
+    itemPerPage,
+  } = adminEnvironments["collection"];
 
   let [data, setData] = useState([]);
   let [original, setOriginal] = useState([]);
@@ -29,8 +34,6 @@ const AdminCollection = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal />}
-
       <h3>{koName} 관리</h3>
       <AdminSearch
         onClick={goSearch}
@@ -42,7 +45,7 @@ const AdminCollection = () => {
         data={data}
         original={original}
         done={done}
-        TableButtons={[AdminAccountDeleteButtons]}
+        TableButtons={[AdminCollectionDeleteButtons]}
       />
       <PaginationButtonList
         current={page}
@@ -50,9 +53,6 @@ const AdminCollection = () => {
         itemPerPage={itemPerPage}
         changePage={setPage}
       />
-      <Button variant="primary" onClick={adminSignup}>
-        추가
-      </Button>
     </>
   );
 
@@ -81,13 +81,6 @@ const AdminCollection = () => {
       setData(data.filter((value, index) => index !== order));
       setOriginal(original.filter((value, index) => index !== order));
     }
-  }
-
-  function adminSignup() {
-    dispatch(setModalName("admin-signup"));
-    dispatch(setShow(true));
-    setPage(1);
-    goSearch();
   }
 };
 
