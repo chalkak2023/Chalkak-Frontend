@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
 
-const AdminTable = ({ header, data, original, width, done, TableButtons }) => {
+const AdminTable = ({ header, data, original, width, done, TableButtons, onClick }) => {
   if (!header || !data) {
   }
 
@@ -17,13 +17,14 @@ const AdminTable = ({ header, data, original, width, done, TableButtons }) => {
       </thead>
       <tbody>
         {data.map((slice, order) => (
-          <tr key={order}>
+          <tr key={order} onClick={onClick ? onClick(original[order]) : () => {}}>
             {slice.map((value, index) => (
               <td key={index}>{value}</td>
             ))}
-            <td key={header.length - 1}>
+           
               {TableButtons
                 ? TableButtons.map((TableButton, buttonIndex) => (
+                  <td key={header.length - 1}>
                     <TableButton
                       key={buttonIndex}
                       id={slice[0]}
@@ -31,9 +32,10 @@ const AdminTable = ({ header, data, original, width, done, TableButtons }) => {
                       entity={original[order]}
                       done={done}
                     />
+                    </td>
                   ))
                 : ""}
-            </td>
+            
           </tr>
         ))}
       </tbody>
