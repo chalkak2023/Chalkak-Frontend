@@ -65,7 +65,7 @@ const adminEnvironments = {
       (data) => data.content, // 모임내용
       (data) => data.place, // 장소
       (data) => data.schedule, // 모임 날짜 / 시간
-      (data) => `0 / ${data.headcount}`, // 참여인원
+      (data) => `${data.joins?.length || 0} / ${data.headcount}`, // 참여인원
       (data) => data.createdAt, // 최초등록일시
     ],
   },
