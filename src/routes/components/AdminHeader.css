@@ -1,0 +1,12 @@
+.header-link {
+  color: rgb(178, 178, 178) !important;
+  text-decoration: none !important;
+}
+
+.header-link:hover {
+  color: white !important; 
+}
+
+.header-link.active {
+  color: white !important; 
+}

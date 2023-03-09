@@ -7,6 +7,7 @@ import photospot from './photospot.slice';
 import modal from './modal.slice';
 import meetup from './meetup.slice';
 import user from './user.slice';
+import admin from './admin.slice';
 import nav from './nav.slice';
 import collection from "./collection.slice";
 
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   modal: modal.reducer,
   meetup: meetup.reducer,
   user: user.reducer,
+  admin: admin.reducer,
   nav: nav.reducer,
   photospot: photospot.reducer,
   collection: collection.reducer,
