@@ -1,15 +1,17 @@
 import axios from "axios";
 import { Button, Container, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
 import AdminSigninModal from "../admin/modals/AdminSigninModal";
+import styles from './AdminHeader.module.css'
 
 const AdminHeader = () => {
   let state = useSelector((state) => state);
   let navigate = useNavigate();
   let dispatch = useDispatch();
+  const location = useLocation();
 
   return (
     <>
@@ -34,14 +36,14 @@ const AdminHeader = () => {
           </div>
         </Container>
       </Navbar>
-      <Navbar>
+      <Navbar className="bg-black">
         <Container fluid>
           <div>
-            <Button variant="link" onClick={() => navigate('/admin/users')}>유저 관리</Button>
-            <Button variant="link" onClick={() => navigate('/admin/collections')}>콜렉션 관리</Button>
-            <Button variant="link" onClick={() => navigate('/admin/meetups')}>모임 관리</Button>
-            <Button variant="link" onClick={() => navigate('/admin/faqs')}>자주찾는질문 관리</Button>
-            <Button variant="link" onClick={() => navigate('/admin/accounts')}>관리자 계정관리</Button>
+            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/users'} onClick={() => navigate("/admin/users")}>유저 관리</Button>
+            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/meetups'} onClick={() => navigate("/admin/meetups")}>모임 관리</Button>
+            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/collections'} onClick={() => navigate("/admin/collections")}>콜렉션 관리</Button>
+            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/faqs'} onClick={() => navigate("/admin/faqs")}>자주찾는질문 관리</Button>
+            <Button className={styles.Link} variant="link" active={location.pathname === '/admin/accounts'} onClick={() => navigate("/admin/accounts")}>관리자 계정관리</Button>
           </div>
           <div>
             {state.admin.loginState ? (
