@@ -36,7 +36,7 @@ const adminEnvironments = {
     ko: '자주찾는질문', 
     getItemPath: '/admin/faq',
     itemPerPage: 6,
-    header: ["ID", "제목", "최초등록일시", "삭제"],
+    header: ["ID", "제목", "최초등록일시"],
     width: [10, 65, 15, 10],
     transform: [
       (data) => data.id, // ID

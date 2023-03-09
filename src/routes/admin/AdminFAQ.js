@@ -6,9 +6,9 @@ import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
-import AdminAccountDeleteButtons from "./components/AdminAccountDeleteButton";
 import AdminSearch from "./components/AdminSearch";
-import AdminCreateAccountModal from "./modals/AdminCreateAccountModal";
+import AdminCreateFAQModal from "./modals/AdminCreateFAQModal";
+import AdminPutFAQModal from "./modals/AdminPutFAQModal";
 
 const AdminFAQ = () => {
   const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
@@ -19,6 +19,7 @@ const AdminFAQ = () => {
   let [keyword, setkeyword] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
+  let [prev, setPrev] = useState({});
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -29,7 +30,8 @@ const AdminFAQ = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal />}
+      {state.modal.modalName === "admin-create-faq" && <AdminCreateFAQModal done={done} />}
+      {state.modal.modalName === "admin-put-faq" && <AdminPutFAQModal prev={prev} done={done} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
@@ -42,7 +44,8 @@ const AdminFAQ = () => {
         data={data}
         original={original}
         done={done}
-        TableButtons={[AdminAccountDeleteButtons]}
+        TableButtons={[]}
+        onClick={clickTable}
       />
       <PaginationButtonList
         current={page}
@@ -50,7 +53,7 @@ const AdminFAQ = () => {
         itemPerPage={itemPerPage}
         changePage={setPage}
       />
-      <Button variant="primary" onClick={adminSignup}>
+      <Button variant="primary" onClick={createFAQ}>
         추가
       </Button>
     </>
@@ -74,20 +77,29 @@ const AdminFAQ = () => {
       });
   }
 
-  function done(order) {
-    if (!order) {
+  function done(id) {
+    if (!id) {
       goSearch();
     } else {
-      setData(data.filter((value, index) => index !== order));
-      setOriginal(original.filter((value, index) => index !== order));
+      setData(data.filter((value, index) => index !== id));
+      setOriginal(original.filter((value, index) => index !== id));
     }
   }
 
-  function adminSignup() {
-    dispatch(setModalName("admin-signup"));
+  function createFAQ() {
+    dispatch(setModalName("admin-create-faq"));
     dispatch(setShow(true));
     setPage(1);
     goSearch();
+  }
+
+  function clickTable(entity) {
+    return function (e) {
+      setPrev(entity)
+      dispatch(setModalName('admin-put-faq'))
+      dispatch(setShow(true))
+    }
+      
   }
 };
 
