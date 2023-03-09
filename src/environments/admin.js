@@ -75,20 +75,22 @@ const adminEnvironments = {
     itemPerPage: 6,
     header: [
       "ID",
+      "소셜ID",
       "이메일",
+      "닉네임",
       "가입일시",
       "가입 형태",
-      "소셜ID",
       "블락여부",
       "블락"
     ],
-    width: [10, 20, 20, 15, 20, 5, 10],
+    width: [10, 15, 15, 10, 20, 15, 5, 10],
     transform: [
       (data) => data.id, // ID
+      (data) => data.providerUserId, // 소셜 ID
       (data) => data.email, // 이메일
+      (data) => data.username, // 닉네임
       (data) => data.createdAt, // 가입일시
       (data) => providerMap[data.provider], // 가입 형태
-      (data) => data.providerUserId, // 소셜 ID
       (data) => data.isBlock ? "✔" : "", // 블락 여부
     ],
   },
