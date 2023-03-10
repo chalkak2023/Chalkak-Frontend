@@ -1,22 +1,24 @@
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { Button, Container, InputGroup, Form, Row, Col, Card, Stack } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { setModalName, setShow } from '../../store/modal.slice';
-import { setCollection } from '../../store/collection.slice';
-import Loading from '../components/loading/Loading';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { setModalName, setShow } from "../../store/modal.slice";
+import { setCollection } from "../../store/collection.slice";
+import Loading from "../components/loading/Loading";
+import { useNavigate } from "react-router-dom";
+import CollectionsCreateModal from "./CollectionsCreateModal";
 
 const CollectionsList = () => {
-  let state = useSelector((state)=> state );
+  let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [inputKeyword, setInputKeyword] = useState('');
+  const [inputSearch, setInputSearch] = useState("");
+
   const target = useRef(null);
   const page = useRef(1);
-  const keyword = useRef('');
+  const search = useRef("");
 
   useEffect(() => {
     observer.observe(target.current);
@@ -27,71 +29,74 @@ const CollectionsList = () => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       if (loading) return;
-      getCollections(page.current);
+      getCollections(page.current, search.current);
       page.current += 1;
     });
   });
 
   return (
     <>
-      { loading && <Loading /> }
+      {loading && <Loading />}
+      {state.modal.modalName === "create" && <CollectionsCreateModal />}
 
       <Container>
-        <div>
-          <h2 onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>콜렉션</h2>
-          <InputGroup className="mb-5" style={{ width: '25rem' }}>
-            <Form.Control type='text' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
+        <div><h2 onClick={() => { window.location.reload() }} style={{ cursor: "pointer" }}>콜렉션</h2>
+          <InputGroup className="mb-5" style={{ width: "25rem" }}>
+            <Form.Control type="text" placeholder="키워드를 검색해보세요." onChange={(e) => { setInputSearch(e.target.value) }} onKeyDown={pressEnterHandler}/>
             <Button variant="outline-dark" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
 
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
-          {
-            Object.keys(state.user.data).length > 0 ?
-            <>
-              <Button className="ms-auto" variant="outline-dark">마이 콜렉션</Button>
-            </> : ''
+          <h2># {search.current === "" ? "전체" : search.current}</h2>
+          {Object.keys(state.user.data).length > 0 ? 
+          <>
+              <Button variant="outline-dark" onClick={() => { showModal("create") }}>콜렉션 등록</Button>
+            </> : ""
           }
         </Stack>
 
         <Row xs={1} md={3} className="g-3 mb-3">
-          {collections.map((collection, i) => (
-            <Col key={i} onClick={()=>{photospot(collection.id)}} style={{ cursor: 'pointer' }}>
+          {
+            collections.length > 0 ?
+            collections.map((collection, i) => (
+            <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
               <Card border="dark">
-              <Card.Body style={{ height: '8rem' }}>
-                <Card.Header>{collection.title}</Card.Header>
+                  <Card.Header>{collection.title}</Card.Header>
+                  <Card.Body style={{ height: "8rem" }}>
                   <Card.Title>{collection.description}</Card.Title>
                 </Card.Body>
               </Card>
             </Col>
-          ))}
+          )) :
+          <h3>데이터가 없습니다.</h3>
+         } 
         </Row>
         <div id="scrollEnd" style={{ height: "1px" }} ref={target}></div>
-        </Container>
+      </Container>
     </>
-  )
-  
+  );
+
   function pressEnterHandler(e) {
-    if(e.key === 'Enter') {
-      goSearch();
+    if (e.key === "Enter") { 
+      goSearch() 
     }
   }
 
-  async function goSearch() {
-    keyword.current = inputKeyword;
+    async function goSearch() {
+    search.current = inputSearch;
     page.current = 2;
-    document.querySelector('#scrollEnd').hidden = false;
+    document.querySelector("#scrollEnd").hidden = false;
     resetCollections();
   }
 
   async function resetCollections() {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
-      console.log(`page: ${i}, keyword: ${keyword.current}`);
-
-      const searchData = await axios.get(`http://localhost:8080/api/collections?p=${i}&keyword=${keyword.current}`);
-      const searchResult = searchData.data.data
+      const searchData = await axios.get(
+        `http://localhost:8080/api/collections?p=${i}&search=${search.current}`
+      );
+      const searchResult = searchData.data.data;
       arr = [...arr, ...searchResult];
     }
     setCollections(arr);
@@ -100,14 +105,17 @@ const CollectionsList = () => {
   function photospot(id) {
     const result = collections.find((collection) => collection.id === id);
     dispatch(setCollection(result));
-    navigate((result.userId === state.user.data.id) ? '/photospot' : '/photospot-view');
+    navigate(
+      result.userId === state.user.data.id ? "/photospot" : "/photospot-view"
+    );
   }
-
-  function getCollections(p, k) {
+  
+    function getCollections(p, search) {
     setLoading(true);
-    console.log(`page: ${p}, keyword: ${k}`);
+    
+    console.log(`page: ${p}, search: ${search}`);
     axios
-      .get(`http://localhost:8080/api/collections?p=${p}&keyword=${keyword.current}`)
+      .get(`http://localhost:8080/api/collections?p=${p}&search=${search.current}`)
       .then(({ status, data }) => {
         if (status === 200) {
           const newCollections = data.data;
@@ -125,6 +133,11 @@ const CollectionsList = () => {
         setLoading(false);
       })
   }
-}
+
+  function showModal(modalName) {
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
+};
 
 export default CollectionsList;
