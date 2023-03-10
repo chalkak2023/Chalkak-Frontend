@@ -16,7 +16,6 @@ import AdminAccount from './routes/admin/AdminAccount';
 import AdminMeetup from './routes/admin/AdminMeetup';
 import UserPage from './pages/UserPage'
 import AdminMain from './routes/admin/AdminMain';
-import Service from "./routes/service/Service";
 
 function App() {
 
@@ -37,7 +36,6 @@ function App() {
         <Route path="/admin/meetups" element={<AdminPage MainComponent={AdminMeetup} />}></Route>
         <Route path="/admin/faqs" element={<AdminPage MainComponent={AdminFAQ} />}></Route>
         <Route path="/admin/accounts" element={<AdminPage MainComponent={AdminAccount} />}></Route>
-        <Route path="/service" element={<UserPage MainComponent={Service} />}></Route>
       </Routes>
     </div>
   );
