@@ -28,7 +28,7 @@ const adminEnvironments = {
       (data) => data.id, // ID
       (data) => data.title, // 콜렉션명
       (data) => data.description, // 한줄 소개
-      (data) => data.collection_keywords || "", // (백엔드 필요) 키워드
+      (data) => data.collection_keywords?.map(obj => obj.keyword).join(', ') || "", // 키워드
       (data) => data.createdAt, // 등록일자
     ],
   },
