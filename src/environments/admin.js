@@ -32,6 +32,18 @@ const adminEnvironments = {
       (data) => data.createdAt, // 등록일자
     ],
   },
+  photospot: {
+    ko: '포토스팟', 
+    getItemPath: (collectionId) => `/admin/${collectionId}/photospots`,
+    header: ["ID", "포토스팟명", "한줄 소개", "등록일자", "삭제"],
+    width: [10, 20, 50, 10, 10],
+    transform: [
+      (data) => data.id, // ID
+      (data) => data.title, // 포토스팟명
+      (data) => data.description, // 한줄 소개
+      (data) => data.createdAt, // 등록일자
+    ],
+  },
   faq: {
     ko: '자주찾는질문', 
     getItemPath: '/admin/faq',

@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
-import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
 import AdminCollectionDeleteButtons from "./components/AdminCollectionDeleteButton";
+import AdminPhotospotDeleteButtons from "./components/AdminPhotospotDeleteButton";
 import AdminSearch from "./components/AdminSearch";
 
-const AdminCollection = () => {
+const AdminPhotospot = () => {
   const {
     ko: koName,
     getItemPath,
@@ -18,7 +17,8 @@ const AdminCollection = () => {
     width,
     transform,
     itemPerPage,
-  } = adminEnvironments["collection"];
+  } = adminEnvironments["photospot"];
+  const { collectionId } = useParams()
 
   let [data, setData] = useState([]);
   let [original, setOriginal] = useState([]);
@@ -36,7 +36,7 @@ const AdminCollection = () => {
 
   return (
     <>
-      <h3>{koName} 관리</h3>
+      <h3>{koName} 관리 (콜렉션 ID: {collectionId})</h3>
       <AdminSearch
         onClick={goSearch}
         onChange={(e) => setkeyword(e.target.value)}
@@ -47,23 +47,15 @@ const AdminCollection = () => {
         data={data}
         original={original}
         done={done}
-        TableButtons={[AdminCollectionDeleteButtons]}
-        onClick={clickTable}
-      />
-      <PaginationButtonList
-        current={page}
-        total={total}
-        itemPerPage={itemPerPage}
-        changePage={setPage}
+        TableButtons={[AdminPhotospotDeleteButtons]}
       />
     </>
   );
 
   function goSearch() {
     apiAxios
-      .get(getItemPath, { params: { keyword, p: page } })
-      .then(({ status, data }) => {
-        const { data: items, total } = data;
+      .get(getItemPath(collectionId), { params: { keyword, p: page } })
+      .then(({ status, data: items }) => {
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
@@ -88,12 +80,6 @@ const AdminCollection = () => {
       setOriginal(original.filter((value, index) => index !== order));
     }
   }
-  
-  function clickTable(entity) {
-    return function (e) {
-      navigate(`/admin/collections/${entity.id}/photospots`)
-    }
-  }
 };
 
-export default AdminCollection;
+export default AdminPhotospot;
