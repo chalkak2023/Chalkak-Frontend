@@ -15,7 +15,8 @@ const CollectionsList = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
-
+  const [checkedMine, setCheckedMine] = useState(false);
+  const [tempCollections, setTempCollections] = useState([]);
   const target = useRef(null);
   const page = useRef(1);
   const search = useRef("");
@@ -24,6 +25,22 @@ const CollectionsList = () => {
     observer.observe(target.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (checkedMine) {
+      const myCollections = collections.filter((collection) => {
+        return collection.userId === state.user.data.id;
+      });
+      setTempCollections(collections);
+      setCollections(myCollections);
+      document.querySelector('#scrollEnd').hidden = true;
+    } else if (!checkedMine) {
+      setCollections(tempCollections);
+      setTimeout(() => {
+        document.querySelector('#scrollEnd').hidden = false;
+      }, 500);
+    }
+  }, [checkedMine])
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -51,6 +68,8 @@ const CollectionsList = () => {
           <h2># {search.current === "" ? "전체" : search.current}</h2>
           {Object.keys(state.user.data).length > 0 ? 
           <>
+              <ToggleButton className="ms-auto" id="toggle-check" type="checkbox" variant="outline-dark" 
+                checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>마이 콜렉션</ToggleButton>
               <Button variant="outline-dark" onClick={() => { showModal("create") }}>콜렉션 등록</Button>
             </> : ""
           }
@@ -90,11 +109,27 @@ const CollectionsList = () => {
     resetCollections();
   }
 
+  function makeCollectionURI(p, search, checkedMine) {
+    let signinedUserId = state.user.data.id
+    let collectionListURI;
+    let allCollectionListURI = `http://localhost:8080/api/collections`
+    let searchCollectionURI = `http://localhost:8080/api/collections?p=${p}&search=${search.current}`
+    let myCollectionURI = `http://localhost:8080/api/collections?p=${p}&userId=${signinedUserId}`
+    let searchMyCollectionURI = `http://localhost:8080/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
+
+    if (!search && !checkedMine) { collectionListURI = allCollectionListURI }
+    else if (search && !checkedMine) { collectionListURI = searchCollectionURI } 
+    else if (!search && checkedMine) { collectionListURI = myCollectionURI } 
+    else { collectionListURI = searchMyCollectionURI }
+
+    return collectionListURI;
+  }
+
   async function resetCollections() {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
       const searchData = await axios.get(
-        `http://localhost:8080/api/collections?p=${i}&search=${search.current}`
+        makeCollectionURI(i, search, checkedMine)
       );
       const searchResult = searchData.data.data;
       arr = [...arr, ...searchResult];
@@ -112,10 +147,9 @@ const CollectionsList = () => {
   
     function getCollections(p, search) {
     setLoading(true);
-    
     console.log(`page: ${p}, search: ${search}`);
     axios
-      .get(`http://localhost:8080/api/collections?p=${p}&search=${search.current}`)
+      .get(makeCollectionURI(p, search, checkedMine))
       .then(({ status, data }) => {
         if (status === 200) {
           const newCollections = data.data;
