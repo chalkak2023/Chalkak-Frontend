@@ -61,8 +61,8 @@ const Photospot = () => {
     kakao.maps.event.addListener(marker, 'click', function () {
       clickMarker(
         'PhotospotCreateModal',
-        marker.getPosition().getLng(),
-        marker.getPosition().getLat()
+        marker.getPosition().getLat(),
+        marker.getPosition().getLng()
       );
     });
 
@@ -76,16 +76,16 @@ const Photospot = () => {
             const photospots = response.data;
             map.setCenter(
               new kakao.maps.LatLng(
-                photospots[0].longitude,
-                photospots[0].latitude
+                photospots[0].latitude,
+                photospots[0].longitude
               )
             );
             setPhotospots(response.data);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
               const position = new kakao.maps.LatLng(
-                element.longitude,
-                element.latitude
+                element.latitude,
+                element.longitude
               );
               new kakao.maps.Marker({
                 map: map, // 마커를 표시할 지도
@@ -129,7 +129,7 @@ const Photospot = () => {
   function photospotModify(modalName, id) {
     const result = photospots.find((photospot) => photospot.id === id);
     kakaoMap.setCenter(
-      new kakao.maps.LatLng(result.longitude, result.latitude)
+      new kakao.maps.LatLng(result.latitude, result.longitude)
     );
     dispatch(setPhotospot(result));
     dispatch(setModalName(modalName));
