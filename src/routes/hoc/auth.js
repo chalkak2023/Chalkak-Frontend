@@ -30,13 +30,10 @@ function Auth(SpecificComponent) {
   }, [location]);
 
   if (state.user.loginState) {
-    // return <SpecificComponent />;
     return SpecificComponent;
   } else {
-//     return <Navigate to="/" />;
     return Main;
   }
-
 }
 
 export default Auth;
