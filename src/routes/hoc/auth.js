@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { setLogin } from '../../store/user.slice';
 import apiAxios from '../../utils/api-axios';
+import Main from '../Main';
 
 function Auth(SpecificComponent) {
   let state = useSelector((state) => state);
@@ -29,10 +30,13 @@ function Auth(SpecificComponent) {
   }, [location]);
 
   if (state.user.loginState) {
-    return <SpecificComponent />;
+    // return <SpecificComponent />;
+    return SpecificComponent;
   } else {
-    return <Navigate to="/" />;
+//     return <Navigate to="/" />;
+    return Main;
   }
+
 }
 
 export default Auth;
