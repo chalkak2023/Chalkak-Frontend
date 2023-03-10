@@ -22,7 +22,7 @@ const AdminCollection = () => {
 
   let [data, setData] = useState([]);
   let [original, setOriginal] = useState([]);
-  let [keyword, setkeyword] = useState("");
+  let [search, setSearch] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
 
@@ -33,13 +33,13 @@ const AdminCollection = () => {
   useEffect(() => {
     goSearch();
   }, [page]);
-
+ 
   return (
     <>
       <h3>{koName} 관리</h3>
       <AdminSearch
         onClick={goSearch}
-        onChange={(e) => setkeyword(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
       <AdminTable
         header={header}
@@ -61,7 +61,7 @@ const AdminCollection = () => {
 
   function goSearch() {
     apiAxios
-      .get(getItemPath, { params: { keyword, p: page } })
+      .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
         const { data: items, total } = data;
         const mappingData = items.map((item) =>
