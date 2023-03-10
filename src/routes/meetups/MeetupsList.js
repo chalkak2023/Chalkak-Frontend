@@ -113,6 +113,7 @@ const MeetupsList = () => {
   }
 
   async function goSearch() {
+    setCheckedMine(false);
     keyword.current = inputKeyword;
     page.current = 2;
     document.querySelector('#scrollEnd').hidden = false;
