@@ -13,6 +13,7 @@ import {
 } from '../../store/photospot.slice';
 import './Photospot.css'
 import axios from 'axios';
+import CollectionModifyModal from '../collections/CollectionModifyModal'
 
 const Photospot = () => {
   const { kakao } = window;
@@ -135,6 +136,11 @@ const Photospot = () => {
     dispatch(setShow(true));
   }
 
+  function collectionModify(modalName) {
+    dispatch(setModalName(modalName));
+    dispatch(setShow(true));
+  }
+
   useEffect(() => {
     setKakaoMapping();
   }, []);
@@ -143,6 +149,7 @@ const Photospot = () => {
     <>
       {state.photospot.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
       {state.photospot.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
+      {state.photospot.modalName === 'CollectionModifyModal' && (<CollectionModifyModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
         <Form className='keywordSearch'>
@@ -157,7 +164,15 @@ const Photospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
+
+        <Card className='collectionBox'>
+          <Card.Body className='collectionInfo'>
+            <Card.Title className='collectionTitle textOverflow'>콜렉션 {state.collection.data.title}</Card.Title>
+              <Button variant="light" onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
+          </Card.Body>
+        </Card>
         <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
+
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotModify('PhotospotModifyModal', photospot.id)}}>
             <div className='photospotBox'>

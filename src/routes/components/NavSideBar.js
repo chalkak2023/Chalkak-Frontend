@@ -23,12 +23,12 @@ const NavSideBar = () => {
       <Offcanvas.Body>
         <p className="menu" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</p>
         <p className="menu" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</p>
-        <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>자주하는질문</p>
-        <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>개인정보처리방침</p>
-        <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>이용약관</p>
         <p className="menu" onClick={()=>{navigate('/sample'); handleClose();}}>샘플페이지</p>
         <p className="menu" onClick={()=>{navigate('/photospot'); handleClose();}}>포토스팟편집</p>
         <p className="menu" onClick={()=>{navigate('/photospot-view'); handleClose();}}>포토스팟보기</p>
+        <p className="menu" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</p>
+        {/* 임시로 관리자 페이지 추가. 나중에 삭제 */}
+        <p className="menu" onClick={()=>{navigate('/admin'); handleClose();}}>관리자 페이지</p>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
