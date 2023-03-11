@@ -10,7 +10,7 @@ apiAxios.interceptors.response.use(
   (res) => {
     const { config } = res
     
-    if (res.status === 200 && config.method === 'post' && config.url === '/api/auth/signin') {
+    if (res.status === 200 && config.method === 'post' && (config.url === '/api/auth/signin' || config.url.startsWith('/api/auth/oauth/signin'))) {
       setLoginCookie(res.data)
     }
     if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signin') {
