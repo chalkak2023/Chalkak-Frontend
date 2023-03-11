@@ -43,7 +43,7 @@ const NavSideBar = () => {
 
   function signout() {
     apiAxios
-      .post("/api/auth/signout", { withCredentials: true })
+      .post("/api/auth/signout")
       .then((response) => {
         alert("로그아웃 완료");
         dispatch(setUser({}));

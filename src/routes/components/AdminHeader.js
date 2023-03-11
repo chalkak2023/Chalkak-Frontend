@@ -65,9 +65,7 @@ const AdminHeader = () => {
 
   function signout() {
     apiAxios
-      .post("/admin/auth/signout", null, {
-        withCredentials: true,
-      })
+      .post("/admin/auth/signout")
       .then(({ status, data }) => {
         alert("로그아웃 완료");
 
