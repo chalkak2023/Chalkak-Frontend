@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { setShow } from '../../store/photospot.slice';
 import { setCollection } from '../../store/collection.slice';
 import styled from "styled-components";
+import apiAxios from '../../utils/api-axios';
 
 const CollectionModifyModal = () => {
   let state = useSelector((state) => state);
@@ -91,16 +91,11 @@ const CollectionModifyModal = () => {
     if (keyword) { modifyCollection.keyword = keyword }
     
     dispatch(setCollection(modifyCollection))
-    axios({
-      method: 'put',
-      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}`,
-      data: {
+    apiAxios.put(`/api/collections/${state.collection.data.id}`, {
         title: modifyCollection.title,
         description: modifyCollection.description,
         keyword: modifyCollection.keyword
-      },
-      withCredentials: true,
-    })
+      })
       .then(() => {
         dispatch(setShow(false));
         dispatch(setCollection({...state.collection.data, 
@@ -118,11 +113,7 @@ const CollectionModifyModal = () => {
   }
 
   function deleteCollection() {
-    axios({
-      method: 'delete',
-      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}`,
-      withCredentials: true,
-    })
+    apiAxios.delete(`/api/collections/${state.collection.data.id}`)
       .then(() => {
         dispatch(setShow(false));
         window.location.href = '/collections';

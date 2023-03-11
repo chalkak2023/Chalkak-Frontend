@@ -9,7 +9,7 @@ import {
   setPhotospot
 } from '../../store/photospot.slice';
 import './Photospot.css'
-import axios from 'axios';
+import apiAxios from '../../utils/api-axios';
 
 const Photospot = () => {
   const { kakao } = window;
@@ -45,10 +45,7 @@ const Photospot = () => {
     // 지도 중심좌표를 접속위치로 변경합니다
 
     async function getPhotospots() {
-      axios({
-        method: 'get',
-        url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}/photospots`,
-      })
+      apiAxios.get(`/api/collections/${state.collection.data.id}/photospots`)
         .then((response) => {
           if (response.status === 200) {
             const photospots = response.data;

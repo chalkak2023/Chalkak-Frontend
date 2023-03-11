@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from "../../store/modal.slice";
 import { Button, Modal, Form, InputGroup, Stack } from "react-bootstrap";
@@ -108,8 +107,8 @@ function AuthSigninModal() {
   }
 
   function login() {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/signin`, { email, password })
+    apiAxios
+      .post(`/api/auth/signin`, { email, password })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);

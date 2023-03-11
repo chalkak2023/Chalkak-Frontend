@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   setShow,
 } from '../../store/photospot.slice';
-import axios from 'axios';
+import apiAxios from '../../utils/api-axios';
 
 const PhotospotCreateModal = () => {
   const [title, setTitle] = useState('');
@@ -62,12 +62,7 @@ const PhotospotCreateModal = () => {
     formData.append('longitude', state.photospot.lng);
     formData.append('image', imageFile[0]);
 
-    axios({
-      method: 'post',
-      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}/photospots`,
-      data: formData,
-      withCredentials: true,
-    })
+    apiAxios.post(`/api/collections/${state.collection.data.id}/photospots`, formData)
       .then((response) => {
         dispatch(setShow(false));
         window.location.href = "/photospot";

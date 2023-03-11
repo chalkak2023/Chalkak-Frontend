@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { setShow } from '../../store/photospot.slice';
-import axios from 'axios';
+import apiAxios from '../../utils/api-axios';
 
 const PhotospotModifyModal = () => {
   let state = useSelector((state) => state);
@@ -65,12 +65,7 @@ const PhotospotModifyModal = () => {
       formData.append('image', imageFile[0]);
     }
 
-    axios({
-      method: 'put',
-      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/1/photospots/${state.photospot.data.id}`,
-      data: formData,
-      withCredentials: true,
-    })
+    apiAxios.put(`/api/collections/1/photospots/${state.photospot.data.id}`, formData)
       .then(() => {
         dispatch(setShow(false));
         window.location.href = '/photospot';
@@ -81,11 +76,7 @@ const PhotospotModifyModal = () => {
   }
 
   function deletePhotospot() {
-    axios({
-      method: 'delete',
-      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/1/photospots/${state.photospot.data.id}`,
-      withCredentials: true,
-    })
+    apiAxios.delete(`/api/collections/1/photospots/${state.photospot.data.id}`)
       .then(() => {
         dispatch(setShow(false));
         window.location.href = '/photospot';

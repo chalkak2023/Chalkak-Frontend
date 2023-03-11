@@ -1,4 +1,3 @@
-import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
