@@ -93,7 +93,7 @@ const CollectionModifyModal = () => {
     dispatch(setCollection(modifyCollection))
     axios({
       method: 'put',
-      url: `http://localhost:8080/api/collections/${state.collection.data.id}`,
+      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}`,
       data: {
         title: modifyCollection.title,
         description: modifyCollection.description,
@@ -120,7 +120,7 @@ const CollectionModifyModal = () => {
   function deleteCollection() {
     axios({
       method: 'delete',
-      url: `http://localhost:8080/api/collections/${state.collection.data.id}`,
+      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}`,
       withCredentials: true,
     })
       .then(() => {

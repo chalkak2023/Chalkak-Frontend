@@ -28,7 +28,7 @@ function MeetupsDetailModal(props) {
   function addJoin() {
     const meetupId = state.meetup.data.id;
     axios
-      .post(`http://localhost:8080/api/meetups/${meetupId}/join`,
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups/${meetupId}/join`,
         {},
         { withCredentials: true }
       )
@@ -49,7 +49,7 @@ function MeetupsDetailModal(props) {
   function deleteJoin() {
     const meetupId = state.meetup.data.id;
     axios
-      .delete(`http://localhost:8080/api/meetups/${meetupId}/join`,
+      .delete(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups/${meetupId}/join`,
         { withCredentials: true }
       )
       .then((response) => {
@@ -70,7 +70,7 @@ function MeetupsDetailModal(props) {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       const meetupId = state.meetup.data.id;
       axios
-        .delete(`http://localhost:8080/api/meetups/${meetupId}`,
+        .delete(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups/${meetupId}`,
           { withCredentials: true }
         )
         .then((response) => {

@@ -67,7 +67,7 @@ const PhotospotModifyModal = () => {
 
     axios({
       method: 'put',
-      url: `http://localhost:8080/api/collections/1/photospots/${state.photospot.data.id}`,
+      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/1/photospots/${state.photospot.data.id}`,
       data: formData,
       withCredentials: true,
     })
@@ -83,7 +83,7 @@ const PhotospotModifyModal = () => {
   function deletePhotospot() {
     axios({
       method: 'delete',
-      url: `http://localhost:8080/api/collections/1/photospots/${state.photospot.data.id}`,
+      url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/1/photospots/${state.photospot.data.id}`,
       withCredentials: true,
     })
       .then(() => {

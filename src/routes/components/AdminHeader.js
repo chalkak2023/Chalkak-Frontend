@@ -64,7 +64,7 @@ const AdminHeader = () => {
 
   function signout() {
     axios
-      .post("http://localhost:8080/admin/auth/signout", null, {
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/admin/auth/signout`, null, {
         withCredentials: true,
       })
       .then(({ status, data }) => {

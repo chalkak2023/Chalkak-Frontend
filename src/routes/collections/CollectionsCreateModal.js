@@ -76,7 +76,7 @@ function CollectionsCreateModal(props) {
 
   function createCollection() {
     axios
-      .post('http://localhost:8080/api/collections',
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/collections`,
         { title, description, keyword },
         { withCredentials: true }
       )

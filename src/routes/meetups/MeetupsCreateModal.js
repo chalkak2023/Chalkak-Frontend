@@ -44,7 +44,7 @@ function MeetupsCreateModal(props) {
 
   function createMeetup() {
     axios
-      .post('http://localhost:8080/api/meetups',
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups`,
         {
           title, 
           content, 
