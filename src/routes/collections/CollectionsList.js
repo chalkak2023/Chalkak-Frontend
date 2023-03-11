@@ -112,10 +112,10 @@ const CollectionsList = () => {
   function makeCollectionURI(p, search, checkedMine) {
     let signinedUserId = state.user.data.id
     let collectionListURI;
-    let allCollectionListURI = `http://localhost:8080/api/collections`
-    let searchCollectionURI = `http://localhost:8080/api/collections?p=${p}&search=${search.current}`
-    let myCollectionURI = `http://localhost:8080/api/collections?p=${p}&userId=${signinedUserId}`
-    let searchMyCollectionURI = `http://localhost:8080/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
+    let allCollectionListURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections`
+    let searchCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&search=${search.current}`
+    let myCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&userId=${signinedUserId}`
+    let searchMyCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
 
     if (!search && !checkedMine) { collectionListURI = allCollectionListURI }
     else if (search && !checkedMine) { collectionListURI = searchCollectionURI } 

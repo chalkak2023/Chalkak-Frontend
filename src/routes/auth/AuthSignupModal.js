@@ -51,7 +51,7 @@ function AuthSignupModal() {
 
   function confirmEmail() {
     axios
-      .put(`http://localhost:8080/api/auth/emailverification`, { email, verifyToken })
+      .put(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/emailverification`, { email, verifyToken })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
@@ -72,7 +72,7 @@ function AuthSignupModal() {
       return;
     }
     axios
-      .post('http://localhost:8080/api/auth/emailverification', { email })
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/emailverification`, { email })
       .then((response) => {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
@@ -96,7 +96,7 @@ function AuthSignupModal() {
       return;
     }
     axios
-      .post("http://localhost:8080/api/auth/signup", { email, password })
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/signup`, { email, password })
       .then((response) => {
         const statusCode = response.status;
         console.log("status code: " + statusCode);

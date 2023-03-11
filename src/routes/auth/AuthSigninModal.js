@@ -60,7 +60,7 @@ function AuthSigninModal() {
 
   function login() {
     axios
-      .post(`http://localhost:8080/api/auth/signin`, { email, password })
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/signin`, { email, password })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);

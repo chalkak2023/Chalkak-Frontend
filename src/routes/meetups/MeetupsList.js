@@ -124,7 +124,7 @@ const MeetupsList = () => {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
       console.log(`page: ${i}, keyword: ${keyword.current}`);
-      const { data } = await axios.get(`http://localhost:8080/api/meetups?p=${i}&keyword=${keyword.current}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups?p=${i}&keyword=${keyword.current}`);
       arr = [...arr, ...data];
     }
     setMeetups(arr);
@@ -134,7 +134,7 @@ const MeetupsList = () => {
     setLoading(true);
     console.log(`page: ${p}, keyword: ${k}`);
     axios
-      .get(`http://localhost:8080/api/meetups?p=${p}&keyword=${keyword.current}`)
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups?p=${p}&keyword=${keyword.current}`)
       .then(({ status, data }) => {
         if (status === 200) {
           const newMeetups = data;
@@ -155,7 +155,7 @@ const MeetupsList = () => {
 
   function getMeetupDetail(meetupId) {
     axios
-      .get(`http://localhost:8080/api/meetups/${meetupId}`)
+      .get(`${process.env.REACT_APP_SERVER_ADDRESS}/api/meetups/${meetupId}`)
       .then((response) => {
         if (response.status === 200) {
           const meetup = response.data;

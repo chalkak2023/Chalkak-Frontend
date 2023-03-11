@@ -47,7 +47,7 @@ const Photospot = () => {
     async function getPhotospots() {
       axios({
         method: 'get',
-        url: `http://localhost:8080/api/collections/${state.collection.data.id}/photospots`,
+        url: `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections/${state.collection.data.id}/photospots`,
       })
         .then((response) => {
           if (response.status === 200) {

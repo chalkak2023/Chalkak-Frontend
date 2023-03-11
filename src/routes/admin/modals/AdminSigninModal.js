@@ -38,7 +38,7 @@ function AdminSigninModal() {
 
   function login() {
     axios
-      .post(`http://localhost:8080/admin/auth/signin`, { account, password })
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/admin/auth/signin`, { account, password })
       .then(({status, data: body}) => {
         if (status === 200) {
           alert("로그인 완료");
