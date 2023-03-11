@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
+import apiAxios from "../../utils/api-axios";
 import AdminSigninModal from "../admin/modals/AdminSigninModal";
 import './AdminHeader.css'
 
@@ -63,13 +64,13 @@ const AdminHeader = () => {
   }
 
   function signout() {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/admin/auth/signout`, null, {
+    apiAxios
+      .post("/admin/auth/signout", null, {
         withCredentials: true,
       })
       .then(({ status, data }) => {
         alert("로그아웃 완료");
-        // TODO: 쿠키를 클라이언트에서 없애려면 여기서 해야함
+
         dispatch(setAdmin({}));
         dispatch(setAdminLogin(false));
         navigate("/admin");

@@ -68,9 +68,6 @@ function AuthSigninModal() {
           alert("로그인 완료");
 
           const accessToken = response.data.accessToken;
-          const refreshToken = response.data.refreshToken;
-          document.cookie = `accessToken=${accessToken}; path=/;`;
-          document.cookie = `refreshToken=${refreshToken}; path=/;`;
 
           const userInfo = jwt_decode(accessToken);
           dispatch(setUser(userInfo));
@@ -89,9 +86,6 @@ function AuthSigninModal() {
       return ;
     }
     dispatch(setShow(false));
-
-    document.cookie = `accessToken=${accessToken}; path=/;`;
-    document.cookie = `refreshToken=${refreshToken}; path=/;`;
 
     const userInfo = jwt_decode(accessToken);
     dispatch(setUser(userInfo));

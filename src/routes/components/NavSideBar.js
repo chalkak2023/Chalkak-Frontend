@@ -46,8 +46,6 @@ const NavSideBar = () => {
       .post("/api/auth/signout", { withCredentials: true })
       .then((response) => {
         alert("로그아웃 완료");
-        deleteCookie("accessToken");
-        deleteCookie("refreshToken");
         dispatch(setUser({}));
       })
       .catch((err) => {
@@ -56,10 +54,6 @@ const NavSideBar = () => {
       });
 
     // TODO: 로그아웃 시 비회원이 볼 수 없는 페이지에 있는 상황에 대한 조치 필요
-  };
-  
-  function deleteCookie(key) {
-    document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
   };
 };
 
