@@ -30,6 +30,16 @@ apiAxios.interceptors.response.use(
     const refreshUrl = isAdminApi ? "/admin/auth/signin" : "/api/auth/refresh";
 
     if (
+      config.method === 'post' &&
+      config.url === '/api/auth/signin' ||
+      config.url.startsWith('/api/auth/oauth/signin') ||
+      config.url === '/admin/auth/signin' ||
+      config.url === '/api/auth/emailverification'
+    ) {
+      return Promise.reject(err);
+    }
+
+    if (
       config.method === 'get' &&
       config.url === refreshUrl
     ) {
