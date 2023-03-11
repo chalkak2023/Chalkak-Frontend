@@ -11,7 +11,7 @@ apiAxios.interceptors.response.use(
     const { config } = res
     
     if (res.status === 200 && config.method === 'post' && config.url === '/api/auth/signin') {
-      setLoginCookie(res.data.data)
+      setLoginCookie(res.data)
     }
     if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signin') {
       setAdminLoginCookie(res.data.data)
@@ -62,7 +62,7 @@ apiAxios.interceptors.response.use(
       if (!res) {
         return Promise.reject(err);
       }
-      setLoginCookie(res.data.data)
+      setLoginCookie(res.data)
     }
 
     return axios(config);
