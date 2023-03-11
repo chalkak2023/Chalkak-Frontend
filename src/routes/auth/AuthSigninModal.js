@@ -8,6 +8,7 @@ import { setUser, setLogin } from '../../store/user.slice';
 import social from '../../environments/social';
 import KakaoLoginImage from './kakao_login.png'
 import NaverLoginImage from './naver_login.png'
+import apiAxios from '../../utils/api-axios';
 
 function AuthSigninModal() {
   const [email, setEmail] = useState("");
@@ -18,8 +19,8 @@ function AuthSigninModal() {
 
   const handleClose = () => dispatch(setShow(false));
 
-  const naverLoginUri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${social.naverClientId}&redirect_uri=${social.naverRedirectId}`
-  const kakaoLoginUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${social.kakaoClientId}&redirect_uri=${social.kakaoRedirectId}`
+  const naverLoginUri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${social.naverClientId}&redirect_uri=${social.naverRedirectId}`;
+  const kakaoLoginUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${social.kakaoClientId}&redirect_uri=${social.kakaoRedirectId}`;
 
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
@@ -30,23 +31,71 @@ function AuthSigninModal() {
         <Form>
           <Form.Group>
             <InputGroup className="mb-2">
-              <Form.Control id="email" name="email" type="email" placeholder="이메일" autoFocus onChange={(e) => {setEmail(e.target.value);}}/>
+              <Form.Control
+                id="email"
+                name="email"
+                type="email"
+                placeholder="이메일"
+                autoFocus
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
             </InputGroup>
             <InputGroup>
-              <Form.Control id="password" name="password" type="password" placeholder="비밀번호" autoFocus onChange={(e) => {setPassword(e.target.value);}}/>
+              <Form.Control
+                id="password"
+                name="password"
+                type="password"
+                placeholder="비밀번호"
+                autoFocus
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
             </InputGroup>
           </Form.Group>
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button variant="primary" onClick={() => {login()}}>로그인</Button>
-        <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            login();
+          }}
+        >
+          로그인
+        </Button>
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            handleClose();
+            showModal("signup");
+          }}
+        >
+          아직 회원가입을 안하셨다면?
+        </Button>
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <div onClick={() => socialLogin(naverLoginUri)} style={{cursor: 'pointer', width: '50%', padding: 0}}>
-            <img src={NaverLoginImage} alt="네이버 로그인 버튼" style={{ width: '100%', height: '38px' }}/>
+          <div
+            onClick={() => socialLogin(naverLoginUri, "naver")}
+            style={{ cursor: "pointer", width: "50%", padding: 0 }}
+          >
+            <img
+              src={NaverLoginImage}
+              alt="네이버 로그인 버튼"
+              style={{ width: "100%", height: "38px" }}
+            />
           </div>
-          <div className="ms-auto" onClick={() => socialLogin(kakaoLoginUri)} style={{cursor: 'pointer', width: '50%', padding: 0}}>
-            <img src={KakaoLoginImage} alt="카카오 로그인 버튼" style={{ width: '100%', height: '38px' }}/>
+          <div
+            className="ms-auto"
+            onClick={() => socialLogin(kakaoLoginUri, "kakao")}
+            style={{ cursor: "pointer", width: "50%", padding: 0 }}
+          >
+            <img
+              src={KakaoLoginImage}
+              alt="카카오 로그인 버튼"
+              style={{ width: "100%", height: "38px" }}
+            />
           </div>
         </Stack>
       </div>
@@ -80,23 +129,38 @@ function AuthSigninModal() {
         alert(e.response.data.message);
       });
   }
-  
-  function afterSocialLogin({ accessToken, refreshToken, err }) {
-    if (err) {
-      return ;
-    }
-    dispatch(setShow(false));
 
-    const userInfo = jwt_decode(accessToken);
-    dispatch(setUser(userInfo));
-    dispatch(setLogin(true));
+  function requestSocialLogin(provider) {
+    return function (queryParams) {
+      const { code, state } = queryParams
+      if (!code) {
+        alert('로그인할 수 없습니다.')
+      }
+      const body = { code };
+      if (state) {
+        body.state = state;
+      }
+      apiAxios
+        .post(`/api/auth/oauth/signin/${provider}`, body)
+        .then((response) => {
+          const accessToken = response.data.accessToken;
+          dispatch(setShow(false));
+
+          const userInfo = jwt_decode(accessToken);
+          dispatch(setUser(userInfo));
+          dispatch(setLogin(true));
+        })
+        .catch((err) => {
+          return;
+        })
+      
+    };
   }
 
-  function socialLogin(url) {
-    window.afterSocialLogin = afterSocialLogin
-    window.open(url, 'social', 'width=600,height=600')
+  function socialLogin(url, provider) {
+    window.requestSocialLogin = requestSocialLogin(provider);
+    window.open(url, "social", "width=600,height=600");
   }
-
 }
 
 export default AuthSigninModal;

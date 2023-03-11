@@ -5,28 +5,13 @@ import Loading from '../components/loading/Loading'
 const KaKaoLoginRedirect = () => {
 
   useEffect(() => {
-    const temp = {};
+    const queryParams = {};
     new URLSearchParams(window.location.search).forEach((value, key) => {
-      temp[key] = value;
+      queryParams[key] = value;
     });
 
-    if (temp.code) {
-      apiAxios
-        .post("/api/auth/oauth/signin/kakao", {
-          code: temp.code,
-        })
-        .then((response) => {
-          const accessToken = response.data.accessToken;
-          const refreshToken = response.data.refreshToken;
-          window.opener?.afterSocialLogin({accessToken, refreshToken})
-        })
-        .catch((err) => {
-          window.opener?.afterSocialLogin({err})
-        })
-        .finally(() => {
-          window.close()
-        })
-    }
+    window.opener?.requestSocialLogin(queryParams)
+    window.close()
   }, []);
 
   return (
