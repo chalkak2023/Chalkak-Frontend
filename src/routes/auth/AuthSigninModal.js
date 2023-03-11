@@ -130,8 +130,7 @@ function AuthSigninModal() {
       });
   }
 
-  function requestSocialLogin(provider) {
-    return function (queryParams) {
+  function requestSocialLogin(provider, queryParams) {
       const { code, state } = queryParams
       if (!code) {
         alert('로그인할 수 없습니다.')
@@ -153,12 +152,10 @@ function AuthSigninModal() {
         .catch((err) => {
           return;
         })
-      
-    };
   }
 
-  function socialLogin(url, provider) {
-    window.requestSocialLogin = requestSocialLogin(provider);
+  function socialLogin(url) {
+    window.requestSocialLogin = requestSocialLogin;
     window.open(url, "social", "width=600,height=600");
   }
 }

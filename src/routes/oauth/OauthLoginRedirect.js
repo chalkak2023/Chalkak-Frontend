@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import apiAxios from "../../utils/api-axios";
+import { useParams } from "react-router-dom";
 import Loading from '../components/loading/Loading'
 
-const NaverLoginRedirect = () => {
+const OauthLoginRedirect = () => {
+  const { provider } = useParams()
 
   useEffect(() => {
     const queryParams = {};
@@ -10,7 +11,7 @@ const NaverLoginRedirect = () => {
       queryParams[key] = value;
     });
 
-    window.opener?.requestSocialLogin(queryParams)
+    window.opener?.requestSocialLogin(provider, queryParams)
     window.close()
   }, []);
 
@@ -18,7 +19,7 @@ const NaverLoginRedirect = () => {
     <div>
       <Loading />
     </div>
-  )
+  );
 };
 
-export default NaverLoginRedirect;
+export default OauthLoginRedirect;
