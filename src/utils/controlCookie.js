@@ -2,7 +2,9 @@ export function setLoginCookie(data) {
   const { accessToken, refreshToken } = data;
 
   document.cookie = `accessToken=${accessToken}; path=/;`;
-  document.cookie = `refreshToken=${refreshToken}; path=/;`;
+  if (refreshToken) {
+    document.cookie = `refreshToken=${refreshToken}; path=/;`;
+  }
 }
 export function setAdminLoginCookie(data) {
   document.cookie = `auth-cookie=${JSON.stringify(data)}; path=/;`;
