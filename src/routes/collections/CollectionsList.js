@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +6,7 @@ import { setCollection } from "../../store/collection.slice";
 import Loading from "../components/loading/Loading";
 import { useNavigate } from "react-router-dom";
 import CollectionsCreateModal from "./CollectionsCreateModal";
+import apiAxios from "../../utils/api-axios";
 
 const CollectionsList = () => {
   let state = useSelector((state) => state);
@@ -112,10 +112,10 @@ const CollectionsList = () => {
   function makeCollectionURI(p, search, checkedMine) {
     let signinedUserId = state.user.data.id
     let collectionListURI;
-    let allCollectionListURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections`
-    let searchCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&search=${search.current}`
-    let myCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&userId=${signinedUserId}`
-    let searchMyCollectionURI = `${process.env.REACT_APP_SERVER_ADDRESS}/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
+    let allCollectionListURI = `/api/collections`
+    let searchCollectionURI = `/api/collections?p=${p}&search=${search.current}`
+    let myCollectionURI = `/api/collections?p=${p}&userId=${signinedUserId}`
+    let searchMyCollectionURI = `/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
 
     if (!search && !checkedMine) { collectionListURI = allCollectionListURI }
     else if (search && !checkedMine) { collectionListURI = searchCollectionURI } 
@@ -128,7 +128,7 @@ const CollectionsList = () => {
   async function resetCollections() {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
-      const searchData = await axios.get(
+      const searchData = await apiAxios.get(
         makeCollectionURI(i, search, checkedMine)
       );
       const searchResult = searchData.data.data;
@@ -148,7 +148,7 @@ const CollectionsList = () => {
     function getCollections(p, search) {
     setLoading(true);
     console.log(`page: ${p}, search: ${search}`);
-    axios
+    apiAxios
       .get(makeCollectionURI(p, search, checkedMine))
       .then(({ status, data }) => {
         if (status === 200) {
