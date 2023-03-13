@@ -131,7 +131,7 @@ const CollectionsList = () => {
       const searchData = await axios.get(
         makeCollectionURI(i, search, checkedMine)
       );
-      const searchResult = searchData.data.data;
+      const searchResult = searchData.data;
       arr = [...arr, ...searchResult];
     }
     setCollections(arr);
@@ -152,12 +152,11 @@ const CollectionsList = () => {
       .get(makeCollectionURI(p, search, checkedMine))
       .then(({ status, data }) => {
         if (status === 200) {
-          const newCollections = data.data;
-          if (newCollections.length === 0) {
+          if (data.length === 0) {
             console.log('더 불러올 데이터가 없습니다.');
             document.querySelector('#scrollEnd').hidden = true;
           } else {
-            setCollections((prev) => [...prev, ...newCollections]);
+            setCollections((prev) => [...prev, ...data]);
           }
         }
       }).catch((e) => {
