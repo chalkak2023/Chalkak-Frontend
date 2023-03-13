@@ -2,10 +2,10 @@ export function setLoginCookie(data) {
   const { accessToken, refreshToken } = data;
 
   // document.cookie = `accessToken=${accessToken}; path=/;`;
-  document.cookie = `accessToken=${accessToken}; path=/; Domain=chalkak.site;`;
+  document.cookie = `accessToken=${accessToken}; Domain=chalkak.site;`;
   if (refreshToken) {
     // document.cookie = `refreshToken=${refreshToken}; path=/;`;
-    document.cookie = `refreshToken=${refreshToken}; path=/; Domain=chalkak.site;`;
+    document.cookie = `refreshToken=${refreshToken}; Domain=chalkak.site;`;
   }
 }
 export function setAdminLoginCookie(data) {
