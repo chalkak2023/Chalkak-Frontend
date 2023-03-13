@@ -9,12 +9,12 @@ export function setLoginCookie(data) {
   }
 }
 export function setAdminLoginCookie(data) {
-  document.cookie = `auth-cookie=${JSON.stringify(data)}; path=/;`;
+  document.cookie = `auth-cookie=${JSON.stringify(data)}; Domain=chalkak.site; path=/;`;
 }
 export function clearLoginCookie() {
-  document.cookie = `accessToken=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
-  document.cookie = `refreshToken=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+  document.cookie = `accessToken=; Domain=chalkak.site; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+  document.cookie = `refreshToken=; Domain=chalkak.site; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
 }
 export function clearAdminLoginCookie() {
-  document.cookie = `auth-cookie=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+  document.cookie = `auth-cookie=; Domain=chalkak.site; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
 }
