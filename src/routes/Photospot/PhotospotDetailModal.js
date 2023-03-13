@@ -1,6 +1,6 @@
 // import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Carousel, Modal } from 'react-bootstrap';
 import {
   setShow,
 } from '../../store/photospot.slice';
@@ -18,7 +18,16 @@ function PhotospotDetailModal() {
       </Modal.Header>
       <Modal.Body>
         <div className="detailBox">
-          <img style={{width: "500px"}} src={state.photospot.data.imagePath}></img>
+        <Carousel>
+        {state.photospot.data.photos.map((photo) => (
+            <Carousel.Item key={photo.id}>
+              <img
+                className="d-block w-100"
+                src={photo.image}
+              />
+            </Carousel.Item>
+          ))}
+        </Carousel>
           <p className="description">{state.photospot.data.description}</p>
         </div>
       </Modal.Body>

@@ -159,3 +159,18 @@
 .collectionTitle.card-title.h5 {
   margin: 0;
 }
+.photoCount {
+  color: tomato;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.deletePhoto {
+  position: absolute;
+  z-index: 20;
+
+  right: 0;
+  padding: 5px;
+
+  cursor: pointer;
+}

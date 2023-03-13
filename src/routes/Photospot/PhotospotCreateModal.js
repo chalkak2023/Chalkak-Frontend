@@ -10,8 +10,9 @@ import apiAxios from '../../utils/api-axios';
 const PhotospotCreateModal = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [imageFile, setImageFile] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
   const [isPhotospotEmpty, setIsPhotospotEmpty] = useState(true)
+  const [isPhotoCount, setIsPhotoCount] = useState(true)
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
@@ -36,9 +37,10 @@ const PhotospotCreateModal = () => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicImageFile">
             <Form.Label>사진</Form.Label>
-            <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFile(e.target.files);}}/>
+            <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFiles(e.target.files);}} accept="image/png, image/jpeg, image/jpg" multiple/>
           </Form.Group>
-          <div className="photospotEmpty" style={isPhotospotEmpty ? {display: 'none'} : {display: 'block'}}>제목, 설명, 사진을 모두 입력하셔야 합니다</div>
+          <div className="photospotEmpty" style={isPhotospotEmpty ? {display: 'none'} : {display: 'block'}}>제목, 설명, 사진을 모두 입력하셔야 합니다.</div>
+          <div className="photoCount" style={isPhotoCount ? {display: 'none'} : {display: 'block'}}>사진은 5장만 업로드 할 수 있습니다.</div>
           <Button variant="primary" onClick={(e) => {createPhotospot(e);}}>
             생성
           </Button>
@@ -48,19 +50,29 @@ const PhotospotCreateModal = () => {
   );
 
   function createPhotospot(e) {
-    if (!title || !description || !imageFile.length) {
-      e.preventDefault();
+    e.preventDefault();
+    if (!title || !description || !imageFiles.length) {
       setIsPhotospotEmpty(false)
       return;
     }
 
-    const formData = new FormData();
+    if (imageFiles.length > 5) {
+      setIsPhotoCount(false)
+      return
+    }
 
+    const formData = new FormData();
+    
     formData.append('title', title);
     formData.append('description', description);
     formData.append('latitude', state.photospot.lat);
     formData.append('longitude', state.photospot.lng);
-    formData.append('image', imageFile[0]);
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append('files', imageFiles[i])
+    }
+    
+    
+    
 
     apiAxios.post(`/api/collections/${state.collection.data.id}/photospots`, formData)
       .then((response) => {
