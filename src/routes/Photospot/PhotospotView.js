@@ -131,11 +131,17 @@ const Photospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
+
+        <Card className='collectionBox'>
+          <Card.Body className='collectionInfo'>
+            <Card.Title className='collectionTitle textOverflow'>콜렉션 {state.collection.data.title}</Card.Title>
+          </Card.Body>
+        </Card>
         <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotDetail('PhotospotDetailModal', photospot.id)}}>
             <div className='photospotBox'>
-            <img className='imageSize' src={photospot.imagePath} alt=""/>
+            <img className='imageSize' src={photospot.photos[0].image} alt=""/>
             <Card.Body>
               <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
               <Card.Text className='textOverflow'>

@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import PhotospotCreateModal from './PhotospotCreateModal';
 import PhotospotModifyModal from './PhotospotModifyModal';
 import {
@@ -173,7 +172,7 @@ const Photospot = () => {
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotModify('PhotospotModifyModal', photospot.id)}}>
             <div className='photospotBox'>
-            <img className='imageSize' src={photospot.imagePath} alt=""/>
+            <img className='imageSize' src={photospot.photos[0].image} alt=""/>
             <Card.Body>
               <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
               <Card.Text className='textOverflow'>
