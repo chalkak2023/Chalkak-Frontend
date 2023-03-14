@@ -6,11 +6,28 @@ import AuthSignupModal from '../auth/AuthSignupModal';
 import { setModalName, setShow } from '../../store/modal.slice';
 import { setNavShow } from '../../store/nav.slice';
 import NavSideBar from './NavSideBar';
+import { useEffect } from 'react';
+import { setLogin, setUser } from '../../store/user.slice';
 
 const Header = () => {
   let state = useSelector((state)=> state );
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
+  useEffect(() => {
+    let signoutTimeout;
+    if (state.user.loginState && state.user.data?.iat) {
+      signoutTimeout = setTimeout(() => {
+        console.log(state.user.data.iat, Date.now())
+        dispatch(setLogin(false));
+        dispatch(setUser({}))
+      }, (state.user.data.iat + 60 * 60 * 3) * 1000 - Date.now());
+    }
+
+    return () => {
+      clearTimeout(signoutTimeout)
+    }
+  }, [state.user.data, state.user.loginState])
 
   return (
     <>
