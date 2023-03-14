@@ -48,8 +48,6 @@ apiAxios.interceptors.response.use(
       if (isAdminApi) {
         // 백엔드에서 관리자 인증쿠키를 res.cookie로 설정하지 않으면 주석을 풀면 됨.
         // clearAdminLoginCookie()
-      } else {
-        clearLoginCookie()
       }
       return Promise.reject(err);
     }
@@ -79,7 +77,7 @@ apiAxios.interceptors.response.use(
       setLoginCookie(res.data)
     }
 
-    return axios(config);
+    return apiAxios(config);
   }
 );
 

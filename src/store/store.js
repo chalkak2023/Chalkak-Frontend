@@ -10,6 +10,12 @@ import user from './user.slice';
 import admin from './admin.slice';
 import nav from './nav.slice';
 import collection from "./collection.slice";
+import  { createStateSyncMiddleware , initMessageListener } from "redux-state-sync" ;
+
+const reduxStateSyncConfig = {
+  whiteList: ["user/setUser", "user/setLogin", "admin/setAdmin", "admin/setAdminLogin"],
+  blacklist: ["persist/PERSIST", "persist/REHYDRATE"]
+} ;
 
 const reducers = combineReducers({
   modal: modal.reducer,
@@ -33,7 +39,9 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({
   reducer: persistedReducer,
   // devTools:
-  middleware: [thunk],
+  middleware: [thunk, createStateSyncMiddleware (reduxStateSyncConfig)],
 });
+
+initMessageListener (store) ;
 
 export default store;
