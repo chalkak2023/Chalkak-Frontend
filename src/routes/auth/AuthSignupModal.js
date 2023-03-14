@@ -96,7 +96,7 @@ function AuthSignupModal() {
       return;
     }
     apiAxios
-      .post("/api/auth/signup", { email, password })
+      .post("/api/auth/signup", { email, password, verifyToken })
       .then((response) => {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
