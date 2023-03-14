@@ -110,20 +110,19 @@ const CollectionsList = () => {
   }
 
   function makeCollectionURI(p, search, checkedMine) {
-    let signinedUserId = state.user.data.id
-    let collectionListURI;
-    let allCollectionListURI = `/api/collections`
-    let searchCollectionURI = `/api/collections?p=${p}&search=${search.current}`
-    let myCollectionURI = `/api/collections?p=${p}&userId=${signinedUserId}`
-    let searchMyCollectionURI = `/api/collections?p=${p}&search=${search.current}&userId=${signinedUserId}`
+    const signinedUserId = state.user.data.id;
+    const collectionListURI = `/api/collections?p=${p}&`;
 
-    if (!search && !checkedMine) { collectionListURI = allCollectionListURI }
-    else if (search && !checkedMine) { collectionListURI = searchCollectionURI } 
-    else if (!search && checkedMine) { collectionListURI = myCollectionURI } 
-    else { collectionListURI = searchMyCollectionURI }
-
-    return collectionListURI;
-  }
+    if (search && checkedMine) { 
+      return collectionListURI + `search=${search.current}&userId=${signinedUserId}`;
+    } else if (!search && checkedMine) { 
+      return collectionListURI + `userId=${signinedUserId}`;
+    } else if (search && !checkedMine) { 
+      return collectionListURI + `search=${search.current}`;
+    } else { 
+      return collectionListURI;
+    }
+}
 
   async function resetCollections() {
     let arr = [];
@@ -131,7 +130,7 @@ const CollectionsList = () => {
       const searchData = await apiAxios.get(
         makeCollectionURI(i, search, checkedMine)
       );
-      const searchResult = searchData.data.data;
+      const searchResult = searchData.data;
       arr = [...arr, ...searchResult];
     }
     setCollections(arr);
@@ -152,12 +151,11 @@ const CollectionsList = () => {
       .get(makeCollectionURI(p, search, checkedMine))
       .then(({ status, data }) => {
         if (status === 200) {
-          const newCollections = data.data;
-          if (newCollections.length === 0) {
+          if (data.length === 0) {
             console.log('더 불러올 데이터가 없습니다.');
             document.querySelector('#scrollEnd').hidden = true;
           } else {
-            setCollections((prev) => [...prev, ...newCollections]);
+            setCollections((prev) => [...prev, ...data]);
           }
         }
       }).catch((e) => {
