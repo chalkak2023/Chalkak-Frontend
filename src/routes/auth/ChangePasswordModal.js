@@ -98,7 +98,7 @@ function ChangePasswordModal() {
       return;
     }
     apiAxios
-      .patch("/api/auth/password", { password })
+      .patch("/api/auth", { password })
       .then((response) => {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
