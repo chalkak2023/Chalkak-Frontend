@@ -5,6 +5,7 @@ import { setNavShow } from '../../store/nav.slice';
 import './NavSideBar.css';
 import { setLogin, setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
+import { setModalName, setShow } from "../../store/modal.slice";
 
 const NavSideBar = () => {
   const handleClose = () => dispatch(setNavShow(false));
@@ -32,7 +33,7 @@ const NavSideBar = () => {
         {
           Object.keys(state.user.data).length > 0 ?
           <>
-            <p className="menu" onClick={()=>{navigate('/'); handleClose();}}>비밀번호변경</p>
+            {state.user.data.email ? <p className="menu" onClick={()=>{dispatch(setModalName('change-password')); dispatch(setShow(true));}}>비밀번호변경</p> : ''}
             <p className="menu" onClick={()=>{signout(); handleClose();}}>로그아웃</p>
           </> : ''
 

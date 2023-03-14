@@ -8,6 +8,7 @@ import { setNavShow } from '../../store/nav.slice';
 import NavSideBar from './NavSideBar';
 import { useEffect } from 'react';
 import { setLogin, setUser } from '../../store/user.slice';
+import ChangePasswordModal from '../auth/ChangePasswordModal';
 
 const Header = () => {
   let state = useSelector((state)=> state );
@@ -33,6 +34,7 @@ const Header = () => {
     <>
       { state.modal.modalName === 'signin' && <AuthSigninModal /> }
       { state.modal.modalName === 'signup' && <AuthSignupModal /> }
+      { state.modal.modalName === 'change-password' && <ChangePasswordModal /> }
 
       <Navbar>
         <Container fluid>
