@@ -4,7 +4,6 @@ import { Button, Modal, Form, InputGroup, Stack } from "react-bootstrap";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
 import { setUser, setLogin } from '../../store/user.slice';
-import social from '../../environments/social';
 import KakaoLoginImage from './kakao_login.png'
 import NaverLoginImage from './naver_login.png'
 import apiAxios from '../../utils/api-axios';
@@ -18,8 +17,8 @@ function AuthSigninModal() {
 
   const handleClose = () => dispatch(setShow(false));
 
-  const naverLoginUri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${social.naverClientId}&redirect_uri=${social.naverRedirectId}`;
-  const kakaoLoginUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${social.kakaoClientId}&redirect_uri=${social.kakaoRedirectId}`;
+  const naverLoginUri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${process.env.REACT_APP_NAVER_LOGIN_CLIENT_ID}&redirect_uri=${window.location.origin}/login/naver`;
+  const kakaoLoginUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_LOGIN_CLIENT_ID}&redirect_uri=${window.location.origin}/login/kakao`;
 
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>

@@ -72,7 +72,7 @@ const CollectionModifyModal = () => {
   function submitKeywordTag() {
     let updatedKeyword = [...keyword]
     updatedKeyword.push(keywordTag)
-    setKeyword(prev => [...prev, keywordTag])
+    setKeyword(prev => [...new Set ([...prev, keywordTag])])
     setKeywordTag('')
   }
 
@@ -104,7 +104,6 @@ const CollectionModifyModal = () => {
           collection_keywords: modifyCollection.keyword.map(text=> ({keyword: text, userId: state.collection.data.userId, 
             collectionId: state.collection.data.collectionId}))}
           ))
-          
         window.location.href = `/photospot`;
       })
       .catch(() => {

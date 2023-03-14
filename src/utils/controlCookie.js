@@ -1,9 +1,12 @@
+const THREE_HOUR = 60 * 60 * 3
+const SEVEN_DAY = 60 * 60 * 24 * 7
+
 export function setLoginCookie(data) {
   const { accessToken, refreshToken } = data;
 
-  document.cookie = `accessToken=${accessToken}; Domain=${process.env.REACT_APP_COOKIE_DOMAIN}; path=/;`;
+  document.cookie = `accessToken=${accessToken}; Domain=${process.env.REACT_APP_COOKIE_DOMAIN}; path=/; max-age=${THREE_HOUR};${process.env.REACT_APP_ENV === 'production' ? ' secure;' : ''}`;
   if (refreshToken) {
-    document.cookie = `refreshToken=${refreshToken}; Domain=${process.env.REACT_APP_COOKIE_DOMAIN}; path=/;`;
+    document.cookie = `refreshToken=${refreshToken}; Domain=${process.env.REACT_APP_COOKIE_DOMAIN}; path=/; max-age=${SEVEN_DAY};${process.env.REACT_APP_ENV === 'production' ? ' secure;' : ''}`;
   }
 }
 export function setAdminLoginCookie(data) {
