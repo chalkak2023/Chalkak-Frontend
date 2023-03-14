@@ -7,6 +7,7 @@ import apiAxios from '../../utils/api-axios';
 function AuthSignupModal() {
   const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verifyToken, setVerifyToken] = useState('');
@@ -32,6 +33,7 @@ function AuthSignupModal() {
               <Form.Control id="confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
               <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
+            <Form.Control id="nickname" className='mb-2' name="nickname" type="text" placeholder='닉네임' autoFocus onChange={(e) => { setUsername(e.target.value); }} />
             <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
             <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocus onChange={(e) => { setConfirmPassword(e.target.value); }} />
           </Form.Group>
@@ -96,7 +98,7 @@ function AuthSignupModal() {
       return;
     }
     apiAxios
-      .post("/api/auth/signup", { email, password, verifyToken })
+      .post("/api/auth/signup", { email, username, password, verifyToken })
       .then((response) => {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
