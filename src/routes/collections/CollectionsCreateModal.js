@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../store/modal.slice';
 import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState } from "react";
 import { setCollection } from '../../store/collection.slice';
 import styled from "styled-components";
+import apiAxios from '../../utils/api-axios';
 
 function CollectionsCreateModal(props) {
   const [title, setTitle] = useState('');
@@ -75,10 +75,9 @@ function CollectionsCreateModal(props) {
   }
 
   function createCollection() {
-    axios
-      .post('http://localhost:8080/api/collections',
+    apiAxios
+      .post('/api/collections',
         { title, description, keyword },
-        { withCredentials: true }
       )
       .then((response) => {
         const statusCode = response.status;

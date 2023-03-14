@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../store/modal.slice';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useState } from "react";
+import apiAxios from '../../utils/api-axios';
 
 function MeetupsCreateModal(props) {
   const [title, setTitle] = useState('');
@@ -43,8 +43,8 @@ function MeetupsCreateModal(props) {
   )
 
   function createMeetup() {
-    axios
-      .post('http://localhost:8080/api/meetups',
+    apiAxios
+      .post('/api/meetups',
         {
           title, 
           content, 

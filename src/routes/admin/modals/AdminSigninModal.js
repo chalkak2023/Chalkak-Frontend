@@ -1,10 +1,10 @@
-import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin, setAdminLogin } from '../../../store/admin.slice';
 import { setShow } from "../../../store/modal.slice";
+import apiAxios from "../../../utils/api-axios";
 
 function AdminSigninModal() {
   const [account, setAccount] = useState("");
@@ -37,13 +37,12 @@ function AdminSigninModal() {
   );
 
   function login() {
-    axios
-      .post(`http://localhost:8080/admin/auth/signin`, { account, password })
+    apiAxios
+      .post(`/admin/auth/signin`, { account, password })
       .then(({status, data: body}) => {
         if (status === 200) {
           alert("로그인 완료");
-          
-          // TODO: 백엔드가 아니라 클라이언트에서 쿠키를 설정한다면 여기에서 설정해줘야함.
+
           const { accessToken } = body.data
           const adminInfo = jwt_decode(accessToken);
           dispatch(setAdmin(adminInfo));

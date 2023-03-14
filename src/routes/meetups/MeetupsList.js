@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +6,7 @@ import MeetupsDetailModal from './MeetupsDetailModal';
 import { setModalName, setShow } from '../../store/modal.slice';
 import { setMeetup } from '../../store/meetup.slice';
 import Loading from '../components/loading/Loading';
+import apiAxios from '../../utils/api-axios';
 
 const MeetupsList = () => {
   let state = useSelector((state)=> state );
@@ -124,7 +124,7 @@ const MeetupsList = () => {
     let arr = [];
     for (let i = 1; i < page.current; i++) {
       console.log(`page: ${i}, keyword: ${keyword.current}`);
-      const { data } = await axios.get(`http://localhost:8080/api/meetups?p=${i}&keyword=${keyword.current}`);
+      const { data } = await apiAxios.get(`/api/meetups?p=${i}&keyword=${keyword.current}`);
       arr = [...arr, ...data];
     }
     setMeetups(arr);
@@ -133,8 +133,8 @@ const MeetupsList = () => {
   function getMeetups(p, k) {
     setLoading(true);
     console.log(`page: ${p}, keyword: ${k}`);
-    axios
-      .get(`http://localhost:8080/api/meetups?p=${p}&keyword=${keyword.current}`)
+    apiAxios
+      .get(`/api/meetups?p=${p}&keyword=${keyword.current}`)
       .then(({ status, data }) => {
         if (status === 200) {
           const newMeetups = data;
@@ -154,8 +154,8 @@ const MeetupsList = () => {
   }
 
   function getMeetupDetail(meetupId) {
-    axios
-      .get(`http://localhost:8080/api/meetups/${meetupId}`)
+    apiAxios
+      .get(`/api/meetups/${meetupId}`)
       .then((response) => {
         if (response.status === 200) {
           const meetup = response.data;

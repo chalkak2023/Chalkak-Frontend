@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../store/modal.slice';
 import { Button, Modal } from 'react-bootstrap';
+import apiAxios from '../../utils/api-axios';
 
 function MeetupsDetailModal(props) {
   const handleClose = () => dispatch(setShow(false));
@@ -27,11 +27,8 @@ function MeetupsDetailModal(props) {
 
   function addJoin() {
     const meetupId = state.meetup.data.id;
-    axios
-      .post(`http://localhost:8080/api/meetups/${meetupId}/join`,
-        {},
-        { withCredentials: true }
-      )
+    apiAxios
+      .post(`/api/meetups/${meetupId}/join`, {})
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
@@ -48,10 +45,8 @@ function MeetupsDetailModal(props) {
 
   function deleteJoin() {
     const meetupId = state.meetup.data.id;
-    axios
-      .delete(`http://localhost:8080/api/meetups/${meetupId}/join`,
-        { withCredentials: true }
-      )
+    apiAxios
+      .delete(`/api/meetups/${meetupId}/join`)
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
@@ -69,10 +64,8 @@ function MeetupsDetailModal(props) {
   function deleteMeetup() {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       const meetupId = state.meetup.data.id;
-      axios
-        .delete(`http://localhost:8080/api/meetups/${meetupId}`,
-          { withCredentials: true }
-        )
+      apiAxios
+        .delete(`/api/meetups/${meetupId}`)
         .then((response) => {
           const statusCode = response.status;
           // console.log('status code: ' + statusCode);
