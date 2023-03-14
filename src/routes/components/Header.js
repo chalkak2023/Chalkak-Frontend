@@ -18,7 +18,7 @@ const Header = () => {
     let signoutTimeout;
     if (state.user.loginState && state.user.data?.iat) {
       signoutTimeout = setTimeout(() => {
-        console.log(state.user.data.iat, Date.now())
+        alert('오랫동안 활동을 하지 않아 로그아웃되었습니다.')
         dispatch(setLogin(false));
         dispatch(setUser({}))
       }, (state.user.data.iat + 60 * 60 * 3) * 1000 - Date.now());
