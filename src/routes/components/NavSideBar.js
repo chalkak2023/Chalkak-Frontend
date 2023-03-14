@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setNavShow } from '../../store/nav.slice';
 import './NavSideBar.css';
-import { setUser } from '../../store/user.slice';
+import { setLogin, setUser } from '../../store/user.slice';
 import apiAxios from "../../utils/api-axios";
 
 const NavSideBar = () => {
@@ -47,10 +47,12 @@ const NavSideBar = () => {
       .then((response) => {
         alert("로그아웃 완료");
         dispatch(setUser({}));
+        dispatch(setLogin(false));
       })
       .catch((err) => {
         alert("로그인된 상태가 아닙니다.");
         dispatch(setUser({}));
+        dispatch(setLogin(false));
       });
 
     // TODO: 로그아웃 시 비회원이 볼 수 없는 페이지에 있는 상황에 대한 조치 필요
