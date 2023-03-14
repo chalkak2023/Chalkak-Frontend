@@ -9,6 +9,7 @@ import NavSideBar from './NavSideBar';
 import { useEffect } from 'react';
 import { setLogin, setUser } from '../../store/user.slice';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
+import { clearLoginCookie } from '../../utils/controlCookie';
 
 const Header = () => {
   let state = useSelector((state)=> state );
@@ -22,6 +23,7 @@ const Header = () => {
         alert('오랫동안 활동을 하지 않아 로그아웃되었습니다.')
         dispatch(setLogin(false));
         dispatch(setUser({}))
+        clearLoginCookie()
       }, (state.user.data.iat + 60 * 60 * 3) * 1000 - Date.now());
     }
 
