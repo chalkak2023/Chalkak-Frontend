@@ -63,7 +63,7 @@ function CollectionsCreateModal(props) {
   function submitKeywordTag() {
     let updatedKeyword = [...keyword]
     updatedKeyword.push(keywordTag)
-    setKeyword(prev => [...prev, keywordTag])
+    setKeyword(prev => [...new Set ([...prev, keywordTag])])
     setKeywordTag('')
   }
 
