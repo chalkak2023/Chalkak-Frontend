@@ -79,7 +79,7 @@ apiAxios.interceptors.response.use(
       setLoginCookie(res.data)
     }
 
-    return axios(config);
+    return apiAxios(config);
   }
 );
 
