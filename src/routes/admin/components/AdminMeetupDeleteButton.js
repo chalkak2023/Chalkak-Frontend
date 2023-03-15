@@ -7,7 +7,7 @@ const AdminMeetupDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="primary" onClick={() => deleteMeetup(id)}>
+      <Button variant="danger" onClick={() => deleteMeetup(id)}>
         삭제
       </Button>
     </>

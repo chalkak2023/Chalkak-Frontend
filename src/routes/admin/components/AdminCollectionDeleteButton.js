@@ -7,7 +7,7 @@ const AdminCollectionDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="primary" onClick={() => deleteCollection(id)}>
+      <Button variant="danger" onClick={() => deleteCollection(id)}>
         삭제
       </Button>
     </>

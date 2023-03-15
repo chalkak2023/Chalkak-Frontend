@@ -7,7 +7,7 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="primary" onClick={() => deleteAccount(id)}>
+      <Button variant="danger" onClick={() => deleteAccount(id)}>
         삭제
       </Button>
     </>
