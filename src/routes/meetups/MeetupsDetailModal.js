@@ -88,15 +88,15 @@ function MeetupsDetailModal(props) {
     if (state.user.data.id === state.meetup.data.userId) {
       return <Button variant="outline-danger" onClick={()=>{deleteMeetup()}} style={{ width: '100%' }}>삭제하기</Button>
     } else {
-      if (state.meetup.data.joins.length === state.meetup.data.headcount) {
-        return <Button variant="secondary" style={{ width: '100%' }}>모집마감</Button>
-      }
       const findResult = state.meetup.data.joins.find((join) => {
         return join.userId === state.user.data.id;
       });
       if (findResult) {
         return <Button variant="outline-danger" onClick={()=>{deleteJoin()}} style={{ width: '100%' }}>참여취소</Button>
       } else {
+        if (state.meetup.data.joins.length === state.meetup.data.headcount) {
+          return <Button variant="secondary" style={{ width: '100%' }}>모집마감</Button>
+        }
         return <Button variant="outline-success" onClick={()=>{addJoin()}} style={{ width: '100%' }}>참여하기</Button>
       }
     }
