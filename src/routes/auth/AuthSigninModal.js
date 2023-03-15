@@ -64,7 +64,7 @@ function AuthSigninModal() {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
-          alert("로그인 완료");
+          alert(response.data.message);
 
           const accessToken = response.data.accessToken;
 
@@ -76,7 +76,7 @@ function AuthSigninModal() {
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -92,6 +92,7 @@ function AuthSigninModal() {
       apiAxios
         .post(`/api/auth/oauth/signin/${provider}`, body)
         .then((response) => {
+          alert(response.data.message);
           const accessToken = response.data.accessToken;
           dispatch(setShow(false));
 
@@ -99,8 +100,8 @@ function AuthSigninModal() {
           dispatch(setUser(userInfo));
           dispatch(setLogin(true));
         })
-        .catch((err) => {
-          return;
+        .catch((e) => {
+          alert(e.response?.data.message);
         })
   }
 

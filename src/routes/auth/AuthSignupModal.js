@@ -5,6 +5,7 @@ import { useState } from "react";
 import apiAxios from '../../utils/api-axios';
 
 function AuthSignupModal() {
+  const [isSending, setIsSending] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -26,13 +27,15 @@ function AuthSignupModal() {
         <Form>
           <Form.Group className="mb-3">
             <InputGroup className="mb-2">
-              <Form.Control id="email" name="email" type="email" placeholder='이메일' autoFocus onChange={(e) => { setEmail(e.target.value); setIsVerified(false); }}/>
-              <Button variant="success" onClick={()=>{ sendEmail(); }}>인증번호 전송</Button>
+              <Form.Control disabled={isVerified} id="email" name="email" type="email" placeholder='이메일' autoFocus onChange={(e) => { setEmail(e.target.value); setIsVerified(false); }}/>
+              <Button disabled={isVerified} variant="success" onClick={()=>{ sendEmail(); }}>인증번호 전송</Button>
             </InputGroup>
+            {isSending ? <Form.Text>메일 보내는 중...</Form.Text> : ''}
             <InputGroup className="mb-2">
-              <Form.Control id="confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
-              <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
+              <Form.Control disabled={isVerified} id="confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
+              <Button disabled={isVerified} variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
+            {isVerified ? <Form.Text>메일 인증이 완료되었습니다.</Form.Text> : ''}
             <Form.Control id="nickname" className='mb-2' name="nickname" type="text" placeholder='닉네임' autoFocus onChange={(e) => { setUsername(e.target.value); }} />
             <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
             <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocus onChange={(e) => { setConfirmPassword(e.target.value); }} />
@@ -40,7 +43,7 @@ function AuthSignupModal() {
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button variant="primary" onClick={()=>{ register(); }}>회원가입</Button>
+        <Button disabled={!isVerified || !username || !password || password !== confirmPassword} variant="primary" onClick={()=>{ register(); }}>회원가입</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signin');}}>이미 가입하셨다면?</Button>
       </div>
     </Modal>
@@ -53,18 +56,18 @@ function AuthSignupModal() {
 
   function confirmEmail() {
     apiAxios
-      .put(`/api/auth/emailverification`, { email, verifyToken })
+      .put(`/api/auth/emailverification/signup`, { email, verifyToken })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
-          alert('인증완료');
+          alert(response.data.message);
           setIsVerified(true);
         }
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -73,18 +76,20 @@ function AuthSignupModal() {
       alert('이메일을 입력해야 합니다.');
       return;
     }
+    setIsSending(true);
     apiAxios
-      .post('/api/auth/emailverification', { email })
+      .post('/api/auth/emailverification/signup', { email })
       .then((response) => {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
         if (statusCode === 201) {
-          alert('인증번호를 이메일로 보냈습니다.');
+          setIsSending(false);
+          alert(response.data.message);
         }
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        console.log(e);
+        alert(e.response?.data.message);
       });
   }
 
@@ -103,13 +108,13 @@ function AuthSignupModal() {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
         if (statusCode === 201) {
-          alert("회원가입했습니다.");
+          alert(response.data.message);
           handleClose()
         }
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        console.log(e);
+        alert(e.response?.data.message);
       });
   }
 }
