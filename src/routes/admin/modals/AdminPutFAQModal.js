@@ -63,14 +63,16 @@ const AdminCreateFAQModal = ({done, prev}) => {
       .put(`/admin/faq/${prev.id}`, {title, content})
       .then(({ status, data: body }) => {
         if (status === 200) {
-          alert("수정 완료");
+          alert('자주찾는질문을 수정했습니다.')
           handleClose();
           done();
         }
       })
       .catch((e) => {
-        console.log("axios 통신실패");
-        alert(e.response.data.message);
+        if (e.response) {
+          alert('자주찾는질문을 수정하지 못 했습니다.')
+        }
+        console.log(e)
       });
   }
 }

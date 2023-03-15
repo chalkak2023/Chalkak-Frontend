@@ -13,16 +13,14 @@ apiAxios.interceptors.response.use(
     if (res.status === 200 && config.method === 'post' && (config.url === '/api/auth/signin' || config.url.startsWith('/api/auth/oauth/signin'))) {
       setLoginCookie(res.data)
     }
-    // 백엔드에서 관리자 인증쿠키를 res.cookie로 설정하지 않으면 주석을 풀면 됨.
-    // if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signin') {
-    //   setAdminLoginCookie(res.data.data)
-    // }
+    if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signin') {
+      setAdminLoginCookie(res.data.data)
+    }
     if (res.status === 200 && config.method === 'post' && config.url === '/api/auth/signout') {
       clearLoginCookie();
     }
     if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signout') {
-      // 백엔드에서 관리자 인증쿠키를 res.cookie로 설정하지 않으면 주석을 풀면 됨.
-      // clearAdminLoginCookie();
+      clearAdminLoginCookie();
     }
     return res;
   },
@@ -45,10 +43,6 @@ apiAxios.interceptors.response.use(
       config.method === 'get' &&
       config.url === refreshUrl
     ) {
-      if (isAdminApi) {
-        // 백엔드에서 관리자 인증쿠키를 res.cookie로 설정하지 않으면 주석을 풀면 됨.
-        // clearAdminLoginCookie()
-      }
       return Promise.reject(err);
     }
 
@@ -66,8 +60,7 @@ apiAxios.interceptors.response.use(
       if (!res) {
         return Promise.reject(err);
       }
-      // 백엔드에서 관리자 인증쿠키를 res.cookie로 설정하지 않으면 주석을 풀면 됨.
-      // setAdminLoginCookie(res.data.data)
+      setAdminLoginCookie(res.data.data)
     } else {
       const res = await apiAxios.get(refreshUrl);
 

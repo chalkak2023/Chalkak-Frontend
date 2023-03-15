@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
@@ -25,6 +25,7 @@ const AdminPhotospot = () => {
   let [search, setSearch] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
+  let keyword = useRef('');
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -38,9 +39,10 @@ const AdminPhotospot = () => {
     <>
       <h3>{koName} 관리 (콜렉션 ID: {collectionId})</h3>
       <AdminSearch
-        onClick={goSearch}
+        onClick={() => {setPage(1); goSearch();}}
         onChange={(e) => setSearch(e.target.value)}
       />
+      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
       <AdminTable
         header={header}
         width={width}
@@ -56,6 +58,7 @@ const AdminPhotospot = () => {
     apiAxios
       .get(getItemPath(collectionId), { params: { search, p: page } })
       .then(({ status, data: items }) => {
+        keyword.current = search;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
@@ -68,7 +71,9 @@ const AdminPhotospot = () => {
         if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("포토스팟들을 가져오지 못 했습니다.");
+        }
       });
   }
 

@@ -26,7 +26,7 @@ function AdminSigninModal() {
             <InputGroup className="mb-2">
               <Form.Control id="account" name="email" type="email" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
             </InputGroup>
-            <Form.Control id="password" className="mb-2" name="password" type="password" placeholder="비밀번호" autoFocus onChange={(e) => {setPassword(e.target.value);}}/>
+            <Form.Control id="password" className="mb-2" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -35,6 +35,15 @@ function AdminSigninModal() {
       </div>
     </Modal>
   );
+
+  function enterLogin(e) {
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      if (account && password) {
+        login()
+      }
+    }
+  }
 
   function login() {
     apiAxios
@@ -51,8 +60,10 @@ function AdminSigninModal() {
         }
       })
       .catch((e) => {
-        console.log("axios 통신실패");
-        alert(e.response.data.message);
+        if (e.response) {
+          alert('로그인하지 못 했습니다.')
+        }
+        console.log(e)
       });
   }
 }

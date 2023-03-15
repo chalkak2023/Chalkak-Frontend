@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Button, Container, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setAdmin, setAdminLogin } from '../../store/admin.slice';
 import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
+import { clearAdminLoginCookie } from "../../utils/controlCookie";
 import AdminSigninModal from "../admin/modals/AdminSigninModal";
 import './AdminHeader.css'
 
@@ -12,6 +14,22 @@ const AdminHeader = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const location = useLocation();
+
+  useEffect(() => {
+    let signoutTimeout;
+    if (state.admin.loginState && state.admin.data?.iat) {
+      signoutTimeout = setTimeout(() => {
+        alert('오랫동안 활동을 하지 않아 관리자 로그아웃되었습니다.')
+        dispatch(setAdminLogin(false));
+        dispatch(setAdmin({}))
+        clearAdminLoginCookie()
+      }, (state.admin.data.iat + 60 * 60 * 3) * 1000 - Date.now());
+    }
+
+    return () => {
+      clearTimeout(signoutTimeout)
+    }
+  }, [state.admin.data, state.admin.loginState])
 
   return (
     <>
@@ -73,8 +91,11 @@ const AdminHeader = () => {
         navigate("/admin");
       })
       .catch((err) => {
-        alert("로그인된 상태가 아닙니다.");
+        if (err.response) {
+          alert("로그인된 상태가 아닙니다.");
+        }
         dispatch(setAdmin({}));
+        dispatch(setAdminLogin(false));
       });
   }
 };

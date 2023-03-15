@@ -7,7 +7,7 @@ const AdminPhotospotDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="primary" onClick={() => deletePhotospot(entity.collectionId, id)}>
+      <Button variant="danger" onClick={(e) => {e.stopPropagation(); deletePhotospot(entity.collectionId, id);}}>
         삭제
       </Button>
     </>
@@ -18,7 +18,7 @@ const AdminPhotospotDeleteButtons = ({ id, order, entity, done }) => {
       .delete(`/admin/${collectionId}/photospots/${id}`)
       .then(({ status, data }) => {
         if (status === 200) {
-          alert("성공");
+          alert("해당 포토스팟을 삭제했습니다.");
           done();
         }
       })
@@ -26,7 +26,9 @@ const AdminPhotospotDeleteButtons = ({ id, order, entity, done }) => {
          if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("해당 포토스팟을 삭제하는데 실패했습니다.");
+        }
       });
   }
 };

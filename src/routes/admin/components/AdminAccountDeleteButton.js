@@ -7,9 +7,13 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="primary" onClick={() => deleteAccount(id)}>
-        삭제
-      </Button>
+      {entity.account !== "master" ? (
+        <Button variant="danger" onClick={(e) => {e.stopPropagation(); deleteAccount(id)}}>
+          삭제
+        </Button>
+      ) : (
+        ""
+      )}
     </>
   );
 
@@ -18,7 +22,7 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
       .delete(`/admin/auth/${id}`)
       .then(({ status, data }) => {
         if (status === 200) {
-          alert("성공");
+          alert("해당 관리자 계정을 삭제했습니다.");
           done(order);
         }
       })
@@ -26,7 +30,9 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
          if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("해당 관리자 계정을 삭제하는데 실패했습니다.");
+        }
       });
   }
 };

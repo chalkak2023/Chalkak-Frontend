@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../../store/modal.slice';
 import apiAxios from "../../../utils/api-axios";
 
-function AdminCreateAccountModal() {
+function AdminCreateAccountModal({done}) {
   let [account, setAccount] = useState('');
   let [responsibility, setResponsibility] = useState('');
   let [password, setPassword] = useState('');
@@ -47,11 +47,14 @@ function AdminCreateAccountModal() {
         if (status === 201) {
           alert("관리자를 추가했습니다.");
           handleClose()
+          done()
         }
       })
       .catch((e) => {
-        console.log("axios 통신실패");
-        console.log(e);
+        if (e.response) {
+          alert('관리자를 추가하지 못 했습니다.')
+        }
+        console.log(e)
       });
   }
 }
