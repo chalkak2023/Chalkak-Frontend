@@ -78,7 +78,9 @@ const AdminCollection = () => {
         if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("콜렉션들을 가져오지 못 했습니다.");
+        }
       });
   }
 

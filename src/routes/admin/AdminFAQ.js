@@ -79,7 +79,9 @@ const AdminFAQ = () => {
          if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("자주 찾는 질문을 가져오지 못 했습니다.");
+        }
       });
   }
 

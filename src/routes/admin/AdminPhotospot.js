@@ -68,7 +68,9 @@ const AdminPhotospot = () => {
         if (err.response.status === 401) {
           navigate('/admin');
         }
-        alert("실패");
+       if (err.response) {
+          alert("포토스팟들을 가져오지 못 했습니다.");
+        }
       });
   }
 
