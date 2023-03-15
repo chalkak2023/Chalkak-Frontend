@@ -70,7 +70,7 @@ const AdminCreateFAQModal = ({done, prev}) => {
       })
       .catch((e) => {
         if (e.response) {
-          alert('자주찾는질문을 수정하지 못 했습니다.')
+          alert('자주찾는질문을 수정하지 못했습니다.')
         }
         console.log(e)
       });

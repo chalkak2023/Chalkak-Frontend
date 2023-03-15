@@ -68,7 +68,7 @@ const AdminUser = () => {
           navigate('/admin');
         }
        if (err.response) {
-          alert("회원 목록을 가져오지 못 했습니다.");
+          alert("회원 목록을 가져오지 못했습니다.");
         }
       });
   }

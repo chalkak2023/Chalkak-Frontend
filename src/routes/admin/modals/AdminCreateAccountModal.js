@@ -52,7 +52,7 @@ function AdminCreateAccountModal({done}) {
       })
       .catch((e) => {
         if (e.response) {
-          alert('관리자를 추가하지 못 했습니다.')
+          alert('관리자를 추가하지 못했습니다.')
         }
         console.log(e)
       });

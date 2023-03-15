@@ -38,14 +38,14 @@ const AdminCreateFAQModal = ({done}) => {
       .post(`/admin/faq`, {title, content})
       .then(({ status, data: body }) => {
         if (status === 201) {
-          alert("자주찾는질문를 작성했습니다.");
+          alert("자주찾는질문을 작성했습니다.");
           handleClose();
           done();
         }
       })
       .catch((e) => {
         if (e.response) {
-          alert('자주찾는질문을 작성하지 못 했습니다.')
+          alert('자주찾는질문을 작성하지 못했습니다.')
         }
         console.log(e)
       });

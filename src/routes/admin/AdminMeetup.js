@@ -72,7 +72,7 @@ const AdminMeetup = () => {
           navigate('/admin');
         }
        if (err.response) {
-         alert("모임 목록을 가져오지 못 했습니다.");
+         alert("모임 목록을 가져오지 못했습니다.");
        }
       });
   }

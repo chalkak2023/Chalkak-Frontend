@@ -83,7 +83,7 @@ const AdminFAQ = () => {
           navigate('/admin');
         }
        if (err.response) {
-          alert("자주 찾는 질문을 가져오지 못 했습니다.");
+          alert("자주 찾는 질문을 가져오지 못했습니다.");
         }
       });
   }

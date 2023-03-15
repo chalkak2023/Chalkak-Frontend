@@ -78,7 +78,7 @@ const AdminAccount = () => {
       .catch((err) => {
         navigate('/admin')
        if (err.response) {
-          alert("관리자계정들을 가져오지 못 했습니다.");
+          alert("관리자계정들을 가져오지 못했습니다.");
         }
       });
   }
