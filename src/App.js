@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import Main from './routes/Main';
-import SampleList from './routes/sample/List';
 import MeetupsList from './routes/meetups/MeetupsList';
 import Photospot from './routes/Photospot/Photospot';
 import PhotospotView from './routes/Photospot/PhotospotView';
@@ -24,7 +23,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<UserPage MainComponent={Main} />}></Route>
-        <Route path="/sample" element={<UserPage MainComponent={SampleList} />}></Route>
         <Route path="/meetups" element={<UserPage MainComponent={MeetupsList} />}></Route>
         <Route path="/photospot" element={<UserPage MainComponent={Auth(Photospot)} />}></Route>
         <Route path="/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>

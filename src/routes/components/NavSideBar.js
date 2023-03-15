@@ -24,7 +24,6 @@ const NavSideBar = () => {
       <Offcanvas.Body>
         <p className="menu" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</p>
         <p className="menu" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</p>
-        <p className="menu" onClick={()=>{navigate('/sample'); handleClose();}}>샘플페이지</p>
         <p className="menu" onClick={()=>{navigate('/photospot'); handleClose();}}>포토스팟편집</p>
         <p className="menu" onClick={()=>{navigate('/photospot-view'); handleClose();}}>포토스팟보기</p>
         <p className="menu" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</p>
