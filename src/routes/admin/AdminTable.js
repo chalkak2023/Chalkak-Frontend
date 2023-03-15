@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
 
-const AdminTable = ({ header, data, original, width, done, TableButtons, onClick }) => {
+const AdminTable = ({ header, data, original, width, changeList, TableButtons, onClick }) => {
   if (!header || !data) {
   }
 
@@ -30,7 +30,7 @@ const AdminTable = ({ header, data, original, width, done, TableButtons, onClick
                       id={slice[0]}
                       order={order}
                       entity={original[order]}
-                      done={done}
+                      changeList={changeList}
                     />
                     </td>
                   ))

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShow } from "../../../store/modal.slice";
 import apiAxios from "../../../utils/api-axios";
 
-const AdminCreateFAQModal = ({done}) => {
+const AdminCreateFAQModal = ({changeList}) => {
   let [title, setTitle] = useState('');
   let [content, setContent] = useState('');
 
@@ -40,7 +40,7 @@ const AdminCreateFAQModal = ({done}) => {
         if (status === 201) {
           alert("자주찾는질문을 작성했습니다.");
           handleClose();
-          done();
+          changeList();
         }
       })
       .catch((e) => {

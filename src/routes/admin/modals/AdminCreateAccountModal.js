@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../../store/modal.slice';
 import apiAxios from "../../../utils/api-axios";
 
-function AdminCreateAccountModal({done}) {
+function AdminCreateAccountModal({changeList}) {
   let [account, setAccount] = useState('');
   let [responsibility, setResponsibility] = useState('');
   let [password, setPassword] = useState('');
@@ -47,7 +47,7 @@ function AdminCreateAccountModal({done}) {
         if (status === 201) {
           alert("관리자를 추가했습니다.");
           handleClose()
-          done()
+          changeList()
         }
       })
       .catch((e) => {

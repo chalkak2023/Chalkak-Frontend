@@ -48,7 +48,7 @@ const AdminPhotospot = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[AdminPhotospotDeleteButtons]}
       />
     </>
@@ -82,7 +82,7 @@ const AdminPhotospot = () => {
     getList();
   }
 
-  function done(order) {
+  function changeList(order) {
     if (!order) {
       getList();
     } else {

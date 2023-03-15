@@ -37,7 +37,7 @@ const AdminUser = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[AdminUserBlockButton]}
       />
       <PaginationButtonList
@@ -78,7 +78,7 @@ const AdminUser = () => {
     getList();
   }
 
-  function done(order) {
+  function changeList(order) {
     if (!order) {
       getList();
     } else {

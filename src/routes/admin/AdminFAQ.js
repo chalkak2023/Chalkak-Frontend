@@ -34,8 +34,8 @@ const AdminFAQ = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-create-faq" && <AdminCreateFAQModal done={done} />}
-      {state.modal.modalName === "admin-put-faq" && <AdminPutFAQModal prev={prev} done={done} />}
+      {state.modal.modalName === "admin-create-faq" && <AdminCreateFAQModal changeList={changeList} />}
+      {state.modal.modalName === "admin-put-faq" && <AdminPutFAQModal prev={prev} changeList={changeList} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
@@ -48,7 +48,7 @@ const AdminFAQ = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[]}
         onClick={clickTable}
       />
@@ -93,7 +93,7 @@ const AdminFAQ = () => {
     getList();
   }
 
-  function done(id) {
+  function changeList(id) {
     if (!id) {
       getList();
     } else {

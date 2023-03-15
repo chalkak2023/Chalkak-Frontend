@@ -33,7 +33,7 @@ const AdminAccount = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal done={done} />}
+      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal changeList={changeList} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
@@ -46,7 +46,7 @@ const AdminAccount = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[AdminAccountDeleteButtons]}
       />
       <PaginationButtonList
@@ -88,7 +88,7 @@ const AdminAccount = () => {
     getList();
   }
 
-  function done(order) {
+  function changeList(order) {
     if (!order) {
       getList();
     } else {
