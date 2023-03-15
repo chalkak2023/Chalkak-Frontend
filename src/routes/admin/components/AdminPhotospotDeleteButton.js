@@ -7,7 +7,7 @@ const AdminPhotospotDeleteButtons = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant="danger" onClick={() => deletePhotospot(entity.collectionId, id)}>
+      <Button variant="danger" onClick={(e) => {e.stopPropagation(); deletePhotospot(entity.collectionId, id);}}>
         삭제
       </Button>
     </>

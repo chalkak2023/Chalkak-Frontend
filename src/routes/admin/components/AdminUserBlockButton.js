@@ -7,7 +7,7 @@ const AdminUserBlockButton = ({ id, order, entity, done }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button variant={entity.isBlock ? 'primary' : 'danger'} onClick={() => blockUser(id)}>
+      <Button variant={entity.isBlock ? 'primary' : 'danger'} onClick={(e) => {e.stopPropagation(); blockUser(id);}}>
         {entity.isBlock ? '취소' : '블락'}
       </Button>
     </>

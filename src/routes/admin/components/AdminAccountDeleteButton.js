@@ -8,7 +8,7 @@ const AdminAccountDeleteButtons = ({ id, order, entity, done }) => {
   return (
     <>
       {entity.account !== "master" ? (
-        <Button variant="danger" onClick={() => deleteAccount(id)}>
+        <Button variant="danger" onClick={(e) => {e.stopPropagation(); deleteAccount(id)}}>
           삭제
         </Button>
       ) : (
