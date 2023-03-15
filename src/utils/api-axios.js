@@ -43,9 +43,6 @@ apiAxios.interceptors.response.use(
       config.method === 'get' &&
       config.url === refreshUrl
     ) {
-      if (isAdminApi) {
-        clearAdminLoginCookie()
-      }
       return Promise.reject(err);
     }
 
