@@ -51,8 +51,10 @@ function AdminSigninModal() {
         }
       })
       .catch((e) => {
-        console.log("axios 통신실패");
-        alert(e.response.data.message);
+        if (e.response) {
+          alert('로그인하지 못 했습니다.')
+        }
+        console.log(e)
       });
   }
 }

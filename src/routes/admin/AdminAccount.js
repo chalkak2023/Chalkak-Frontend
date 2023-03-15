@@ -32,7 +32,7 @@ const AdminAccount = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal />}
+      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal done={done} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
