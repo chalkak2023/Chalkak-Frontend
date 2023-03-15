@@ -1,3 +1,8 @@
+body {
+  width: 100%;
+  height: 100%;
+}
+
 #map {
   position: relative;
 }
@@ -21,8 +26,8 @@
   right: 20px;
   z-index: 10;
 
-  width: 300px;
-  height: 710px;
+  width: 400px;
+  height: 90%;
   overflow: hidden;
   overflow-y: auto;
 
@@ -34,7 +39,7 @@
   flex-direction: row;
   align-items: center;
 
-  width: 250px;
+  width: 350px;
   height: 100px;
 }
 
@@ -58,7 +63,7 @@
 }
 
 .photospot.card {
-  width: 300px;
+  width: 400px;
   height: 100px;
   margin-bottom: 10px;
   display: flex;
@@ -81,7 +86,10 @@
 }
 
 .imageSize {
-  width: 100px;
+  object-fit: contain;
+
+  width: 100%;
+  height: 100%;
 }
 
 .customoverlay {
@@ -124,7 +132,7 @@
 }
 
 .textOverflow {
-  width: 150px;
+  width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -137,7 +145,7 @@
 }
 
 .collectionBox.card {
-  width: 300px;
+  width: 400px;
   height: 65px;
 
   position: absolute;
@@ -173,4 +181,51 @@
   padding: 5px;
 
   cursor: pointer;
+}
+
+.addPhoto {
+  font-size: 16px;
+
+  position: absolute;
+  z-index: 20;
+
+  right: 30px;
+  padding: 5px;
+
+  cursor: pointer;
+}
+
+.myLocation {
+  border-radius: 5px;
+  background-color: white;
+  border: solid 1px rgb(220, 220, 220);
+  padding: 10px;
+  position: absolute;
+  top: 190px;
+  left: 10px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.imgBox {
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.imgBox > .w-100 {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbBox {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
 }

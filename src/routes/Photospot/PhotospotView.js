@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {
   setModalName,
   setShow,
-  setPhotospot
+  setPhotospot,
 } from '../../store/photospot.slice';
+import { setCollection } from '../../store/collection.slice';
 import './Photospot.css'
 import apiAxios from '../../utils/api-axios';
 
 const Photospot = () => {
+  const { collectionId } = useParams()
   const { kakao } = window;
   const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -29,33 +31,23 @@ const Photospot = () => {
     let map = new kakao.maps.Map(container, options);
     setKakaoMap(map)
     await getPhotospots();
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude; // 위도
-        const lng = position.coords.longitude; // 경도
 
-        const locPosition = new kakao.maps.LatLng(lat, lng);
-        map.setCenter(locPosition);
-      });
-    } else {
-      const locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-      map.setCenter(locPosition);
-    }
-    // 지도 중심좌표를 접속위치로 변경합니다
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
     async function getPhotospots() {
-      apiAxios.get(`/api/collections/${state.collection.data.id}/photospots`)
+      apiAxios.get(`/api/collections/${collectionId}`)
         .then((response) => {
           if (response.status === 200) {
-            const photospots = response.data;
+            const photospots = response.data.photospots;
             map.setCenter(
               new kakao.maps.LatLng(
                 photospots[0].latitude,
                 photospots[0].longitude
               )
             );
-            setPhotospots(response.data);
+            dispatch(setCollection(response.data));
+            setPhotospots(photospots);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
               const position = new kakao.maps.LatLng(
@@ -110,6 +102,21 @@ const Photospot = () => {
     dispatch(setShow(true));
   }
 
+  function myLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const lat = position.coords.latitude; // 위도
+        const lng = position.coords.longitude; // 경도
+
+        const locPosition = new kakao.maps.LatLng(lat, lng);
+        kakaoMap.setCenter(locPosition);
+      }, function (err) {
+        alert("위치 엑세스가 거부되었습니다.");
+      });
+    }
+  }
+
+
   useEffect(() => {
     setKakaoMapping();
   }, []);
@@ -131,6 +138,7 @@ const Photospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
+        <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
@@ -141,7 +149,9 @@ const Photospot = () => {
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotDetail('PhotospotDetailModal', photospot.id)}}>
             <div className='photospotBox'>
+            <div className='thumbBox'>
             <img className='imageSize' src={photospot.photos[0].image} alt=""/>
+            </div>
             <Card.Body>
               <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
               <Card.Text className='textOverflow'>
