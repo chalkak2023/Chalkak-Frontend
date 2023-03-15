@@ -16,7 +16,7 @@ const AdminTable = ({ header, data, original, width, changeList, TableButtons, o
         </tr>
       </thead>
       <tbody>
-        {data?.length ? data.map((slice, order) => (
+        {Array.isArray(data) ? data.map((slice, order) => (
           <tr key={order} onClick={onClick ? onClick(original[order]) : () => {}} style={ onClick ? {cursor: 'pointer'} : {}}>
             {slice.map((value, index) => (
               <td key={index}>{value}</td>
