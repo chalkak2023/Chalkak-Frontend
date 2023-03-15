@@ -29,17 +29,18 @@ function MeetupsDetailModal(props) {
     const meetupId = state.meetup.data.id;
     apiAxios
       .post(`/api/meetups/${meetupId}/join`, {})
-      .then((response) => {
-        const statusCode = response.status;
-        // console.log('status code: ' + statusCode);
-        if (statusCode === 201) {
+      .then(({ status }) => {
+        if (status === 201) {
           props.getMeetupDetail(meetupId);
           props.resetMeetups();
         }
       })
-      .catch((e) => {
+      .catch(({ response }) => {
         console.log('axios 통신실패');
-        console.log(e);
+        const message = response.data.message;
+        alert(message);
+        props.getMeetupDetail(meetupId);
+        props.resetMeetups();
       });
   }
 
@@ -47,17 +48,18 @@ function MeetupsDetailModal(props) {
     const meetupId = state.meetup.data.id;
     apiAxios
       .delete(`/api/meetups/${meetupId}/join`)
-      .then((response) => {
-        const statusCode = response.status;
-        // console.log('status code: ' + statusCode);
-        if (statusCode === 200) {
+      .then(({ status }) => {
+        if (status === 200) {
           props.getMeetupDetail(meetupId);
           props.resetMeetups();
         }
       })
-      .catch((e) => {
+      .catch(({ response }) => {
         console.log('axios 통신실패');
-        console.log(e);
+        const message = response.data.message;
+        alert(message);
+        props.getMeetupDetail(meetupId);
+        props.resetMeetups();
       });
   }
 
@@ -66,10 +68,8 @@ function MeetupsDetailModal(props) {
       const meetupId = state.meetup.data.id;
       apiAxios
         .delete(`/api/meetups/${meetupId}`)
-        .then((response) => {
-          const statusCode = response.status;
-          // console.log('status code: ' + statusCode);
-          if (statusCode === 200) {
+        .then(({ status }) => {
+          if (status === 200) {
             handleClose();
             props.resetMeetups();
           }
@@ -94,6 +94,9 @@ function MeetupsDetailModal(props) {
       if (findResult) {
         return <Button variant="outline-danger" onClick={()=>{deleteJoin()}} style={{ width: '100%' }}>참여취소</Button>
       } else {
+        if (state.meetup.data.joins.length === state.meetup.data.headcount) {
+          return <Button variant="secondary" style={{ width: '100%' }}>모집마감</Button>
+        }
         return <Button variant="outline-success" onClick={()=>{addJoin()}} style={{ width: '100%' }}>참여하기</Button>
       }
     }
