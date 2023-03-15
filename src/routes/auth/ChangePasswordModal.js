@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import apiAxios from '../../utils/api-axios';
 
 function ChangePasswordModal() {
+  const [isSending, setIsSending] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verifyToken, setVerifyToken] = useState('');
@@ -16,15 +16,6 @@ function ChangePasswordModal() {
 
   const handleClose = () => dispatch(setShow(false));
 
-  useEffect(() => {
-    if (state.modal.modalName !== 'change-password' || !state.modal.show) {
-    } else if (!state.user.data?.email) {
-      alert('유저 정보에 이메일이 없어 발송에 실패했습니다.')
-    } else {
-      sendEmail(state.user.data.email);
-    }
-  }, [state.modal.modalName, state.modal.show])
-
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -33,7 +24,10 @@ function ChangePasswordModal() {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-            {!email ? <Form.Text>인증메일 발송 중...</Form.Text> : ''}
+            <div className="d-grid gap-2 m-2">
+              <Button variant="outline-success" onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
+            </div>
+            {isSending ? <Form.Text>메일 보내는 중...</Form.Text> : ''}
             <InputGroup className="mb-2">
               <Form.Control id="p_confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
               <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
@@ -56,7 +50,7 @@ function ChangePasswordModal() {
 
   function confirmEmail() {
     apiAxios
-      .put(`/api/auth/emailverification`, { email: state.user.data?.email, verifyToken })
+      .put(`/api/auth/emailverification/password`, { verifyToken })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
@@ -71,20 +65,21 @@ function ChangePasswordModal() {
       });
   }
 
-  function sendEmail(email) {
+  function sendEmail() {
+    setIsSending(true);
     apiAxios
-      .post('/api/auth/emailverification', { email })
+      .post('/api/auth/emailverification/password', {})
       .then((response) => {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
         if (statusCode === 201) {
-          setEmail(state.user.data.email);
-          alert('인증번호를 이메일로 보냈습니다.');
+          setIsSending(false);
+          alert(`인증번호를 ${state.user.data?.email}로 보냈습니다.`);
         }
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        console.log(e);
+        alert(e.response.data.message);
       });
   }
 
@@ -109,7 +104,7 @@ function ChangePasswordModal() {
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        console.log(e);
+        alert(e.response.data.message);
       });
   }
 }

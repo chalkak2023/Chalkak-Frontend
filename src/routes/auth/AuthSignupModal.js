@@ -5,6 +5,7 @@ import { useState } from "react";
 import apiAxios from '../../utils/api-axios';
 
 function AuthSignupModal() {
+  const [isSending, setIsSending] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -53,7 +54,7 @@ function AuthSignupModal() {
 
   function confirmEmail() {
     apiAxios
-      .put(`/api/auth/emailverification`, { email, verifyToken })
+      .put(`/api/auth/emailverification/signup`, { email, verifyToken })
       .then((response) => {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
@@ -73,8 +74,9 @@ function AuthSignupModal() {
       alert('이메일을 입력해야 합니다.');
       return;
     }
+    setIsSending(true);
     apiAxios
-      .post('/api/auth/emailverification', { email })
+      .post('/api/auth/emailverification/signup', { email })
       .then((response) => {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
@@ -83,8 +85,9 @@ function AuthSignupModal() {
         }
       })
       .catch((e) => {
+        setIsSending(false);
         console.log('axios 통신실패');
-        console.log(e);
+        alert(e.response.data.message);
       });
   }
 
@@ -102,14 +105,14 @@ function AuthSignupModal() {
       .then((response) => {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
-        if (statusCode === 201) {
+        if (statusCode === 200) {
           alert("회원가입했습니다.");
           handleClose()
         }
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        console.log(e);
+        alert(e.response.data.message);
       });
   }
 }
