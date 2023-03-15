@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const AdminFAQ = () => {
   let [total, setTotal] = useState(1);
   let [prev, setPrev] = useState({});
   let [lastPage, setLastPage] = useState(1);
+  let keyword = useRef('');
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -38,9 +39,10 @@ const AdminFAQ = () => {
 
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={goSearch}
+        onClick={() => {setPage(1); goSearch();}}
         onChange={(e) => setSearch(e.target.value)}
       />
+      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
       <AdminTable
         header={header}
         width={width}
@@ -66,6 +68,7 @@ const AdminFAQ = () => {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
+        keyword.current = search;
         const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))

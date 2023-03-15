@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
@@ -18,6 +18,7 @@ const AdminMeetup = () => {
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
   let [lastPage, setLastPage] = useState(1);
+  let keyword = useRef('');
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -31,9 +32,10 @@ const AdminMeetup = () => {
     <>
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={goSearch}
+        onClick={() => {setPage(1); goSearch();}}
         onChange={(e) => setSearch(e.target.value)}
       />
+      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
       <AdminTable
         header={header}
         width={width}
@@ -55,6 +57,7 @@ const AdminMeetup = () => {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
+        keyword.current = search;
         const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))

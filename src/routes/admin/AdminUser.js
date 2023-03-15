@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import apiAxios from "../../utils/api-axios";
@@ -17,6 +17,7 @@ const AdminUser = () => {
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
   let [lastPage, setLastPage] = useState(1);
+  let keyword = useRef('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,9 +28,10 @@ const AdminUser = () => {
     <>
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={goSearch}
+        onClick={() => {setPage(1); goSearch();}}
         onChange={(e) => setSearch(e.target.value)}
       />
+      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
       <AdminTable
         header={header}
         width={width}
@@ -51,6 +53,7 @@ const AdminUser = () => {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
+        keyword.current = search;
         const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
