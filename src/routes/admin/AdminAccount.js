@@ -63,12 +63,13 @@ const AdminAccount = () => {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
-        const { data: items, total } = data;
+        const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
         setTotal(total);
         setOriginal(items);
+        setLastPage(lastPage);
         setData(mappingData);
       })
       .catch((err) => {
