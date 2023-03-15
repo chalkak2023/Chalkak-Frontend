@@ -61,7 +61,7 @@ function AdminSigninModal() {
       })
       .catch((e) => {
         if (e.response) {
-          alert('로그인하지 못 했습니다.')
+          alert('로그인하지 못했습니다.')
         }
         console.log(e)
       });
