@@ -41,8 +41,7 @@ const Photospot = () => {
         .then((response) => {
           if (response.status === 200) {
             const photospots = response.data.photospots;
-            console.log(photospots);
-            if (photospots.length > 0) {
+           if (photospots.length > 0) {
               map.setCenter(
                 new kakao.maps.LatLng(
                   photospots[0].latitude,
