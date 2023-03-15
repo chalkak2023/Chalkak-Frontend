@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {
   setModalName,
   setShow,
-  setPhotospot
+  setPhotospot,
 } from '../../store/photospot.slice';
+import { setCollection } from '../../store/collection.slice';
 import './Photospot.css'
 import apiAxios from '../../utils/api-axios';
 
 const Photospot = () => {
+  const { collectionId } = useParams()
   const { kakao } = window;
   const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -30,18 +32,22 @@ const Photospot = () => {
     setKakaoMap(map)
     await getPhotospots();
 
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
+
     async function getPhotospots() {
-      apiAxios.get(`/api/collections/${state.collection.data.id}/photospots`)
+      apiAxios.get(`/api/collections/${collectionId}`)
         .then((response) => {
           if (response.status === 200) {
-            const photospots = response.data;
+            const photospots = response.data.photospots;
             map.setCenter(
               new kakao.maps.LatLng(
                 photospots[0].latitude,
                 photospots[0].longitude
               )
             );
-            setPhotospots(response.data);
+            dispatch(setCollection(response.data));
+            setPhotospots(photospots);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
               const position = new kakao.maps.LatLng(
@@ -143,7 +149,9 @@ const Photospot = () => {
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotDetail('PhotospotDetailModal', photospot.id)}}>
             <div className='photospotBox'>
+            <div className='thumbBox'>
             <img className='imageSize' src={photospot.photos[0].image} alt=""/>
+            </div>
             <Card.Body>
               <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
               <Card.Text className='textOverflow'>

@@ -13,11 +13,13 @@ const PhotospotModifyModal = () => {
   const [description, setDescription] = useState('');
   const [imageFiles, setImageFiles] = useState([]);
   const [isPhotoCount, setIsPhotoCount] = useState(true);
+  const [isPhoto, setIsPhoto] = useState(true);
+  const [addPhoto, setAddPhoto] = useState(false)
 
   const handleClose = () => dispatch(setShow(false));
 
   return (
-    <Modal size="sm" show={state.photospot.show} onHide={handleClose} centered>
+    <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>포토스팟 수정하기</Modal.Title>
       </Modal.Header>
@@ -25,8 +27,11 @@ const PhotospotModifyModal = () => {
         <Carousel>
           {state.photospot.data.photos.map((photo) => (
             <Carousel.Item key={photo.id} className='photoItem'>
+              <div className='addPhoto' onClick={() => {setAddPhoto(true)}}>➕</div>
               <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>❌</div>
+              <div className='imgBox'>
               <img className="d-block w-100" src={photo.image} />
+              </div>
             </Carousel.Item>
           ))}
         </Carousel>
@@ -55,8 +60,8 @@ const PhotospotModifyModal = () => {
               }}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicImageFile">
-            <Form.Label>사진</Form.Label>
+          <Form.Group className="mb-3" controlId="formBasicImageFile" style={addPhoto ? { display: 'block' } : { display: 'none' }}>
+            <Form.Label>사진 <span style={{color: 'lightgray', fontSize: '12px'}}>- 최대 {Math.abs(5 - state.photospot.data.photos.length)}장을 첨부할 수 있습니다.</span></Form.Label>
             <Form.Control
               type="file"
               placeholder="Image"
@@ -71,6 +76,12 @@ const PhotospotModifyModal = () => {
           >
             사진은 {Math.abs(5 - state.photospot.data.photos.length)}장만 업로드 할 수
             있습니다.
+          </div>
+          <div
+            className="photoCount"
+            style={isPhoto ? { display: 'none' } : { display: 'block' }}
+          >
+            1장 이상의 사진은 있어야합니다.
           </div>
           <Button
             variant="primary"
@@ -94,6 +105,10 @@ const PhotospotModifyModal = () => {
   );
 
   function deletePhoto(id) {
+    if (state.photospot.data.photos.length === 1) {
+      setIsPhoto(false);
+      return
+    }
     apiAxios
       .delete(
         `/api/collections/${state.collection.data.id}/photospots/${state.photospot.data.id}/photo/${id}`
@@ -104,7 +119,7 @@ const PhotospotModifyModal = () => {
         dispatch(setPhotospot(photospot))
       })
       .catch(() => {
-        navigate('/photospot');
+        dispatch(setShow(false))
       });
   }
 
@@ -140,10 +155,10 @@ const PhotospotModifyModal = () => {
       )
       .then(() => {
         dispatch(setShow(false));
-        window.location.href = '/photospot';
+        window.location.href = `/collection/${state.collection.data.id}/photospot`;
       })
       .catch(() => {
-        navigate('/photospot');
+        navigate(`/collection/${state.collection.data.id}/photospot`);
       });
   }
 
@@ -154,10 +169,10 @@ const PhotospotModifyModal = () => {
       )
       .then(() => {
         dispatch(setShow(false));
-        window.location.href = '/photospot';
+        window.location.href = `/collection/${state.collection.data.id}/photospot`;
       })
       .catch(() => {
-        navigate('/photospot');
+        navigate(`/collection/${state.collection.data.id}/photospot`);
       });
   }
 };

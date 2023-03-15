@@ -20,12 +20,11 @@ function PhotospotDetailModal() {
         <div className="detailBox">
         <Carousel>
         {state.photospot.data.photos.map((photo) => (
-            <Carousel.Item key={photo.id}>
-              <img
-                className="d-block w-100"
-                src={photo.image}
-              />
-            </Carousel.Item>
+            <Carousel.Item key={photo.id} className='photoItem'>
+              <div className='imgBox'>
+              <img className="d-block w-100" src={photo.image} />
+            </div>
+          </Carousel.Item>
           ))}
         </Carousel>
           <p className="description">{state.photospot.data.description}</p>

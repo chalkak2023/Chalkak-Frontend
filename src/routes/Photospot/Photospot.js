@@ -10,11 +10,14 @@ import {
   setLng,
   setPhotospot
 } from '../../store/photospot.slice';
+import { setCollection } from '../../store/collection.slice';
 import './Photospot.css'
 import CollectionModifyModal from '../collections/CollectionModifyModal'
 import apiAxios from '../../utils/api-axios';
+import { useParams } from 'react-router-dom';
 
 const Photospot = () => {
+  const { collectionId } = useParams()
   const { kakao } = window;
   const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -34,8 +37,11 @@ const Photospot = () => {
     await getPhotospots();
 
     const marker = new kakao.maps.Marker();
-
     marker.setMap(map);
+
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
+
 
     kakao.maps.event.addListener(map, 'click', function (e) {
       const latlng = e.latLng;
@@ -51,17 +57,18 @@ const Photospot = () => {
     });
 
     async function getPhotospots() {
-      apiAxios.get(`/api/collections/${state.collection.data.id}/photospots`)
+      apiAxios.get(`/api/collections/${collectionId}`)
         .then((response) => {
           if (response.status === 200) {
-            const photospots = response.data;
+            const photospots = response.data.photospots;
             map.setCenter(
               new kakao.maps.LatLng(
                 photospots[0].latitude,
                 photospots[0].longitude
               )
             );
-            setPhotospots(response.data);
+            dispatch(setCollection(response.data));
+            setPhotospots(photospots);
             photospots.forEach((element) => {
               const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
               const position = new kakao.maps.LatLng(
@@ -86,7 +93,6 @@ const Photospot = () => {
         })
         .catch((response) => {
           console.log('axios 통신실패');
-          console.log(response);
         });
     }
   }
@@ -146,7 +152,7 @@ const Photospot = () => {
       {state.photospot.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
       {state.photospot.modalName === 'CollectionModifyModal' && (<CollectionModifyModal />)}
       
-      <div id="map" style={{ width: '100%', height: '800px' }}>
+      <div id="map" style={{ width: '100%', height: '90vh' }}>
         <Form className='keywordSearch'>
           <Form.Group className="mb-3" controlId="formBasicTitle">
             <Form.Label>장소를 검색하세요</Form.Label>
@@ -172,7 +178,9 @@ const Photospot = () => {
         {photospots.map((photospot) => (
             <Card key={photospot.id} className="photospot" onClick={() => {photospotModify('PhotospotModifyModal', photospot.id)}}>
             <div className='photospotBox'>
+            <div className='thumbBox'>
             <img className='imageSize' src={photospot.photos[0].image} alt=""/>
+            </div>
             <Card.Body>
               <Card.Title className='textOverflow'>{photospot.title}</Card.Title>
               <Card.Text className='textOverflow'>

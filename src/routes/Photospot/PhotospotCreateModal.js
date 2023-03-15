@@ -36,7 +36,7 @@ const PhotospotCreateModal = () => {
             <Form.Control as="textarea" rows={3} placeholder="Description" onChange={(e) => {setDescription(e.target.value);}}/>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicImageFile">
-            <Form.Label>사진</Form.Label>
+            <Form.Label>사진 <span style={{color: 'lightgray', fontSize: '12px'}}>- 최대 5장을 첨부할 수 있습니다.</span> </Form.Label>
             <Form.Control type="file" placeholder="Image" onChange={(e) => {setImageFiles(e.target.files);}} accept="image/png, image/jpeg, image/jpg" multiple/>
           </Form.Group>
           <div className="photospotEmpty" style={isPhotospotEmpty ? {display: 'none'} : {display: 'block'}}>제목, 설명, 사진을 모두 입력하셔야 합니다.</div>
@@ -70,17 +70,14 @@ const PhotospotCreateModal = () => {
     for (let i = 0; i < imageFiles.length; i++) {
       formData.append('files', imageFiles[i])
     }
-    
-    
-    
-
+  
     apiAxios.post(`/api/collections/${state.collection.data.id}/photospots`, formData)
       .then((response) => {
         dispatch(setShow(false));
-        window.location.href = "/photospot";
+        window.location.href = `/collection/${state.collection.data.id}/photospot`;
       })
       .catch((response) => {
-        navigate('/photospot');
+        dispatch(setShow(false));
       });
   }
 };

@@ -26,8 +26,8 @@ function App() {
         <Route path="/" element={<UserPage MainComponent={Main} />}></Route>
         <Route path="/sample" element={<UserPage MainComponent={SampleList} />}></Route>
         <Route path="/meetups" element={<UserPage MainComponent={MeetupsList} />}></Route>
-        <Route path="/photospot" element={<UserPage MainComponent={Auth(Photospot)} />}></Route>
-        <Route path="/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>
+        <Route path="/collection/:collectionId/photospot" element={<UserPage MainComponent={Auth(Photospot)} />}></Route>
+        <Route path="/collection/:collectionId/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>
         <Route path="/login/:provider" element={<OauthLoginRedirect />}></Route>
         <Route path="/collections" element={<UserPage MainComponent={CollectionsList} />}></Route>
         <Route path="/admin" element={<AdminPage MainComponent={AdminMain} />}></Route>
