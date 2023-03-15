@@ -20,6 +20,7 @@ const AdminAccount = () => {
   let [search, setSearch] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
+  let [lastPage, setLastPage] = useState(1);
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const AdminAccount = () => {
       <PaginationButtonList
         current={page}
         total={total}
-        itemPerPage={itemPerPage}
+        lastPage={lastPage}
         changePage={setPage}
       />
       <Button variant="primary" onClick={adminSignup}>

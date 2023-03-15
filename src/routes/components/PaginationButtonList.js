@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
-const PaginationButtonList = ({ current, total, changePage, itemPerPage }) => {
+const PaginationButtonList = ({ current, total, changePage, lastPage }) => {
   let [leftElipsis, setLeftElipsis] = useState(false);
   let [rightElipsis, setRightElipsis] = useState(false);
   let [pages, setPages] = useState([]);
-  let [end, setEnd] = useState(1);
-
-  useEffect(() => {
-    setEnd(total % itemPerPage === 0 ? Math.floor(total / itemPerPage) : Math.floor(total / itemPerPage) + 1);
-  }, [total])
 
   useEffect(() => {
     const pageList = Array.from(
       { length: 5 },
       (_, index) => index + current - 2
-    ).filter((page) => page > 1 && page < end);
+    ).filter((page) => page > 1 && page < lastPage);
     setPages(pageList);
 
     setLeftElipsis(current - 2 > 2);
-    setRightElipsis(current + 3 < end);
-  }, [current, end]);
+    setRightElipsis(current + 3 < lastPage);
+  }, [current, lastPage]);
 
   return (
     <Pagination>
@@ -45,12 +40,12 @@ const PaginationButtonList = ({ current, total, changePage, itemPerPage }) => {
       )) : ''}
 
       {rightElipsis ? <Pagination.Ellipsis /> : ""}
-      {end > 1 ? (
+      {lastPage > 1 ? (
         <Pagination.Item
-          onClick={() => changePage(end)}
-          active={current === end}
+          onClick={() => changePage(lastPage)}
+          active={current === lastPage}
         >
-          {end}
+          {lastPage}
         </Pagination.Item>
       ) : (
         ""
@@ -58,11 +53,11 @@ const PaginationButtonList = ({ current, total, changePage, itemPerPage }) => {
 
       <Pagination.Next
         onClick={() => changePage(current + 1)}
-        disabled={current >= end}
+        disabled={current >= lastPage}
       />
       <Pagination.Last
-        onClick={() => changePage(end)}
-        disabled={current >= end}
+        onClick={() => changePage(lastPage)}
+        disabled={current >= lastPage}
       />
     </Pagination>
   );

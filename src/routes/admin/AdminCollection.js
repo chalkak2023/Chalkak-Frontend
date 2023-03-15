@@ -25,6 +25,7 @@ const AdminCollection = () => {
   let [search, setSearch] = useState("");
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(1);
+  let [lastPage, setLastPage] = useState(1);
 
   let state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const AdminCollection = () => {
       <PaginationButtonList
         current={page}
         total={total}
-        itemPerPage={itemPerPage}
+        lastPage={lastPage}
         changePage={setPage}
       />
     </>
@@ -63,12 +64,13 @@ const AdminCollection = () => {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
-        const { data: items, total } = data;
+        const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
         setTotal(total);
         setOriginal(items);
+        setLastPage(lastPage)
         setData(mappingData);
       })
       .catch((err) => {
