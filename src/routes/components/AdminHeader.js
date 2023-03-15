@@ -91,8 +91,11 @@ const AdminHeader = () => {
         navigate("/admin");
       })
       .catch((err) => {
-        alert("로그인된 상태가 아닙니다.");
+        if (err.response) {
+          alert("로그인된 상태가 아닙니다.");
+        }
         dispatch(setAdmin({}));
+        dispatch(setAdminLogin(false));
       });
   }
 };
