@@ -65,7 +65,7 @@ function AuthSignupModal() {
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -81,13 +81,13 @@ function AuthSignupModal() {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
         if (statusCode === 201) {
-          alert('인증번호를 이메일로 보냈습니다.');
+          alert(response.data.message);
         }
       })
       .catch((e) => {
         setIsSending(false);
         console.log('axios 통신실패');
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -106,13 +106,13 @@ function AuthSignupModal() {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
         if (statusCode === 200) {
-          alert("회원가입했습니다.");
+          alert(response.data.message);
           handleClose()
         }
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 }

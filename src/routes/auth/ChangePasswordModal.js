@@ -55,13 +55,13 @@ function ChangePasswordModal() {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
-          alert('인증완료');
+          alert(response.data.message);
           setIsVerified(true);
         }
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -79,7 +79,7 @@ function ChangePasswordModal() {
       })
       .catch((e) => {
         console.log('axios 통신실패');
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 
@@ -98,13 +98,13 @@ function ChangePasswordModal() {
         const statusCode = response.status;
         console.log("status code: " + statusCode);
         if (statusCode === 200) {
-          alert("비밀번호를 변경했습니다.");
+          alert(response.data.message);
           handleClose()
         }
       })
       .catch((e) => {
         console.log("axios 통신실패");
-        alert(e.response.data.message);
+        alert(e.response?.data.message);
       });
   }
 }
