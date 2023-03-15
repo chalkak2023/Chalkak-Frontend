@@ -33,14 +33,14 @@ const AdminCollection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    goSearch();
+    getList();
   }, [page]);
  
   return (
     <>
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={() => {setPage(1); goSearch();}}
+        onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
       <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
@@ -62,7 +62,7 @@ const AdminCollection = () => {
     </>
   );
 
-  function goSearch() {
+  function getList() {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
@@ -87,9 +87,14 @@ const AdminCollection = () => {
       });
   }
 
+  function goSearch() {
+    setPage(1);
+    getList();
+  }
+
   function done(order) {
     if (!order) {
-      goSearch();
+      getList();
     } else {
       setData(data.filter((value, index) => index !== order));
       setOriginal(original.filter((value, index) => index !== order));

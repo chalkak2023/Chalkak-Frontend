@@ -29,7 +29,7 @@ const AdminFAQ = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    goSearch();
+    getList();
   }, [page]);
 
   return (
@@ -39,7 +39,7 @@ const AdminFAQ = () => {
 
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={() => {setPage(1); goSearch();}}
+        onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
       <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
@@ -64,7 +64,7 @@ const AdminFAQ = () => {
     </>
   );
 
-  function goSearch() {
+  function getList() {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
@@ -88,9 +88,14 @@ const AdminFAQ = () => {
       });
   }
 
+  function goSearch() {
+    setPage(1);
+    getList();
+  }
+
   function done(id) {
     if (!id) {
-      goSearch();
+      getList();
     } else {
       setData(data.filter((value, index) => index !== id));
       setOriginal(original.filter((value, index) => index !== id));
@@ -101,7 +106,7 @@ const AdminFAQ = () => {
     dispatch(setModalName("admin-create-faq"));
     dispatch(setShow(true));
     setPage(1);
-    goSearch();
+    getList();
   }
 
   function clickTable(entity) {
