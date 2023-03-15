@@ -84,6 +84,7 @@ const CollectionsList = () => {
                   <Card.Header>{collection.title}</Card.Header>
                   <Card.Body style={{ height: "8rem" }}>
                   <Card.Title>{collection.description}</Card.Title>
+                  <Card.Text>{collection.collection_keywords.map(obj => `#${obj.keyword}`).join(', ')}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
