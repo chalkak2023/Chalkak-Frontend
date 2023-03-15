@@ -25,20 +25,21 @@ function ChangePasswordModal() {
         <Form>
           <Form.Group className="mb-3">
             <div className="d-grid gap-2 m-2">
-              <Button variant="outline-success" onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
+              <Button disabled={isVerified} variant="outline-success" onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
             </div>
             {isSending ? <Form.Text>메일 보내는 중...</Form.Text> : ''}
             <InputGroup className="mb-2">
               <Form.Control id="p_confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
-              <Button variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
+              <Button disabled={isVerified} variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
+            {isVerified ? <Form.Text>메일 인증이 완료되었습니다.</Form.Text> : ''}
             <Form.Control id="p_password" className='mb-2' name="password" type="password" placeholder='새 비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
             <Form.Control id="p_confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='새 비밀번호확인' autoFocus onChange={(e) => { setConfirmPassword(e.target.value); }} />
           </Form.Group>
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button variant="primary" onClick={()=>{ changePassword(); }}>비밀번호 변경</Button>
+        <Button disabled={!isVerified || !password || password !== confirmPassword} variant="primary" onClick={()=>{ changePassword(); }}>비밀번호 변경</Button>
       </div>
     </Modal>
   )
