@@ -7,6 +7,7 @@ import { setModalName, setShow } from '../../store/modal.slice';
 import { setMeetup } from '../../store/meetup.slice';
 import Loading from '../components/loading/Loading';
 import apiAxios from '../../utils/api-axios';
+import './MeetupsList.css';
 
 const MeetupsList = () => {
   let state = useSelector((state)=> state );
@@ -93,7 +94,7 @@ const MeetupsList = () => {
                   <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
                   <Card.Body style={{ height: '8rem' }}>
                   <Card.Text>주최자: {meetup.user.username}</Card.Text>
-                    <Card.Title>{meetup.content}</Card.Title>
+                    <Card.Title className='meetupContent'>{meetup.content}</Card.Title>
                   </Card.Body>
                 </Card>
               </Col>
