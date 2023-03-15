@@ -33,21 +33,6 @@ const Photospot = () => {
     setKakaoMap(map)
     await getPhotospots();
 
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude; // 위도
-        const lng = position.coords.longitude; // 경도
-
-        const locPosition = new kakao.maps.LatLng(lat, lng);
-        map.setCenter(locPosition);
-      });
-    } else {
-      const locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-      map.setCenter(locPosition);
-    }
-    // 지도 중심좌표를 접속위치로 변경합니다
-
     const marker = new kakao.maps.Marker();
 
     marker.setMap(map);
@@ -137,6 +122,20 @@ const Photospot = () => {
     dispatch(setShow(true));
   }
 
+  function myLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const lat = position.coords.latitude; // 위도
+        const lng = position.coords.longitude; // 경도
+
+        const locPosition = new kakao.maps.LatLng(lat, lng);
+        kakaoMap.setCenter(locPosition);
+      }, function (err) {
+        alert("위치 엑세스가 거부되었습니다.");
+      });
+    }
+  }
+
   useEffect(() => {
     setKakaoMapping();
   }, []);
@@ -160,6 +159,7 @@ const Photospot = () => {
           </Form.Group>
           <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
         </Form>
+        <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
