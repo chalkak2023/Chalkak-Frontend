@@ -28,16 +28,16 @@ const AdminAccount = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    goSearch();
+    getList();
   }, [page]);
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal done={done} />}
+      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal changeList={changeList} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={() => {setPage(1); goSearch();}}
+        onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
       <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
@@ -46,7 +46,7 @@ const AdminAccount = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[AdminAccountDeleteButtons]}
       />
       <PaginationButtonList
@@ -61,7 +61,7 @@ const AdminAccount = () => {
     </>
   );
 
-  function goSearch() {
+  function getList() {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
@@ -78,14 +78,19 @@ const AdminAccount = () => {
       .catch((err) => {
         navigate('/admin')
        if (err.response) {
-          alert("관리자계정들을 가져오지 못 했습니다.");
+          alert("관리자계정들을 가져오지 못했습니다.");
         }
       });
   }
 
-  function done(order) {
+  function goSearch() {
+    setPage(1);
+    getList();
+  }
+
+  function changeList(order) {
     if (!order) {
-      goSearch();
+      getList();
     } else {
       setData(data.filter((value, index) => index !== order));
       setOriginal(original.filter((value, index) => index !== order));
@@ -96,7 +101,7 @@ const AdminAccount = () => {
     dispatch(setModalName("admin-signup"));
     dispatch(setShow(true));
     setPage(1);
-    goSearch();
+    getList();
   }
 };
 

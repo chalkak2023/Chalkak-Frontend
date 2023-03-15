@@ -29,17 +29,17 @@ const AdminFAQ = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    goSearch();
+    getList();
   }, [page]);
 
   return (
     <>
-      {state.modal.modalName === "admin-create-faq" && <AdminCreateFAQModal done={done} />}
-      {state.modal.modalName === "admin-put-faq" && <AdminPutFAQModal prev={prev} done={done} />}
+      {state.modal.modalName === "admin-create-faq" && <AdminCreateFAQModal changeList={changeList} />}
+      {state.modal.modalName === "admin-put-faq" && <AdminPutFAQModal prev={prev} changeList={changeList} />}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={() => {setPage(1); goSearch();}}
+        onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
       <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
@@ -48,7 +48,7 @@ const AdminFAQ = () => {
         width={width}
         data={data}
         original={original}
-        done={done}
+        changeList={changeList}
         TableButtons={[]}
         onClick={clickTable}
       />
@@ -64,7 +64,7 @@ const AdminFAQ = () => {
     </>
   );
 
-  function goSearch() {
+  function getList() {
     apiAxios
       .get(getItemPath, { params: { search, p: page } })
       .then(({ status, data }) => {
@@ -83,14 +83,19 @@ const AdminFAQ = () => {
           navigate('/admin');
         }
        if (err.response) {
-          alert("자주 찾는 질문을 가져오지 못 했습니다.");
+          alert("자주 찾는 질문을 가져오지 못했습니다.");
         }
       });
   }
 
-  function done(id) {
+  function goSearch() {
+    setPage(1);
+    getList();
+  }
+
+  function changeList(id) {
     if (!id) {
-      goSearch();
+      getList();
     } else {
       setData(data.filter((value, index) => index !== id));
       setOriginal(original.filter((value, index) => index !== id));
@@ -101,7 +106,7 @@ const AdminFAQ = () => {
     dispatch(setModalName("admin-create-faq"));
     dispatch(setShow(true));
     setPage(1);
-    goSearch();
+    getList();
   }
 
   function clickTable(entity) {

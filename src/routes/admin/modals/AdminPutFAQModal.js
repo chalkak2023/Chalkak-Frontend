@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShow } from "../../../store/modal.slice";
 import apiAxios from "../../../utils/api-axios";
 
-const AdminCreateFAQModal = ({done, prev}) => {
+const AdminCreateFAQModal = ({changeList, prev}) => {
   let [title, setTitle] = useState('');
   let [content, setContent] = useState('');
 
@@ -49,7 +49,7 @@ const AdminCreateFAQModal = ({done, prev}) => {
         if (status === 200) {
           alert("삭제 완료");
           handleClose();
-          done();
+          changeList();
         }
       })
       .catch((e) => {
@@ -65,12 +65,12 @@ const AdminCreateFAQModal = ({done, prev}) => {
         if (status === 200) {
           alert('자주찾는질문을 수정했습니다.')
           handleClose();
-          done();
+          changeList();
         }
       })
       .catch((e) => {
         if (e.response) {
-          alert('자주찾는질문을 수정하지 못 했습니다.')
+          alert('자주찾는질문을 수정하지 못했습니다.')
         }
         console.log(e)
       });

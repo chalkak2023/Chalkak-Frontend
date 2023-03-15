@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import apiAxios from "../../../utils/api-axios";
 // import { showModal } from "../../../store/modal.slice";
 
-const AdminCollectionDeleteButtons = ({ id, order, entity, done }) => {
+const AdminCollectionDeleteButtons = ({ id, order, entity, changeList }) => {
   const navigate = useNavigate();
   return (
     <>
@@ -19,7 +19,7 @@ const AdminCollectionDeleteButtons = ({ id, order, entity, done }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           alert("해당 콜렉션을 삭제했습니다.");
-          done();
+          changeList();
         }
       })
       .catch((err) => {
