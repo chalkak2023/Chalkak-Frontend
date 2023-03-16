@@ -9,7 +9,7 @@ body {
 
 .keywordSearch {
   position: absolute;
-  top: 10px;
+  top: 70px;
   left: 10px;
   z-index: 10;
 
@@ -201,7 +201,7 @@ body {
   border: solid 1px rgb(220, 220, 220);
   padding: 10px;
   position: absolute;
-  top: 190px;
+  top: 10px;
   left: 10px;
   z-index: 10;
   cursor: pointer;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {
@@ -15,7 +15,6 @@ import apiAxios from '../../utils/api-axios';
 const Photospot = () => {
   const { collectionId } = useParams()
   const { kakao } = window;
-  const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [photospots, setPhotospots] = useState([]);
 
@@ -82,21 +81,6 @@ const Photospot = () => {
     }
   }
 
-  function searchKeyword(keyword) {
-    var ps = new kakao.maps.services.Places();
-    ps.keywordSearch(keyword, placesSearchCB);
-
-    function placesSearchCB(data, status, pagination) {
-      if (status === kakao.maps.services.Status.OK) {
-        var bounds = new kakao.maps.LatLngBounds();
-
-        for (var i = 0; i < data.length; i++) {
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-        kakaoMap.setBounds(bounds);
-      }
-    }
-  }
   function photospotDetail(modalName, id) {
     const result = photospots.find((photospot) => photospot.id === id);
     kakaoMap.setCenter(
@@ -131,18 +115,6 @@ const Photospot = () => {
       {state.photospot.modalName === 'PhotospotDetailModal' && (<PhotospotDetailModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
-        <Form className='keywordSearch'>
-          <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Label>장소를 검색하세요</Form.Label>
-            <Form.Control size="sm" type="text" placeholder="Title" onChange={(e) => {setKeyword(e.target.value);}} onKeyDown={(e)=> {
-              if (e.code === "Enter") {
-                e.preventDefault()
-                searchKeyword(keyword)
-              }
-              }}/>
-          </Form.Group>
-          <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
-        </Form>
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
