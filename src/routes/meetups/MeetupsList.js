@@ -114,7 +114,6 @@ const MeetupsList = () => {
   }
 
   async function goSearch() {
-    setCheckedMine(false);
     keyword.current = inputKeyword;
     page.current = 2;
     document.querySelector('#scrollEnd').hidden = false;
@@ -122,6 +121,8 @@ const MeetupsList = () => {
   }
 
   async function resetMeetups() {
+    setCheckedMine(false);
+
     let arr = [];
     for (let i = 1; i < page.current; i++) {
       console.log(`page: ${i}, keyword: ${keyword.current}`);
