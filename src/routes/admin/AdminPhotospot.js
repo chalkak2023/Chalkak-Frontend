@@ -42,7 +42,7 @@ const AdminPhotospot = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
+      <h2># {keyword.current === '' ? '전체' : keyword.current} ({total})</h2>
       <AdminTable
         header={header}
         width={width}
