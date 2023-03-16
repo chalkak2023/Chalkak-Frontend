@@ -104,6 +104,8 @@ function ChangePasswordModal() {
         if (statusCode === 200) {
           alert(response.data.message);
           handleClose()
+          setIsSending(0);
+          setIsVerified(false);
         }
       })
       .catch((e) => {

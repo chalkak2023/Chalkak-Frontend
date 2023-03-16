@@ -113,6 +113,8 @@ function AuthSignupModal() {
         if (statusCode === 201) {
           alert(response.data.message);
           handleClose()
+          setIsSending(0);
+          setIsVerified(false);
         }
       })
       .catch((e) => {
