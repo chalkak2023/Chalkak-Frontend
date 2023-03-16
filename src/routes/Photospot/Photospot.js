@@ -173,7 +173,7 @@ const Photospot = () => {
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
-            <Card.Title className='collectionTitle textOverflow'>콜렉션 {state.collection.data.title}</Card.Title>
+            <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
               <Button variant="light" onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
           </Card.Body>
         </Card>
