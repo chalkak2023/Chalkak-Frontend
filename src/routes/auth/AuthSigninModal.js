@@ -32,7 +32,7 @@ function AuthSigninModal() {
               <Form.Control id="email" name="email" type="email" placeholder="이메일" autoFocus onChange={(e) => {setEmail(e.target.value);}}/>
             </InputGroup>
             <InputGroup>
-              <Form.Control id="password" name="password" type="password" placeholder="비밀번호" autoFocus onChange={(e) => {setPassword(e.target.value);}}/>
+              <Form.Control id="password" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
             </InputGroup>
           </Form.Group>
         </Form>
@@ -78,6 +78,15 @@ function AuthSigninModal() {
         console.log("axios 통신실패");
         alert(e.response?.data.message);
       });
+  }
+
+  function enterLogin(e) {
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      if (email && password) {
+        login()
+      }
+    }
   }
 
   function requestSocialLogin(provider, queryParams) {
