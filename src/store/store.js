@@ -10,11 +10,10 @@ import user from './user.slice';
 import admin from './admin.slice';
 import nav from './nav.slice';
 import collection from "./collection.slice";
-import  { createStateSyncMiddleware , initMessageListener } from "redux-state-sync" ;
+import  { createStateSyncMiddleware , initStateWithPrevTab } from "redux-state-sync" ;
 
 const reduxStateSyncConfig = {
-  whiteList: ["user/setUser", "user/setLogin", "admin/setAdmin", "admin/setAdminLogin"],
-  blacklist: ["persist/PERSIST", "persist/REHYDRATE"]
+  predicate: action => action.type.startsWith('user/') || action.type.startsWith('admin/'),
 } ;
 
 const reducers = combineReducers({
@@ -42,6 +41,6 @@ const store = configureStore({
   middleware: [thunk, createStateSyncMiddleware (reduxStateSyncConfig)],
 });
 
-initMessageListener (store) ;
+initStateWithPrevTab(store); 
 
 export default store;
