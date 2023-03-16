@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import apiAxios from '../../utils/api-axios';
 
 function ChangePasswordModal() {
-  const [isSending, setIsSending] = useState(false);
+  const [isSending, setIsSending] = useState(0);
   const [isVerified, setIsVerified] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verifyToken, setVerifyToken] = useState('');
+  const sendingStatus = ['대기', '메일 보내는 중...', '메일 발송 완료']
 
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
@@ -25,12 +26,12 @@ function ChangePasswordModal() {
         <Form>
           <Form.Group className="mb-3">
             <div className="d-grid gap-2 m-2">
-              <Button disabled={isVerified} variant="outline-success" onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
+              <Button disabled={isSending === 2 || isVerified} variant={isSending === 2 ? 'secondary' : 'success'} onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
             </div>
-            {isSending ? <Form.Text>메일 보내는 중...</Form.Text> : ''}
+            {isSending > 0 ? <Form.Text>{sendingStatus[isSending]}</Form.Text> : ''}
             <InputGroup className="mb-2">
               <Form.Control id="p_confirm_email" name="confirm_email" type="text" placeholder='인증번호' autoFocus onChange={(e) => { setVerifyToken(e.target.value); }}/>
-              <Button disabled={isVerified} variant="outline-success" onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
+              <Button disabled={isVerified} variant={isVerified ? 'secondary' : 'outline-success'} onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
             {isVerified ? <Form.Text>메일 인증이 완료되었습니다.</Form.Text> : ''}
             <Form.Control id="p_password" className='mb-2' name="password" type="password" placeholder='새 비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
@@ -67,18 +68,19 @@ function ChangePasswordModal() {
   }
 
   function sendEmail() {
-    setIsSending(true);
+    setIsSending(1);
     apiAxios
       .post('/api/auth/emailverification/password', {})
       .then((response) => {
         const statusCode = response.status;
         console.log('status code: ' + statusCode);
         if (statusCode === 201) {
-          setIsSending(false);
+          setIsSending(2);
           alert(`인증번호를 ${state.user.data?.email}로 보냈습니다.`);
         }
       })
       .catch((e) => {
+        setIsSending(0);
         console.log('axios 통신실패');
         alert(e.response?.data.message);
       });
