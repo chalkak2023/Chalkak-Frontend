@@ -53,7 +53,7 @@ function MeetupsCreateModal(props) {
           title, 
           content, 
           place, 
-          schedule: `${scheduleDate} ${scheduleTime}`, 
+          schedule: new Date(`${scheduleDate} ${scheduleTime}`), 
           headcount
         },
         { withCredentials: true }
@@ -61,7 +61,7 @@ function MeetupsCreateModal(props) {
       .then(({ status, data }) => {
         if (status === 201) {
           handleClose();
-          window.location.reload();
+          props.resetMeetups();
         }
       })
       .catch(({ response }) => {
