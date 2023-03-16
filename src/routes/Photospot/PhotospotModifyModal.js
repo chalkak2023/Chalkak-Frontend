@@ -14,9 +14,20 @@ const PhotospotModifyModal = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [isPhotoCount, setIsPhotoCount] = useState(true);
   const [isPhoto, setIsPhoto] = useState(true);
-  const [addPhoto, setAddPhoto] = useState(false)
+  const [index, setIndex] = useState(0);
+  const [deletePhotos, setDeletePhotos] = useState([]);
 
-  const handleClose = () => dispatch(setShow(false));
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
+
+  const handleClose = () => {
+    dispatch(setShow(false))
+    setIsPhoto(true);
+    setIsPhotoCount(true);
+    setDeletePhotos([]);
+  };
 
   return (
     <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
@@ -24,10 +35,9 @@ const PhotospotModifyModal = () => {
         <Modal.Title>포토스팟 수정하기</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Carousel>
+        <Carousel activeIndex={index} onSelect={handleSelect}>
           {state.photospot.data.photos.map((photo) => (
             <Carousel.Item key={photo.id} className='photoItem'>
-              <div className='addPhoto' onClick={() => {setAddPhoto(true)}}>➕</div>
               <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>❌</div>
               <div className='imgBox'>
               <img className="d-block w-100" src={photo.image} />
@@ -60,7 +70,7 @@ const PhotospotModifyModal = () => {
               }}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicImageFile" style={addPhoto ? { display: 'block' } : { display: 'none' }}>
+          <Form.Group className="mb-3" controlId="formBasicImageFile">
             <Form.Label>사진 <span style={{color: 'lightgray', fontSize: '12px'}}>- 최대 {Math.abs(5 - state.photospot.data.photos.length)}장을 첨부할 수 있습니다.</span></Form.Label>
             <Form.Control
               type="file"
@@ -109,18 +119,17 @@ const PhotospotModifyModal = () => {
       setIsPhoto(false);
       return
     }
-    apiAxios
-      .delete(
-        `/api/collections/${state.collection.data.id}/photospots/${state.photospot.data.id}/photo/${id}`
-      )
-      .then(() => {
-        const photospot = {...state.photospot.data}
-        photospot.photos = photospot.photos.filter((photo) => photo.id !== id);
-        dispatch(setPhotospot(photospot))
-      })
-      .catch(() => {
-        dispatch(setShow(false))
-      });
+
+    const photoItems = document.getElementsByClassName('photoItem');
+    setDeletePhotos((prev) => [...prev, id]);
+
+    const photospot = { ...state.photospot.data };
+    photospot.photos = photospot.photos.filter((photo) => photo.id !== id);
+    dispatch(setPhotospot(photospot));
+    if (index === photoItems.length - 1) {
+      setIndex(0);
+    }
+
   }
 
   function modifyPhotospot() {
@@ -143,8 +152,10 @@ const PhotospotModifyModal = () => {
     
     formData.append('title', modifyTitle);
     formData.append('description', modifyDesc);
+    for (let i = 0; i < deletePhotos.length; i++) {
+      formData.append('deletePhotos[]', deletePhotos[i])
+    }
     for (let i = 0; i < imageFiles.length; i++) {
-      console.log(imageFiles[i]);
       formData.append('files', imageFiles[i])
     }
 
@@ -155,6 +166,7 @@ const PhotospotModifyModal = () => {
       )
       .then(() => {
         dispatch(setShow(false));
+        setDeletePhotos([]);
         window.location.href = `/collection/${state.collection.data.id}/photospot`;
       })
       .catch(() => {
