@@ -40,7 +40,7 @@ const AdminAccount = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
+      <h2># {keyword.current === '' ? '전체' : keyword.current} ({total})</h2>
       <AdminTable
         header={header}
         width={width}
@@ -63,9 +63,8 @@ const AdminAccount = () => {
 
   function getList() {
     apiAxios
-      .get(getItemPath, { params: { search, p: page } })
+      .get(getItemPath, { params: { search: keyword.current, p: page } })
       .then(({ status, data }) => {
-        keyword.current = search;
         const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
@@ -85,6 +84,7 @@ const AdminAccount = () => {
 
   function goSearch() {
     setPage(1);
+    keyword.current = search;
     getList();
   }
 

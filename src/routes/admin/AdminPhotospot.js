@@ -42,7 +42,7 @@ const AdminPhotospot = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}</h2>
+      <h2># {keyword.current === '' ? '전체' : keyword.current} ({total})</h2>
       <AdminTable
         header={header}
         width={width}
@@ -56,9 +56,8 @@ const AdminPhotospot = () => {
 
   function getList() {
     apiAxios
-      .get(getItemPath(collectionId), { params: { search, p: page } })
+      .get(getItemPath(collectionId), { params: { search: keyword.current, p: page } })
       .then(({ status, data: items }) => {
-        keyword.current = search;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
@@ -79,6 +78,7 @@ const AdminPhotospot = () => {
 
   function goSearch() {
     setPage(1);
+    keyword.current = search;
     getList();
   }
 
