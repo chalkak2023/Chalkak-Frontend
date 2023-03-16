@@ -24,7 +24,7 @@ const AdminCollection = () => {
   let [original, setOriginal] = useState([]);
   let [search, setSearch] = useState("");
   let [page, setPage] = useState(1);
-  let [total, setTotal] = useState(1);
+  let [total, setTotal] = useState(0);
   let [lastPage, setLastPage] = useState(1);
   let keyword = useRef('');
 
@@ -43,7 +43,7 @@ const AdminCollection = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current} ({total})</h2>
+      <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
       <AdminTable
         header={header}
         width={width}
