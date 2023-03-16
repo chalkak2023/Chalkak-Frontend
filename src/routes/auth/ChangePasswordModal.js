@@ -36,6 +36,7 @@ function ChangePasswordModal() {
             {isVerified ? <Form.Text>메일 인증이 완료되었습니다.</Form.Text> : ''}
             <Form.Control id="p_password" className='mb-2' name="password" type="password" placeholder='새 비밀번호' autoFocus onChange={(e) => { setPassword(e.target.value); }} />
             <Form.Control id="p_confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='새 비밀번호확인' autoFocus onChange={(e) => { setConfirmPassword(e.target.value); }} />
+            <Form.Text>패스워드는 소문자, 숫자, 특수문자를 모두 포함하는 8글자 이상의 문자열이어야합니다.</Form.Text>
           </Form.Group>
         </Form>
       </Modal.Body>
