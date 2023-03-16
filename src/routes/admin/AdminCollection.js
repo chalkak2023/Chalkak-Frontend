@@ -64,9 +64,8 @@ const AdminCollection = () => {
 
   function getList() {
     apiAxios
-      .get(getItemPath, { params: { search, p: page } })
+      .get(getItemPath, { params: { search: keyword.current, p: page } })
       .then(({ status, data }) => {
-        keyword.current = search;
         const { data: items, total, lastPage } = data;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
@@ -89,6 +88,7 @@ const AdminCollection = () => {
 
   function goSearch() {
     setPage(1);
+    keyword.current = search;
     getList();
   }
 

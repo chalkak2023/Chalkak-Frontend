@@ -56,9 +56,8 @@ const AdminPhotospot = () => {
 
   function getList() {
     apiAxios
-      .get(getItemPath(collectionId), { params: { search, p: page } })
+      .get(getItemPath(collectionId), { params: { search: keyword.current, p: page } })
       .then(({ status, data: items }) => {
-        keyword.current = search;
         const mappingData = items.map((item) =>
           transform.map((fn) => fn(item))
         );
@@ -79,6 +78,7 @@ const AdminPhotospot = () => {
 
   function goSearch() {
     setPage(1);
+    keyword.current = search;
     getList();
   }
 
