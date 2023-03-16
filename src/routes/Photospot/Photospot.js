@@ -15,6 +15,7 @@ import './Photospot.css'
 import CollectionModifyModal from '../collections/CollectionModifyModal'
 import apiAxios from '../../utils/api-axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import Loading from '../components/loading/Loading';
 
 const Photospot = () => {
   const { collectionId } = useParams()
@@ -22,6 +23,7 @@ const Photospot = () => {
   const [keyword, setKeyword] = useState(null);
   const [kakaoMap, setKakaoMap] = useState(null);
   const [photospots, setPhotospots] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
@@ -135,6 +137,7 @@ const Photospot = () => {
   }
 
   function myLocation() {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         const lat = position.coords.latitude; // 위도
@@ -142,8 +145,10 @@ const Photospot = () => {
 
         const locPosition = new kakao.maps.LatLng(lat, lng);
         kakaoMap.setCenter(locPosition);
+        setLoading(false);
       }, function (err) {
         alert("위치 엑세스가 거부되었습니다.");
+        setLoading(false);
       });
     }
   }
@@ -154,6 +159,8 @@ const Photospot = () => {
 
   return (
     <>
+      { loading && <Loading /> }
+
       {state.photospot.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
       {state.photospot.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
       {state.photospot.modalName === 'CollectionModifyModal' && (<CollectionModifyModal />)}

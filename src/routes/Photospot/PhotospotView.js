@@ -11,12 +11,14 @@ import {
 import { setCollection } from '../../store/collection.slice';
 import './Photospot.css'
 import apiAxios from '../../utils/api-axios';
+import Loading from '../components/loading/Loading';
 
 const Photospot = () => {
   const { collectionId } = useParams()
   const { kakao } = window;
   const [kakaoMap, setKakaoMap] = useState(null);
   const [photospots, setPhotospots] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
@@ -92,6 +94,7 @@ const Photospot = () => {
   }
 
   function myLocation() {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         const lat = position.coords.latitude; // 위도
@@ -99,8 +102,10 @@ const Photospot = () => {
 
         const locPosition = new kakao.maps.LatLng(lat, lng);
         kakaoMap.setCenter(locPosition);
+        setLoading(false);
       }, function (err) {
         alert("위치 엑세스가 거부되었습니다.");
+        setLoading(false);
       });
     }
   }
@@ -112,6 +117,8 @@ const Photospot = () => {
 
   return (
     <>
+      { loading && <Loading /> }
+      
       {state.photospot.modalName === 'PhotospotDetailModal' && (<PhotospotDetailModal />)}
       
       <div id="map" style={{ width: '100%', height: '800px' }}>
