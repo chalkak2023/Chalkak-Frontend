@@ -58,7 +58,7 @@ const MeetupsList = () => {
     <>
       { loading && <Loading /> }
 
-      { state.modal.modalName === 'create' && <MeetupsCreateModal /> }
+      { state.modal.modalName === 'create' && <MeetupsCreateModal resetMeetups={resetMeetups} /> }
       { state.modal.modalName === 'detail' && 
         <MeetupsDetailModal 
           getMeetupDetail={getMeetupDetail} 
