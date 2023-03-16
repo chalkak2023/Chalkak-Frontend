@@ -36,38 +36,42 @@ const Photospot = () => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
     async function getPhotospots() {
-      apiAxios.get(`/api/collections/${collectionId}`)
+      apiAxios
+        .get(`/api/collections/${collectionId}`)
         .then((response) => {
           if (response.status === 200) {
             const photospots = response.data.photospots;
-            map.setCenter(
-              new kakao.maps.LatLng(
-                photospots[0].latitude,
-                photospots[0].longitude
-              )
-            );
-            dispatch(setCollection(response.data));
-            setPhotospots(photospots);
-            photospots.forEach((element) => {
-              const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
-              const position = new kakao.maps.LatLng(
-                element.latitude,
-                element.longitude
+           if (photospots.length > 0) {
+              map.setCenter(
+                new kakao.maps.LatLng(
+                  photospots[0].latitude,
+                  photospots[0].longitude
+                )
               );
-              new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: position, // 마커를 표시할 위치
-              });
 
-              let CustomOverlay = new kakao.maps.CustomOverlay({
-                map: map, // 인포윈도우가 표시될 지도
-                position: position,
-                content: tempHtml,
-                yAnchor: 1,
-              });
+              setPhotospots(photospots);
+              photospots.forEach((element) => {
+                const tempHtml = `<div class="customoverlay"><span class="title">${element.title}</span></div>`;
+                const position = new kakao.maps.LatLng(
+                  element.latitude,
+                  element.longitude
+                );
+                new kakao.maps.Marker({
+                  map: map, // 마커를 표시할 지도
+                  position: position, // 마커를 표시할 위치
+                });
 
-              CustomOverlay.setMap(map);
-            });
+                let CustomOverlay = new kakao.maps.CustomOverlay({
+                  map: map, // 인포윈도우가 표시될 지도
+                  position: position,
+                  content: tempHtml,
+                  yAnchor: 1,
+                });
+
+                CustomOverlay.setMap(map);
+              });
+            }
+            dispatch(setCollection(response.data));
           }
         })
         .catch((response) => {
