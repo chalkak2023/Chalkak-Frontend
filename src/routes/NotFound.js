@@ -9,7 +9,8 @@ const NotFound = () => {
         <div style={{translate: '0 -50%'}}>
           <h1>404: 페이지를 찾을 수 없음</h1>
           <p>죄송합니다. 요청하신 페이지를 찾을 수 없습니다.</p>
-          <Button variant="primary" style={{width: '100%'}} onClick={() => {navigate('/')}}>메인으로 되돌아가기</Button>
+          <Button variant="primary" className="mb-2" style={{width: '100%'}} onClick={() => {navigate('/')}}>메인으로 가기</Button>
+          <Button variant="outline-secondary" className="mb-2"  style={{width: '100%'}} onClick={() => {navigate(-1)}}>뒤로 되돌아가기</Button>
         </div>
       </Container>
     </>
