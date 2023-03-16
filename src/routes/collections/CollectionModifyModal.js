@@ -103,6 +103,7 @@ const CollectionModifyModal = () => {
           ))
       })
       .catch(() => {
+        alert('콜렉션 수정을 실패 하셨습니다.');
         dispatch(setShow(false));
       });
     } 
@@ -114,7 +115,7 @@ const CollectionModifyModal = () => {
         window.location.href = '/collections';
       })
       .catch(() => {
-        navigate('/photospot');
+        navigate(`/api/collections/${state.collection.data.id}`);
       });
     }
   };
