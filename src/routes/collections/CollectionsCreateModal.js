@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../store/modal.slice';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
-import { setCollection } from '../../store/collection.slice';
 import styled from "styled-components";
 import apiAxios from '../../utils/api-axios';
 
@@ -13,6 +13,7 @@ function CollectionsCreateModal(props) {
   const [keyword, setKeyword] = useState([])
   let state = useSelector((state)=> state);
   let dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClose = () => dispatch(setShow(false));
 
   return (
@@ -54,41 +55,40 @@ function CollectionsCreateModal(props) {
   )
 
   function pressEnterHandler(e) {
-    if(e.target.value.length !== 0 && e.key === 'Enter') {
-      e.preventDefault()
-    submitKeywordTag();
+    if (e.target.value.length !== 0 && e.key === "Enter") {
+      e.preventDefault();
+      submitKeywordTag();
     }
   }
 
   function submitKeywordTag() {
-    let updatedKeyword = [...keyword]
-    updatedKeyword.push(keywordTag)
-    setKeyword(prev => [...new Set ([...prev, keywordTag])])
-    setKeywordTag('')
+    let updatedKeyword = [...keyword];
+    updatedKeyword.push(keywordTag);
+    setKeyword((prev) => [...new Set([...prev, keywordTag])]);
+    setKeywordTag("");
   }
 
   function deleteKeywordTag(e) {
-    e.preventDefault()
-    const deleteKeywordTag = e.target.parentElement.firstChild.innerText
-    const filteredKeyword = keyword.filter(keywordTag => keywordTag !== deleteKeywordTag)
-    setKeyword(filteredKeyword)
+    e.preventDefault();
+    const deleteKeywordTag = e.target.parentElement.firstChild.innerText;
+    const filteredKeyword = keyword.filter(
+      (keywordTag) => keywordTag !== deleteKeywordTag
+    );
+    setKeyword(filteredKeyword);
   }
 
   function createCollection() {
     apiAxios
-      .post('/api/collections',
-        { title, description, keyword },
-      )
+      .post("/api/collections", { title, description, keyword })
       .then((response) => {
         const statusCode = response.status;
         if (statusCode === 201) {
           handleClose();
-          dispatch(setCollection(response.data));
-          window.location.href = `/photospot`
+          navigate(`/collection/${response.data.id}/photospot`);
         }
       })
       .catch((e) => {
-        console.log('axios 통신실패');
+        console.log("axios 통신실패");
         console.log(e);
       });
   }

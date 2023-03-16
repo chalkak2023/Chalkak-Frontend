@@ -11,14 +11,12 @@ const CollectionModifyModal = () => {
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  const handleClose = () => dispatch(setShow(false));
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-
   const tempKeyword = state.collection.data.collection_keywords.map((keywordObj) => keywordObj.keyword);
   const [keywordTag, setKeywordTag] = useState('')
   const [keyword, setKeyword] = useState(tempKeyword || [])
-
-  const handleClose = () => dispatch(setShow(false));
 
   return (
     <Modal
@@ -83,7 +81,6 @@ const CollectionModifyModal = () => {
     setKeyword(filteredKeyword)
   }
 
-
   function modifyCollection() {
     let modifyCollection = {...state.collection.data}
     if (title) { modifyCollection.title = title }
@@ -104,12 +101,12 @@ const CollectionModifyModal = () => {
           collection_keywords: modifyCollection.keyword.map(text=> ({keyword: text, userId: state.collection.data.userId, 
             collectionId: state.collection.data.collectionId}))}
           ))
-        window.location.href = `/photospot`;
       })
       .catch(() => {
-        navigate(`/photospot`);
+        alert('콜렉션 수정을 실패 하셨습니다.');
+        dispatch(setShow(false));
       });
-  }
+    } 
 
   function deleteCollection() {
     apiAxios.delete(`/api/collections/${state.collection.data.id}`)
@@ -118,10 +115,10 @@ const CollectionModifyModal = () => {
         window.location.href = '/collections';
       })
       .catch(() => {
-        navigate('/photospot');
+        navigate(`/api/collections/${state.collection.data.id}`);
       });
-  }
-};
+    }
+  };
 
 export default CollectionModifyModal;
 

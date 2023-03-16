@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from "../../store/modal.slice";
-import { setCollection } from "../../store/collection.slice";
 import Loading from "../components/loading/Loading";
 import { useNavigate } from "react-router-dom";
 import CollectionsCreateModal from "./CollectionsCreateModal";
@@ -84,6 +83,7 @@ const CollectionsList = () => {
                   <Card.Header>{collection.title}</Card.Header>
                   <Card.Body style={{ height: "8rem" }}>
                   <Card.Title>{collection.description}</Card.Title>
+                  <Card.Text>{collection.collection_keywords.map(obj => `#${obj.keyword}`).join(', ')}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -122,7 +122,7 @@ const CollectionsList = () => {
     } else { 
       return collectionListURI;
     }
-}
+  }
 
   async function resetCollections() {
     let arr = [];
@@ -138,9 +138,9 @@ const CollectionsList = () => {
 
   function photospot(id) {
     const result = collections.find((collection) => collection.id === id);
-    dispatch(setCollection(result));
     navigate(
-      result.userId === state.user.data.id ? "/photospot" : "/photospot-view"
+      result.userId === state.user.data.id ? 
+      `/collection/${result.id}/photospot` : `/collection/${result.id}/photospot-view`
     );
   }
   
@@ -164,7 +164,7 @@ const CollectionsList = () => {
       }).finally(() => {
         setLoading(false);
       })
-  }
+    }
 
   function showModal(modalName) {
     dispatch(setModalName(modalName));
