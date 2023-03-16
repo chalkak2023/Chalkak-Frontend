@@ -14,7 +14,7 @@ import { setCollection } from '../../store/collection.slice';
 import './Photospot.css'
 import CollectionModifyModal from '../collections/CollectionModifyModal'
 import apiAxios from '../../utils/api-axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Photospot = () => {
   const { collectionId } = useParams()
@@ -25,6 +25,7 @@ const Photospot = () => {
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
+  let navigate = useNavigate();
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -96,7 +97,8 @@ const Photospot = () => {
           }
         })
         .catch((response) => {
-          console.log('axios 통신실패');
+          alert('해당 콜렉션을 찾을 수 없습니다.');
+          navigate('/collections');
         });
     }
   }
@@ -173,7 +175,7 @@ const Photospot = () => {
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
-            <Card.Title className='collectionTitle textOverflow'>콜렉션 {state.collection.data.title}</Card.Title>
+            <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
               <Button variant="light" onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
           </Card.Body>
         </Card>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {
   setModalName,
@@ -21,6 +21,7 @@ const Photospot = () => {
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
+  let navigate = useNavigate();
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -75,8 +76,8 @@ const Photospot = () => {
           }
         })
         .catch((response) => {
-          console.log('axios 통신실패');
-          console.log(response);
+          alert('해당 콜렉션을 찾을 수 없습니다.');
+          navigate('/collections');
         });
     }
   }
@@ -146,7 +147,7 @@ const Photospot = () => {
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
-            <Card.Title className='collectionTitle textOverflow'>콜렉션 {state.collection.data.title}</Card.Title>
+            <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
           </Card.Body>
         </Card>
         <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
