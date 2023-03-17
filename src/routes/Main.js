@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+import MainCollections from "./main/MainCollections";
+import MainMeetups from "./main/MainMeetups";
+import MainCarousel from "./main/MainCarousel";
 
 const Main = () => {
   useEffect(() => {
@@ -6,7 +9,9 @@ const Main = () => {
   })
   return (
     <>
-      <h2>메인페이지</h2>
+      <MainCarousel />
+      <MainCollections />
+      <MainMeetups />
     </>
   )
 };
