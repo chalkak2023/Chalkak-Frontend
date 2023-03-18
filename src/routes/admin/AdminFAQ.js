@@ -12,7 +12,7 @@ import AdminCreateFAQModal from "./modals/AdminCreateFAQModal";
 import AdminPutFAQModal from "./modals/AdminPutFAQModal";
 
 const AdminFAQ = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, transform } =
     adminEnvironments["faq"];
 
   let [data, setData] = useState([]);
@@ -45,7 +45,6 @@ const AdminFAQ = () => {
       <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
       <AdminTable
         header={header}
-        width={width}
         data={data}
         original={original}
         changeList={changeList}

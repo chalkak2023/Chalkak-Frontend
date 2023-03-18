@@ -8,7 +8,7 @@ import AdminSearch from "./components/AdminSearch";
 import AdminUserBlockButton from "./components/AdminUserBlockButton";
 
 const AdminUser = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, transform } =
     adminEnvironments["user"];
 
   let [data, setData] = useState([]);
@@ -34,7 +34,6 @@ const AdminUser = () => {
       <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
       <AdminTable
         header={header}
-        width={width}
         data={data}
         original={original}
         changeList={changeList}

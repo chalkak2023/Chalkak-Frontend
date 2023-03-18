@@ -9,7 +9,7 @@ import AdminMeetupDeleteButtons from "./components/AdminMeetupDeleteButton";
 import AdminSearch from "./components/AdminSearch";
 
 const AdminMeetup = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, transform } =
     adminEnvironments["meetup"];
 
   let [data, setData] = useState([]);
@@ -38,7 +38,6 @@ const AdminMeetup = () => {
       <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
       <AdminTable
         header={header}
-        width={width}
         data={data}
         original={original}
         changeList={changeList}
