@@ -47,9 +47,9 @@ const Header = () => {
             {
               Object.keys(state.user.data).length > 0 ?
               <h3>{state.user.data.username}</h3> : 
-              <Button variant="outline-dark" onClick={()=>{showModal('signin')}}>로그인</Button>
+              <Button onClick={()=>{showModal('signin')}}>로그인</Button>
             }
-            <Button variant="outline-dark" onClick={()=>{showNav()}}>nav</Button>
+            <Button className='ChalkakBtn' onClick={()=>{showNav()}}>nav</Button>
           </div>
         </Container>
       </Navbar>

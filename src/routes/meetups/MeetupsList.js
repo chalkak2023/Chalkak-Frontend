@@ -66,11 +66,11 @@ const MeetupsList = () => {
         /> 
       }
       <Container>
-        <div>
-          <h2 onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>같이 찍어요</h2>
+        <div className="d-flex align-items-center flex-column ChalkakSearch">
+          <h2 className='ChalkakH2' onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>같이 찍어요</h2>
           <InputGroup className="mb-5" style={{ width: '25rem' }}>
-            <Form.Control type='text' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
-            <Button variant="outline-dark" onClick={goSearch}>검색</Button>
+            <Form.Control type='text' className='searchInputForm' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
+            <Button className="searchInputFormBtn" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
 
@@ -79,20 +79,20 @@ const MeetupsList = () => {
           {
             Object.keys(state.user.data).length > 0 ?
             <>
-              <ToggleButton className="ms-auto" id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>나의 모임</ToggleButton>
-              <Button variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
+              <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>나의 모임</ToggleButton>
+              <Button className="ChalkakBtn" variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
             </> : ''
           }
         </Stack>
 
-        <Row xs={1} md={3} className="g-3 mb-3">
+        <Row xs={1} md={3} className="g-4 mb-3">
           {
             meetups.length > 0 ?
             meetups.map((meetup, i) => (
               <Col key={i} onClick={()=>{getMeetupDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
                 <Card border="dark">
-                  <Card.Header>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</Card.Header>
-                  <Card.Body style={{ height: '8rem' }}>
+                  <Card.Header><b>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</b></Card.Header>
+                  <Card.Body style={{ height: '10rem' }}>
                   <Card.Text>주최자: {meetup.user.username}</Card.Text>
                     <Card.Title className='meetupContent'>{meetup.content}</Card.Title>
                   </Card.Body>

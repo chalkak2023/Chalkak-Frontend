@@ -17,6 +17,7 @@ import AdminPhotospot from './routes/admin/AdminPhotospot';
 import OauthLoginRedirect from './routes/oauth/OauthLoginRedirect';
 import Service from './routes/service/Service'
 import NotFound from './routes/NotFound';
+import './App.css';
 
 function App() {
 

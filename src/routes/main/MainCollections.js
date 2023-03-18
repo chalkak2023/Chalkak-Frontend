@@ -15,10 +15,10 @@ const MainCollections = () => {
     <>
       <Container className="mb-2">
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2>최근 생성된 콜렉션</h2>
-          <Button className="ms-auto" variant="outline-dark" onClick={() => {navigate('/collections');}}>보러가기</Button>
+          <h2 className='mt-5'>최근 생성된 콜렉션</h2>
+          <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => {navigate('/collections');}}>보러가기</Button>
         </Stack>
-        <Row xs={1} md={3} className="g-3 mb-3">
+        <Row xs={1} md={3} className="g-4 mb-3">
           {
             collections.length > 0 ?
             collections.map((collection, i) => (

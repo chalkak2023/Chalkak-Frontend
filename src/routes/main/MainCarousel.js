@@ -4,7 +4,7 @@ const MainCarousel = () => {
   return (
     <>
       <Container className="mb-5">
-        <h2>찰칵! 당신의 순간을 담을게요. (임시 메인페이지입니다.)</h2>
+        <h2 className='mt-5'>찰칵! 당신의 순간을 담을게요. (임시 메인페이지입니다.)</h2>
         <Carousel>
           <Carousel.Item key='0'>
             <div className='imgBox'>

@@ -229,3 +229,18 @@ body {
   justify-content: center;
   background-color: black;
 }
+
+
+span.tagKeyword.badge.bg-secondary {
+  padding: 5px 10px 5px 10px;
+  margin-left: 3px;
+  background-color: #7e7e7e !important;
+  /* border-radius: 0px; */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
