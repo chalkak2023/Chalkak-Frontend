@@ -47,7 +47,7 @@ const Header = () => {
             {
               Object.keys(state.user.data).length > 0 ?
               <h3>{state.user.data.username}</h3> : 
-              <Button onClick={()=>{showModal('signin')}}>로그인</Button>
+              <Button className='ChalkakBtn me-1' onClick={()=>{showModal('signin')}}>로그인</Button>
             }
             <Button className='ChalkakBtn' onClick={()=>{showNav()}}>nav</Button>
           </div>
