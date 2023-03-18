@@ -13,9 +13,9 @@ const MainCollections = () => {
 
   return (
     <>
-      <Container className="mb-2">
+      <Container style={{ marginBottom: '100px'}}>
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2 className='mt-5'>최근 생성된 콜렉션</h2>
+          <h2>최근 생성된 콜렉션</h2>
           <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => {navigate('/collections');}}>보러가기</Button>
         </Stack>
         <Row xs={1} md={3} className="g-4 mb-3">
@@ -45,12 +45,12 @@ const MainCollections = () => {
       .then(({ status, data }) => {
         if (status === 200) {
           let tempArr = [];
-          if (data.length < 3) {
+          if (data.length < 6) {
             for (let i = 0; i < data.length; i++ ) {
               tempArr.push(data[i]);
             }
           } else {
-            for (let i = 0; i < 3; i++ ) {
+            for (let i = 0; i < 6; i++ ) {
               tempArr.push(data[i]);
             }
           }

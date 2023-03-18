@@ -3,7 +3,7 @@ import { Carousel, Container } from 'react-bootstrap';
 const MainCarousel = () => {
   return (
     <>
-      <Container className="mb-5">
+      <Container style={{ marginBottom: '100px'}}>
         <h2 className='mt-5'>찰칵! 당신의 순간을 담을게요.</h2>
         <Carousel>
           <Carousel.Item key='0'>

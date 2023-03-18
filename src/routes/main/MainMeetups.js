@@ -13,9 +13,9 @@ const MainMeetups = () => {
 
   return (
     <>
-      <Container className="mb-2">
+      <Container style={{ marginBottom: '100px'}}>
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2 className='mt-5'>최근 생성된 모임</h2>
+          <h2>최근 생성된 모임</h2>
           <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => {navigate('/meetups');}}>보러가기</Button>
         </Stack>
         <Row xs={1} md={3} className="g-4 mb-3">
