@@ -1,0 +1,88 @@
+/* MICE 고딕 */
+@font-face {
+  font-family: 'MICEGothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MICEGothic Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: bold;
+}
+
+body {
+  color: #333;
+  background: linear-gradient(180deg, #0584BB 35%, #046795 100%);
+  /* MICE 고딕 */
+  font-family: 'MICEGothic' !important;
+  /* font-family: 'MICEGothic Bold' !important; */
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  color: white;
+  font-family: 'MICEGothic Bold' !important;
+}
+
+.card.border-dark {
+  border: 0;
+  box-shadow: 10px 10px 1px 0px #00425e;
+}
+
+.card-header {
+  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+  margin-bottom: 0;
+  color: var(--bs-card-cap-color);
+  background-color: #F5F5F5;
+  /* background-color: rgb(241 168 120); */
+  border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+.ChalkakBtn {
+  border: 0 !important;
+  background-color: white !important;
+  box-shadow: 3px 3px 5px 0px #00425e !important;
+  color: #333 !important;
+}
+
+.ChalkakBtn:hover,
+.ChalkakBtn:active {
+  background-color: #ffc107 !important;
+}
+
+.ActiveChalkakBtn {
+  border: 0 !important;
+  background-color: #ffc107 !important;
+  color: #333 !important;
+}
+
+.searchInputForm {
+  border: 0;
+  background-color: white;
+  box-shadow: 3px 3px 5px 0px #00425e;
+  color: #333;
+}
+
+.ChalkakH2 {
+  margin-bottom: 30px;
+}
+
+.searchInputFormBtn {
+  border: 0 !important;
+  background-color: #7e7e7e !important;
+  box-shadow: 3px 3px 5px 0px #00425e !important;
+  color: #fff !important;
+}
+
+.ChalkakSearch {
+  margin-top: 70px;
+  margin-bottom: 90px;
+}
+
+.TagList {
+  font-size: 18px !important;
+}
+

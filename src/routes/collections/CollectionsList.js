@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from "react-bootstrap";
+import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton, Badge } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from "../../store/modal.slice";
 import Loading from "../components/loading/Loading";
@@ -56,10 +56,10 @@ const CollectionsList = () => {
       {state.modal.modalName === "create" && <CollectionsCreateModal />}
 
       <Container>
-        <div><h2 onClick={() => { window.location.reload() }} style={{ cursor: "pointer" }}>콜렉션</h2>
+        <div className="d-flex align-items-center flex-column ChalkakSearch"><h2 className="ChalkakH2" onClick={() => { window.location.reload() }} style={{ cursor: "pointer" }}>콜렉션</h2>
           <InputGroup className="mb-5" style={{ width: "25rem" }}>
-            <Form.Control type="text" placeholder="키워드를 검색해보세요." onChange={(e) => { setInputSearch(e.target.value) }} onKeyDown={pressEnterHandler}/>
-            <Button variant="outline-dark" onClick={goSearch}>검색</Button>
+            <Form.Control type="text" className="searchInputForm" placeholder="키워드를 검색해보세요." onChange={(e) => { setInputSearch(e.target.value) }} onKeyDown={pressEnterHandler}/>
+            <Button className="searchInputFormBtn" variant="outline-dark" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
 
@@ -67,23 +67,23 @@ const CollectionsList = () => {
           <h2># {search.current === "" ? "전체" : search.current}</h2>
           {Object.keys(state.user.data).length > 0 ? 
           <>
-              <ToggleButton className="ms-auto" id="toggle-check" type="checkbox" variant="outline-dark" 
+              <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark"
                 checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>마이 콜렉션</ToggleButton>
-              <Button variant="outline-dark" onClick={() => { showModal("create") }}>콜렉션 등록</Button>
+              <Button className="ChalkakBtn" variant="outline-dark" onClick={() => { showModal("create") }}>콜렉션 등록</Button>
             </> : ""
           }
         </Stack>
 
-        <Row xs={1} md={3} className="g-3 mb-3">
+        <Row xs={1} md={3} className="g-4 mb-3">
           {
             collections.length > 0 ?
             collections.map((collection, i) => (
             <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
               <Card border="dark">
-                  <Card.Header>{collection.title}</Card.Header>
-                  <Card.Body style={{ height: "8rem" }}>
+                  <Card.Header><b>{collection.title}</b></Card.Header>
+                  <Card.Body style={{ height: "10rem" }}>
                   <Card.Title>{collection.description}</Card.Title>
-                  <Card.Text>{collection.collection_keywords.map(obj => `#${obj.keyword}`).join(', ')}</Card.Text>
+                  <Card.Text className="TagList">{collection.collection_keywords.map((obj, index) => index < 5 ? (<Badge bg="secondary" className="tagKeyword">{obj.keyword}</Badge>) : '')}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
