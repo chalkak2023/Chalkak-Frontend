@@ -5,7 +5,7 @@ const AdminTable = ({ header, data, original, changeList, TableButtons, onClick 
   }
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive style={{backgroundColor: 'white'}}>
       <thead>
         <tr>
           {header.map((head, index) => (
