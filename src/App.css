@@ -54,6 +54,12 @@ h1, h2, h3 {
   color: #333 !important;
 }
 
+.NicknameBtn {
+  border: 0 !important;
+  background-color: #0584BB !important;
+  color: white !important;
+}
+
 .ChalkakBtn:hover,
 .ChalkakBtn:active {
   background-color: #ffc107 !important;

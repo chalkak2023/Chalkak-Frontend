@@ -41,22 +41,22 @@ const Header = () => {
       { state.modal.modalName === 'change-password' && <ChangePasswordModal /> }
 
       <Navbar>
-        <Container fluid>
+        <Container fluid style={{ paddingRight: '0' }}>
           <Navbar.Brand onClick={()=>{navigate('/')}} style={{ cursor: 'pointer' }}>
             <h1>찰칵</h1>
           </Navbar.Brand>
           <div>
             {
               Object.keys(state.user.data).length > 0 ?
-              <h3>{state.user.data.username}</h3> : 
+              <Button className='NicknameBtn me-1'>{state.user.data.username}</Button> : 
               <Button className='ChalkakBtn me-1' onClick={()=>{showModal('signin')}}>로그인</Button>
             }
+            <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}} style={{  }}><Reservation /></Button>
           </div>
         </Container>
       </Navbar>
       <NavSideBar />
 
-      <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}} style={{  }}><Reservation /></Button>
     </>
   )
 
