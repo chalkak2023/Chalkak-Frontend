@@ -252,8 +252,8 @@ span.tagKeyword.badge.bg-secondary {
   width: 50%;
 }
 
-.PhotospotBtnGroup > .btn:nth-child(2) {
-  margin-left: 20px;
+.PhotospotBtnGroup > .btn:nth-child(1) {
+  margin-right: 20px;
   background-color: tomato;
   border-color: tomato;
 }

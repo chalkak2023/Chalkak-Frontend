@@ -97,18 +97,18 @@ const PhotospotModifyModal = () => {
           <Button
             variant="primary"
             onClick={() => {
-              modifyPhotospot();
-            }}
-          >
-            수정
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
               deletePhotospot();
             }}
           >
             삭제
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              modifyPhotospot();
+            }}
+          >
+            수정
           </Button>
           </div>
         </Form>
@@ -135,6 +135,10 @@ const PhotospotModifyModal = () => {
   }
 
   function modifyPhotospot() {
+    if(!window.confirm('수정 하시겠습니까?')) {
+      return;
+    }
+
     let modifyTitle = state.photospot.data.title;
     let modifyDesc = state.photospot.data.description;
     const inputImageCount = imageFiles.length;
@@ -177,6 +181,10 @@ const PhotospotModifyModal = () => {
   }
 
   function deletePhotospot() {
+    if(!window.confirm('삭제 하시겠습니까?')) {
+      return;
+    }
+
     apiAxios
       .delete(
         `/api/collections/${state.collection.data.id}/photospots/${state.photospot.data.id}`
