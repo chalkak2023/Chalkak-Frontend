@@ -46,12 +46,14 @@ const AdminFAQ = () => {
       />
       {loading || (
         <>
-          <h2>
-            # {keyword.current === "" ? "전체" : keyword.current}{total > 0 ? ` (${total})` : ""}
-          </h2>
+          <div className="mb-2" style={{display: 'flex', justifyContent: 'space-between'}}>
+            <h2>
+              # {keyword.current === "" ? "전체" : keyword.current} {total > 0 ? ` (${total})` : ""}
+            </h2>
+            <Button className="ChalkakBtn" variant="primary" onClick={createFAQ}>자주찾는질문 작성</Button>
+          </div>
           <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[]}onClick={clickTable} />
           <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
-          <Button variant="primary" onClick={createFAQ}>추가</Button>
         </>
       )}
     </>

@@ -39,9 +39,11 @@ const AdminMeetup = () => {
       />
       {loading || (
         <>
-          <h2>
-            # {keyword.current === "" ? "전체" : keyword.current}{total > 0 ? ` (${total})` : ""}
-          </h2>
+          <div className="mb-2">
+            <h2>
+              # {keyword.current === "" ? "전체" : keyword.current}{total > 0 ? ` (${total})` : ""}
+            </h2>
+          </div>
           <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[AdminMeetupDeleteButtons]} />
           <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
         </>
