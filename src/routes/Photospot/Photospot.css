@@ -258,6 +258,18 @@ span.tagKeyword.badge.bg-secondary {
   border-color: tomato;
 }
 
+.PhotospotBtnGroup > .btn:nth-child(1):hover,
+.PhotospotBtnGroup > .btn:nth-child(1):active {
+  margin-right: 20px;
+  background-color: rgb(209, 81, 59);
+  border-color: rgb(209, 81, 59);
+}
+
+
+.photospotCreateBtn {
+  width: 100%;
+}
+
 .photospotDesc {
   width: 100%;
 
