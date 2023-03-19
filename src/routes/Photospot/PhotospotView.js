@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import PhotospotDetailModal from './PhotospotDetailModal';
 import {
@@ -125,9 +125,9 @@ const Photospot = () => {
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
-          <Card.Body className='collectionInfo'>
-            <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
-          </Card.Body>
+        <Card.Body className='collectionInfo'>
+          <Card.Title className='collectionTitle textOverflow' style={{width: '90%', textAlign: 'center'}}>{state.collection.data.title}</Card.Title>
+        </Card.Body>
         </Card>
         <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
         {photospots.map((photospot) => (

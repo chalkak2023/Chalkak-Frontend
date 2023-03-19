@@ -14,7 +14,7 @@ function PhotospotDetailModal() {
   return (
     <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{state.photospot.data.title}</Modal.Title>
+        <Modal.Title style={{fontWeight: 'bold' }}>{state.photospot.data.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="detailBox">
@@ -27,7 +27,10 @@ function PhotospotDetailModal() {
           </Carousel.Item>
           ))}
         </Carousel>
+        <div className='photospotDesc'>
+          <div style={{marginTop: '25px', paddingBottom: '5px', borderBottom: '1px solid #b7b7b7', color: '#b7b7b7'}}>간단 설명</div>
           <p className="description">{state.photospot.data.description}</p>
+        </div>
         </div>
       </Modal.Body>
     </Modal>
