@@ -9,15 +9,22 @@ body {
 
 .keywordSearch {
   position: absolute;
-  top: 70px;
+  top: 20px;
   left: 10px;
   z-index: 10;
+}
 
-  background-color: #fff;
+.searchInputForm-2 {
+  background-color: white;
+  box-shadow: 3px 3px 5px 0px #333;
+  color: #333;
+}
 
-  padding: 20px;
-
-  border-radius: 5px;
+.searchInputFormBtn-2 {
+  border: 0 !important;
+  background-color: #7e7e7e !important;
+  box-shadow: 3px 3px 5px 0px #333 !important;
+  color: #fff !important;
 }
 
 .photospotList {
@@ -27,11 +34,9 @@ body {
   z-index: 10;
 
   width: 400px;
-  height: 90%;
+  max-height: 90%;
   overflow: hidden;
   overflow-y: auto;
-
-  background-color: rgba(195, 195, 195, 0.5);
 }
 
 .photospotBox {
@@ -72,17 +77,6 @@ body {
   padding-left: 20px;
 
   background-color: white;
-}
-
-
-.description {
-  font-size: 18px;
-  font-weight: 600;
-
-  width: 600px;
-
-  margin: 0 auto;
-  margin-top: 30px;
 }
 
 .imageSize {
@@ -197,14 +191,16 @@ body {
 
 .myLocation {
   border-radius: 5px;
-  background-color: white;
+  background-color: #ffffffe9;
   border: solid 1px rgb(220, 220, 220);
   padding: 10px;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  bottom: 20px;
+  left: 40px;
   z-index: 10;
   cursor: pointer;
+  font-weight: bold;
+
 }
 
 .imgBox {
@@ -243,4 +239,32 @@ span.tagKeyword.badge.bg-secondary {
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
+}
+
+.PhotospotBtnGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.PhotospotBtnGroup > .btn {
+  width: 50%;
+}
+
+.PhotospotBtnGroup > .btn:nth-child(2) {
+  margin-left: 20px;
+  background-color: tomato;
+  border-color: tomato;
+}
+
+.photospotDesc {
+  width: 100%;
+
+}
+
+.description {
+  font-size: 20px;
+  margin-top: 15px;
+  min-height: 100px;
 }

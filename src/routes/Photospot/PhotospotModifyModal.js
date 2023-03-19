@@ -93,6 +93,7 @@ const PhotospotModifyModal = () => {
           >
             1장 이상의 사진은 있어야합니다.
           </div>
+          <div className='PhotospotBtnGroup'>
           <Button
             variant="primary"
             onClick={() => {
@@ -109,6 +110,7 @@ const PhotospotModifyModal = () => {
           >
             삭제
           </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>

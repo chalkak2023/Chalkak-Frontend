@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Card } from 'react-bootstrap';
+import { Button, Form, Card, InputGroup } from 'react-bootstrap';
 import PhotospotCreateModal from './PhotospotCreateModal';
 import PhotospotModifyModal from './PhotospotModifyModal';
 import {
@@ -165,25 +165,24 @@ const Photospot = () => {
       {state.photospot.modalName === 'PhotospotModifyModal' && (<PhotospotModifyModal />)}
       {state.photospot.modalName === 'CollectionModifyModal' && (<CollectionModifyModal />)}
       
-      <div id="map" style={{ width: '100%', height: '90vh' }}>
+        <div id="map" style={{ width: '100%', height: '90vh' }}>
         <Form className='keywordSearch'>
-          <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Label>장소를 검색하세요</Form.Label>
-            <Form.Control size="sm" type="text" placeholder="Title" onChange={(e) => {setKeyword(e.target.value);}} onKeyDown={(e)=> {
-              if (e.code === "Enter") {
-                e.preventDefault()
-                searchKeyword(keyword)
-              }
-              }}/>
-          </Form.Group>
-          <Button variant="primary" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
+        <InputGroup className="mb-5" style={{ width: '17rem' }}>
+          <Form.Control type='text' className='searchInputForm-2' placeholder='장소를 검색하세요.' onChange={(e) => {setKeyword(e.target.value);}} onKeyDown={(e)=> {
+            if (e.code === "Enter") {
+              e.preventDefault()
+              searchKeyword(keyword)
+            }
+            }}/>
+          <Button className="searchInputFormBtn-2" onClick={()=>{searchKeyword(keyword)}}>검색</Button>
+        </InputGroup>
         </Form>
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
           <Card.Body className='collectionInfo'>
             <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
-              <Button variant="light" onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
+              <Button variant="light" style={{backgroundColor: '#7e7e7e', color: 'white'}} onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
           </Card.Body>
         </Card>
         <div className='photospotList' style={!photospots.length ? {display: 'none'} : {display: 'block'}}>
