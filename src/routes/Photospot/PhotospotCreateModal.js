@@ -42,7 +42,7 @@ const PhotospotCreateModal = () => {
           <div className="photospotEmpty" style={isPhotospotEmpty ? {display: 'none'} : {display: 'block'}}>제목, 설명, 사진을 모두 입력하셔야 합니다.</div>
           <div className="photoCount" style={isPhotoCount ? {display: 'none'} : {display: 'block'}}>사진은 5장만 업로드 할 수 있습니다.</div>
           <div className='PhotospotBtnGroup'>
-          <Button variant="primary" onClick={(e) => {createPhotospot(e);}}>
+          <Button style={{width: '100%'}} variant="primary" onClick={(e) => {createPhotospot(e);}}>
             생성
           </Button>
           </div>
