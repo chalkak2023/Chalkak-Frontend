@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
+import Loading from "../components/loading/Loading";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
 import AdminAccountDeleteButtons from "./components/AdminAccountDeleteButton";
@@ -21,6 +22,7 @@ const AdminAccount = () => {
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(0);
   let [lastPage, setLastPage] = useState(1);
+  let [loading, setLoading] = useState(false);
   let keyword = useRef('');
 
   let state = useSelector((state) => state);
@@ -33,34 +35,32 @@ const AdminAccount = () => {
 
   return (
     <>
-      {state.modal.modalName === "admin-signup" && <AdminCreateAccountModal changeList={changeList} />}
+      {state.modal.modalName === "admin-signup" && (
+        <AdminCreateAccountModal changeList={changeList} />
+      )}
 
       <h3>{koName} 관리</h3>
       <AdminSearch
-        onClick={() => {goSearch()}}
+        onClick={() => {
+          goSearch();
+        }}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
-      <AdminTable
-        header={header}
-        data={data}
-        original={original}
-        changeList={changeList}
-        TableButtons={[AdminAccountDeleteButtons]}
-      />
-      <PaginationButtonList
-        current={page}
-        total={total}
-        lastPage={lastPage}
-        changePage={setPage}
-      />
-      <Button variant="primary" onClick={adminSignup}>
-        추가
-      </Button>
+      {loading || (
+        <>
+          <h2>
+            # {keyword.current === "" ? "전체" : keyword.current} {total > 0 ? ` (${total})` : ""}
+          </h2>
+          <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[AdminAccountDeleteButtons]} />
+          <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
+          <Button variant="primary" onClick={adminSignup}>추가</Button>
+        </>
+      )}
     </>
   );
 
   function getList() {
+    setLoading(true);
     apiAxios
       .get(getItemPath, { params: { search: keyword.current, p: page } })
       .then(({ status, data }) => {
@@ -78,7 +78,10 @@ const AdminAccount = () => {
        if (err.response) {
           alert("관리자계정들을 가져오지 못했습니다.");
         }
-      });
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
   function goSearch() {
