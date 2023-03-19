@@ -11,7 +11,7 @@ const Main = () => {
     <>
       <MainCarousel />
       <MainCollections />
-      <MainMeetups />
+      {/* <MainMeetups /> */}
     </>
   )
 };
