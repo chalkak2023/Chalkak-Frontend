@@ -24,8 +24,6 @@ const NavSideBar = () => {
         <h4 className="menu mb-3" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</h4>
         <h4 className="menu mb-3" onClick={()=>{navigate('/meetuh4s'); handleClose();}}>같이찍어요</h4>
         <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
-        {/* 임시로 관리자 페이지 추가. 나중에 삭제 */}
-        <h4 className="menu mb-3" onClick={()=>{navigate('/admin'); handleClose();}}>관리자 페이지</h4>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
