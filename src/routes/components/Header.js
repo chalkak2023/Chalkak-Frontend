@@ -45,7 +45,7 @@ const Header = () => {
       { state.modal.modalName === 'signup' && <AuthSignupModal /> }
       { state.modal.modalName === 'change-password' && <ChangePasswordModal /> }
 
-      <Navbar>
+      <Navbar style={{ position: 'sticky', top: '0px', backgroundColor: '#0584BB', zIndex: '100' }}>
         <Container fluid style={{ paddingRight: '0' }}>
           <Navbar.Brand onClick={()=>{navigate('/')}} style={{ cursor: 'pointer' }}>
             <h1>찰칵</h1>
