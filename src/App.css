@@ -41,6 +41,12 @@ h1, h2, h3 {
   border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 
+@media (max-width: 767px) {
+  .input-group {
+    width: 100% !important;
+  }
+}
+
 .ChalkakBtn {
   border: 0 !important;
   background-color: white !important;
