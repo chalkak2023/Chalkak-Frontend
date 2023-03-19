@@ -15,23 +15,22 @@ const NavSideBar = () => {
   let navigate = useNavigate();
 
   return (
-    <Offcanvas show={state.nav.show} onHide={handleClose} placement='end' style={{ width: '20vw' }}>
+    <Offcanvas show={state.nav.show} onHide={handleClose} placement='end' style={{ width: '20vw', minWidth: '200px' }}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title className="menu" onClick={()=>{navigate('/'); handleClose();}}>
-          <h2>찰칵</h2>
         </Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
-        <p className="menu" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</p>
-        <p className="menu" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</p>
-        <p className="menu" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</p>
+        <h4 className="menu mb-3" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</h4>
+        <h4 className="menu mb-3" onClick={()=>{navigate('/meetuh4s'); handleClose();}}>같이찍어요</h4>
+        <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
         {/* 임시로 관리자 페이지 추가. 나중에 삭제 */}
-        <p className="menu" onClick={()=>{navigate('/admin'); handleClose();}}>관리자 페이지</p>
+        <h4 className="menu mb-3" onClick={()=>{navigate('/admin'); handleClose();}}>관리자 페이지</h4>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
-            {state.user.data.email ? <p className="menu" onClick={()=>{dispatch(setModalName('change-password')); dispatch(setShow(true));}}>비밀번호변경</p> : ''}
-            <p className="menu" onClick={()=>{signout(); handleClose();}}>로그아웃</p>
+            {state.user.data.email ? <h4 className="menu mb-3" onClick={()=>{dispatch(setModalName('change-password')); dispatch(setShow(true));}}>비밀번호변경</h4> : ''}
+            <h4 className="menu mb-3" onClick={()=>{signout(); handleClose();}}>로그아웃</h4>
           </> : ''
 
         }
