@@ -53,8 +53,10 @@ const CollectionModifyModal = () => {
             </WholeBox>
 
           </Form.Group>
+          <div className='PhotospotBtnGroup'>
           <Button variant="primary" onClick={() => {modifyCollection();}}>수정</Button>
           <Button variant="primary" onClick={() => {deleteCollection();}}>삭제</Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>
