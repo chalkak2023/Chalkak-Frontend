@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { setLogin, setUser } from '../../store/user.slice';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
 import { clearLoginCookie } from '../../utils/controlCookie';
+import { ReactComponent as Reservation } from './Hamburger_icon.svg';
+import './Header.css'
 
 const Header = () => {
   let state = useSelector((state)=> state );
@@ -47,13 +49,14 @@ const Header = () => {
             {
               Object.keys(state.user.data).length > 0 ?
               <h3>{state.user.data.username}</h3> : 
-              <Button onClick={()=>{showModal('signin')}}>로그인</Button>
+              <Button className='ChalkakBtn me-1' onClick={()=>{showModal('signin')}}>로그인</Button>
             }
-            <Button className='ChalkakBtn' onClick={()=>{showNav()}}>nav</Button>
           </div>
         </Container>
       </Navbar>
       <NavSideBar />
+
+      <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}} style={{  }}><Reservation /></Button>
     </>
   )
 

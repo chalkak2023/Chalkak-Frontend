@@ -83,7 +83,15 @@ const CollectionsList = () => {
                   <Card.Header><b>{collection.title}</b></Card.Header>
                   <Card.Body style={{ height: "10rem" }}>
                   <Card.Title>{collection.description}</Card.Title>
-                  <Card.Text className="TagList">{collection.collection_keywords.map((obj, index) => index < 5 ? (<Badge bg="secondary" className="tagKeyword">{obj.keyword}</Badge>) : '')}</Card.Text>
+                  <Card.Text className="TagList">
+                    { 
+                      collection.collection_keywords.map((obj, i) => 
+                        i < 5 ? 
+                        <Badge bg="secondary" className="tagKeyword" key={i}>{ obj.keyword }</Badge> : 
+                        ''
+                      )
+                    }
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>

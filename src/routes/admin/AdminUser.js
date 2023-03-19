@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import apiAxios from "../../utils/api-axios";
+import Loading from "../components/loading/Loading";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
 import AdminSearch from "./components/AdminSearch";
 import AdminUserBlockButton from "./components/AdminUserBlockButton";
 
 const AdminUser = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, transform } =
     adminEnvironments["user"];
 
   let [data, setData] = useState([]);
@@ -17,6 +18,7 @@ const AdminUser = () => {
   let [page, setPage] = useState(1);
   let [total, setTotal] = useState(0);
   let [lastPage, setLastPage] = useState(1);
+  let [loading, setLoading] = useState(false);
   let keyword = useRef('');
   const navigate = useNavigate();
 
@@ -31,25 +33,22 @@ const AdminUser = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
-      <AdminTable
-        header={header}
-        width={width}
-        data={data}
-        original={original}
-        changeList={changeList}
-        TableButtons={[AdminUserBlockButton]}
-      />
-      <PaginationButtonList
-        current={page}
-        total={total}
-        lastPage={lastPage}
-        changePage={setPage}
-      />
+      {loading || (
+        <>
+          <div className="mb-2">
+            <h2>
+              # {keyword.current === "" ? "전체" : keyword.current}{total > 0 ? ` (${total})` : ""}
+            </h2>
+          </div>
+          <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[AdminUserBlockButton]} />
+          <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
+        </>
+      )}
     </>
   );
 
   function getList() {
+    setLoading(true);
     apiAxios
       .get(getItemPath, { params: { search: keyword.current, p: page } })
       .then(({ status, data }) => {
@@ -69,7 +68,10 @@ const AdminUser = () => {
        if (err.response) {
           alert("회원 목록을 가져오지 못했습니다.");
         }
-      });
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
   function goSearch() {

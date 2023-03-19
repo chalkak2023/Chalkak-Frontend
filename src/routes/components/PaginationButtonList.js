@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
-const PaginationButtonList = ({ current, total, changePage, lastPage }) => {
-  let [leftElipsis, setLeftElipsis] = useState(false);
-  let [rightElipsis, setRightElipsis] = useState(false);
+const PaginationButtonList = ({ current, changePage, lastPage }) => {
+  let [leftEllipsis, setLeftEllipsis] = useState(false);
+  let [rightEllipsis, setRightEllipsis] = useState(false);
   let [pages, setPages] = useState([]);
 
   useEffect(() => {
@@ -13,8 +13,8 @@ const PaginationButtonList = ({ current, total, changePage, lastPage }) => {
     ).filter((page) => page > 1 && page < lastPage);
     setPages(pageList);
 
-    setLeftElipsis(current - 2 > 2);
-    setRightElipsis(current + 3 < lastPage);
+    setLeftEllipsis(current - 2 > 2);
+    setRightEllipsis(current + 3 < lastPage);
   }, [current, lastPage]);
 
   return (
@@ -27,7 +27,7 @@ const PaginationButtonList = ({ current, total, changePage, lastPage }) => {
       <Pagination.Item onClick={() => changePage(1)} active={current === 1}>
         1
       </Pagination.Item>
-      {leftElipsis ? <Pagination.Ellipsis /> : ""}
+      {leftEllipsis ? <Pagination.Ellipsis /> : ""}
 
       {pages?.length ? pages.map((page, index) => (
         <Pagination.Item
@@ -39,7 +39,7 @@ const PaginationButtonList = ({ current, total, changePage, lastPage }) => {
         </Pagination.Item>
       )) : ''}
 
-      {rightElipsis ? <Pagination.Ellipsis /> : ""}
+      {rightEllipsis ? <Pagination.Ellipsis /> : ""}
       {lastPage > 1 ? (
         <Pagination.Item
           onClick={() => changePage(lastPage)}

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import adminEnvironments from "../../environments/admin";
 import { setModalName, setShow } from "../../store/modal.slice";
 import apiAxios from "../../utils/api-axios";
+import Loading from "../components/loading/Loading";
 import PaginationButtonList from "../components/PaginationButtonList";
 import AdminTable from "./AdminTable";
 import AdminSearch from "./components/AdminSearch";
@@ -12,7 +13,7 @@ import AdminCreateFAQModal from "./modals/AdminCreateFAQModal";
 import AdminPutFAQModal from "./modals/AdminPutFAQModal";
 
 const AdminFAQ = () => {
-  const { ko: koName, getItemPath, header, width, transform, itemPerPage } =
+  const { ko: koName, getItemPath, header, transform } =
     adminEnvironments["faq"];
 
   let [data, setData] = useState([]);
@@ -22,6 +23,7 @@ const AdminFAQ = () => {
   let [total, setTotal] = useState(0);
   let [prev, setPrev] = useState({});
   let [lastPage, setLastPage] = useState(1);
+  let [loading, setLoading] = useState(false);
   let keyword = useRef('');
 
   let state = useSelector((state) => state);
@@ -42,29 +44,23 @@ const AdminFAQ = () => {
         onClick={() => {goSearch()}}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <h2># {keyword.current === '' ? '전체' : keyword.current}{total > 0 ? ` (${total})` : ''}</h2>
-      <AdminTable
-        header={header}
-        width={width}
-        data={data}
-        original={original}
-        changeList={changeList}
-        TableButtons={[]}
-        onClick={clickTable}
-      />
-      <PaginationButtonList
-        current={page}
-        total={total}
-        lastPage={lastPage}
-        changePage={setPage}
-      />
-      <Button variant="primary" onClick={createFAQ}>
-        추가
-      </Button>
+      {loading || (
+        <>
+          <div className="mb-2" style={{display: 'flex', justifyContent: 'space-between'}}>
+            <h2>
+              # {keyword.current === "" ? "전체" : keyword.current} {total > 0 ? ` (${total})` : ""}
+            </h2>
+            <Button className="ChalkakBtn" variant="primary" onClick={createFAQ}>자주찾는질문 작성</Button>
+          </div>
+          <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[]}onClick={clickTable} />
+          <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
+        </>
+      )}
     </>
   );
 
   function getList() {
+    setLoading(true);
     apiAxios
       .get(getItemPath, { params: { search: keyword.current, p: page } })
       .then(({ status, data }) => {
@@ -84,7 +80,10 @@ const AdminFAQ = () => {
        if (err.response) {
           alert("자주 찾는 질문을 가져오지 못했습니다.");
         }
-      });
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
   function goSearch() {

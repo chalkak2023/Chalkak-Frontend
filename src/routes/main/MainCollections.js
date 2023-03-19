@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Card, Container, Stack, Button } from 'react-bootstrap';
+import { Row, Col, Card, Container, Stack, Button, Badge } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiAxios from '../../utils/api-axios';
 
 const MainCollections = () => {
-  const [collections, setCollections] = useState([]);
+  let state = useSelector((state) => state);
   let navigate = useNavigate();
+
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
     getCollections();
@@ -13,21 +16,29 @@ const MainCollections = () => {
 
   return (
     <>
-      <Container className="mb-2">
+      <Container style={{ marginBottom: '100px'}}>
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2 className='mt-5'>최근 생성된 콜렉션</h2>
+          <h2>최근 생성된 콜렉션</h2>
           <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => {navigate('/collections');}}>보러가기</Button>
         </Stack>
         <Row xs={1} md={3} className="g-4 mb-3">
           {
             collections.length > 0 ?
             collections.map((collection, i) => (
-              <Col key={i}>
+              <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
                 <Card border="dark">
                     <Card.Header>{collection.title}</Card.Header>
-                    <Card.Body style={{ height: "8rem" }}>
+                    <Card.Body style={{ height: "10rem" }}>
                     <Card.Title>{collection.description}</Card.Title>
-                    <Card.Text>{collection.collection_keywords.map(obj => `#${obj.keyword}`).join(', ')}</Card.Text>
+                    <Card.Text className="TagList">
+                      { 
+                        collection.collection_keywords.map((obj, i) => 
+                          i < 5 ? 
+                          <Badge bg="secondary" className="tagKeyword" key={i}>{ obj.keyword }</Badge> : 
+                          ''
+                        )
+                      }
+                    </Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -39,18 +50,26 @@ const MainCollections = () => {
     </>
   )
 
+  function photospot(id) {
+    const result = collections.find((collection) => collection.id === id);
+    navigate(
+      result.userId === state.user.data.id ? 
+      `/collection/${result.id}/photospot` : `/collection/${result.id}/photospot-view`
+    );
+  }
+
   function getCollections() {
     apiAxios
       .get(`/api/collections?p=1`)
       .then(({ status, data }) => {
         if (status === 200) {
           let tempArr = [];
-          if (data.length < 3) {
+          if (data.length < 6) {
             for (let i = 0; i < data.length; i++ ) {
               tempArr.push(data[i]);
             }
           } else {
-            for (let i = 0; i < 3; i++ ) {
+            for (let i = 0; i < 6; i++ ) {
               tempArr.push(data[i]);
             }
           }

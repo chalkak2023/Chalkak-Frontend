@@ -1,15 +1,15 @@
 import { Table } from "react-bootstrap";
 
-const AdminTable = ({ header, data, original, width, changeList, TableButtons, onClick }) => {
+const AdminTable = ({ header, data, original, changeList, TableButtons, onClick }) => {
   if (!header || !data) {
   }
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive style={{backgroundColor: 'white'}}>
       <thead>
         <tr>
           {header.map((head, index) => (
-            <th key={index} style={{ width: `${width[index]}%` }}>
+            <th key={index}>
               {head}
             </th>
           ))}

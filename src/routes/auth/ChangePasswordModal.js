@@ -25,7 +25,7 @@ function ChangePasswordModal() {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-            <div className="d-grid gap-2 m-2">
+            <div className="d-grid mb-2">
               <Button disabled={isSending === 2 || isVerified} variant={isSending === 2 ? 'secondary' : 'success'} onClick={()=>{ sendEmail(); }}>인증번호 발송</Button>
             </div>
             {isSending > 0 ? <Form.Text>{sendingStatus[isSending]}</Form.Text> : ''}
