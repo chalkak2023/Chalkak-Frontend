@@ -54,8 +54,8 @@ const CollectionModifyModal = () => {
 
           </Form.Group>
           <div className='PhotospotBtnGroup'>
-          <Button variant="primary" onClick={() => {modifyCollection();}}>수정</Button>
           <Button variant="primary" onClick={() => {deleteCollection();}}>삭제</Button>
+          <Button variant="primary" onClick={() => {modifyCollection();}}>수정</Button>
           </div>
         </Form>
       </Modal.Body>
@@ -84,6 +84,10 @@ const CollectionModifyModal = () => {
   }
 
   function modifyCollection() {
+    if(!window.confirm('수정 하시겠습니까?')) {
+      return;
+    }
+
     let modifyCollection = {...state.collection.data}
     if (title) { modifyCollection.title = title }
     if (description) { modifyCollection.description = description }
@@ -111,6 +115,10 @@ const CollectionModifyModal = () => {
     } 
 
   function deleteCollection() {
+    if(!window.confirm('삭제 하시겠습니까?')) {
+      return;
+    }
+
     apiAxios.delete(`/api/collections/${state.collection.data.id}`)
       .then(() => {
         dispatch(setShow(false));
