@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Card, Container, Stack, Button } from 'react-bootstrap';
+import { Row, Col, Card, Container, Stack, Button, Badge } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiAxios from '../../utils/api-axios';
 
 const MainCollections = () => {
-  const [collections, setCollections] = useState([]);
+  let state = useSelector((state) => state);
   let navigate = useNavigate();
+
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
     getCollections();
@@ -22,12 +25,12 @@ const MainCollections = () => {
           {
             collections.length > 0 ?
             collections.map((collection, i) => (
-              <Col key={i}>
+              <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
                 <Card border="dark">
                     <Card.Header>{collection.title}</Card.Header>
-                    <Card.Body style={{ height: "8rem" }}>
+                    <Card.Body style={{ height: "10rem" }}>
                     <Card.Title>{collection.description}</Card.Title>
-                    <Card.Text>{collection.collection_keywords.map(obj => `#${obj.keyword}`).join(', ')}</Card.Text>
+                    <Card.Text className="TagList">{collection.collection_keywords.map((obj, index) => index < 5 ? (<Badge bg="secondary" className="tagKeyword">{obj.keyword}</Badge>) : '')}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -38,6 +41,14 @@ const MainCollections = () => {
       </Container>
     </>
   )
+
+  function photospot(id) {
+    const result = collections.find((collection) => collection.id === id);
+    navigate(
+      result.userId === state.user.data.id ? 
+      `/collection/${result.id}/photospot` : `/collection/${result.id}/photospot-view`
+    );
+  }
 
   function getCollections() {
     apiAxios
