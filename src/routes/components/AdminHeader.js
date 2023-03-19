@@ -65,9 +65,9 @@ const AdminHeader = () => {
           </div>
           <div>
             {state.admin.loginState ? (
-              <Button vairant="outline-dark" onClick={signout}>로그아웃</Button>
+              <Button variant="dark" onClick={signout}>로그아웃</Button>
               ) : (
-              <Button vairant="outline-dark" onClick={() => showModal('admin-signin')}>로그인</Button>
+              <Button variant="dark" onClick={() => showModal('admin-signin')}>로그인</Button>
             )}
           </div>
         </Container>
