@@ -3,19 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card, InputGroup } from 'react-bootstrap';
 import PhotospotCreateModal from './PhotospotCreateModal';
 import PhotospotModifyModal from './PhotospotModifyModal';
-import {
-  setModalName,
-  setShow,
-  setLat,
-  setLng,
-  setPhotospot
-} from '../../store/photospot.slice';
-import { setCollection } from '../../store/collection.slice';
-import './Photospot.css'
 import CollectionModifyModal from '../collections/CollectionModifyModal'
 import apiAxios from '../../utils/api-axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../components/loading/Loading';
+import { setModalName, setShow, setLat, setLng, setPhotospot } from '../../store/photospot.slice';
+import { setCollection } from '../../store/collection.slice';
+import { setIsFooterOn } from '../../store/footer.slice';
+import './Photospot.css'
 
 const Photospot = () => {
   const { collectionId } = useParams()
@@ -155,6 +150,8 @@ const Photospot = () => {
 
   useEffect(() => {
     setKakaoMapping();
+    dispatch(setIsFooterOn(false));
+    return () => dispatch(setIsFooterOn(true));
   }, []);
 
   return (

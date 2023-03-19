@@ -10,6 +10,7 @@ import user from './user.slice';
 import admin from './admin.slice';
 import nav from './nav.slice';
 import collection from "./collection.slice";
+import footer from "./footer.slice";
 import  { createStateSyncMiddleware , initStateWithPrevTab } from "redux-state-sync" ;
 
 const reduxStateSyncConfig = {
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   nav: nav.reducer,
   photospot: photospot.reducer,
   collection: collection.reducer,
+  footer: footer.reducer,
 });
 
 const persistConfig = {

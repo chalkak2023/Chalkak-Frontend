@@ -12,11 +12,16 @@ import ChangePasswordModal from '../auth/ChangePasswordModal';
 import { clearLoginCookie } from '../../utils/controlCookie';
 import { ReactComponent as Reservation } from './Hamburger_icon.svg';
 import './Header.css'
+import { setIsFooterOn } from '../../store/footer.slice';
 
 const Header = () => {
   let state = useSelector((state)=> state );
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setIsFooterOn(true));
+  }, []);
 
   useEffect(() => {
     let signoutTimeout;
@@ -51,12 +56,11 @@ const Header = () => {
               <Button className='NicknameBtn me-1'>{state.user.data.username}</Button> : 
               <Button className='ChalkakBtn me-1' onClick={()=>{showModal('signin')}}>로그인</Button>
             }
-            <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}} style={{  }}><Reservation /></Button>
+            <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}}><Reservation /></Button>
           </div>
         </Container>
       </Navbar>
       <NavSideBar />
-
     </>
   )
 
