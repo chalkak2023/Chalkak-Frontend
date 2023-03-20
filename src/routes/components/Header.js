@@ -12,11 +12,16 @@ import ChangePasswordModal from '../auth/ChangePasswordModal';
 import { clearLoginCookie } from '../../utils/controlCookie';
 import { ReactComponent as Reservation } from './Hamburger_icon.svg';
 import './Header.css'
+import { setIsFooterOn } from '../../store/footer.slice';
 
 const Header = () => {
   let state = useSelector((state)=> state );
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setIsFooterOn(true));
+  }, []);
 
   useEffect(() => {
     let signoutTimeout;
@@ -40,23 +45,22 @@ const Header = () => {
       { state.modal.modalName === 'signup' && <AuthSignupModal /> }
       { state.modal.modalName === 'change-password' && <ChangePasswordModal /> }
 
-      <Navbar>
-        <Container fluid>
+      <Navbar style={{ position: 'sticky', top: '0px', backgroundColor: '#0584BB', zIndex: '100' }}>
+        <Container fluid style={{ paddingRight: '0' }}>
           <Navbar.Brand onClick={()=>{navigate('/')}} style={{ cursor: 'pointer' }}>
             <h1>찰칵</h1>
           </Navbar.Brand>
           <div>
             {
               Object.keys(state.user.data).length > 0 ?
-              <h3>{state.user.data.username}</h3> : 
+              <Button className='NicknameBtn me-1'>{state.user.data.username}</Button> : 
               <Button className='ChalkakBtn me-1' onClick={()=>{showModal('signin')}}>로그인</Button>
             }
+            <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}}><Reservation /></Button>
           </div>
         </Container>
       </Navbar>
       <NavSideBar />
-
-      <Button className='ChalkakBtn navBtn' onClick={()=>{showNav()}} style={{  }}><Reservation /></Button>
     </>
   )
 

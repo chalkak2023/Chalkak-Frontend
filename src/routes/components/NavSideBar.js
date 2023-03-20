@@ -22,7 +22,7 @@ const NavSideBar = () => {
       </Offcanvas.Header>
       <Offcanvas.Body>
         <h4 className="menu mb-3" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</h4>
-        <h4 className="menu mb-3" onClick={()=>{navigate('/meetuh4s'); handleClose();}}>같이찍어요</h4>
+        <h4 className="menu mb-3" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</h4>
         <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
         {
           Object.keys(state.user.data).length > 0 ?
