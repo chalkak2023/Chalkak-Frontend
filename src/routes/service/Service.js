@@ -6,7 +6,7 @@ import ServiceTermsOfUse from './ServiceTermsOfUse';
 import ServicePrivacyPolicy from './ServicePrivacyPolicy';
 
 const Service = () => {
-  const [content, setContent] = useState();
+  const [content, setContent] = useState('Faq');
 
   const handleClickButton = e => {
     const { name } = e.target;
@@ -45,7 +45,7 @@ text-align: center;
 
 const Button = styled.button`
   padding: 1rem 2rem;
-  margin-right: 2rem;
+  margin-right: 4rem;
   color: white;
   background-color: black;
   border-radius: 3rem;
@@ -55,5 +55,9 @@ const Content = styled.div`
   text-align: center;
   font-size: 18px;
   line-height: 1.5;
+  border-radius: 1rem;
   margin-top: 10rem;
+  margin: 9rem;
+  background-color: white;
+  padding: 2rem
 `;
