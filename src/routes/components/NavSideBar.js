@@ -23,14 +23,15 @@ const NavSideBar = () => {
       <Offcanvas.Body>
         <h4 className="menu mb-3" onClick={()=>{navigate('/collections'); handleClose();}}>콜렉션</h4>
         <h4 className="menu mb-3" onClick={()=>{navigate('/meetups'); handleClose();}}>같이찍어요</h4>
-        <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
         {
           Object.keys(state.user.data).length > 0 ?
           <>
+            <h4 className="menu mb-3" onClick={()=>{navigate('/chat'); handleClose();}}>채팅</h4>
+            <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
             {state.user.data.email ? <h4 className="menu mb-3" onClick={()=>{dispatch(setModalName('change-password')); dispatch(setShow(true));}}>비밀번호변경</h4> : ''}
             <h4 className="menu mb-3" onClick={()=>{signout(); handleClose();}}>로그아웃</h4>
-          </> : ''
-
+          </> : 
+          <h4 className="menu mb-3" onClick={()=>{navigate('/service'); handleClose();}}>서비스 이용안내</h4>
         }
       </Offcanvas.Body>
     </Offcanvas>
