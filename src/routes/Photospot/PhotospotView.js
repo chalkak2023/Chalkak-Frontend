@@ -120,7 +120,7 @@ const Photospot = () => {
       
       {state.photospot.modalName === 'PhotospotDetailModal' && (<PhotospotDetailModal />)}
       
-      <div id="map" style={{ width: '100%', height: '800px' }}>
+      <div id="map" style={{ width: '100%', height: '90vh' }}>
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
         <Card className='collectionBox'>
