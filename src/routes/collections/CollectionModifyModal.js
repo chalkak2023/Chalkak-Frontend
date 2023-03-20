@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { setShow } from '../../store/photospot.slice';
 import { setCollection } from '../../store/collection.slice';
 import styled from "styled-components";
 import apiAxios from '../../utils/api-axios';
+import './Collection.css';
 
 const CollectionModifyModal = () => {
   let state = useSelector((state) => state);
@@ -14,13 +15,16 @@ const CollectionModifyModal = () => {
   const handleClose = () => dispatch(setShow(false));
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const tempKeyword = state.collection.data.collection_keywords.map((keywordObj) => keywordObj.keyword);
-  const [keywordTag, setKeywordTag] = useState('')
-  const [keyword, setKeyword] = useState(tempKeyword || [])
+  const [keywordArr, setKeywordArr] = useState([]);
+  const [inputKeyword, setInputKeyword] = useState('');
+
+  useEffect(() => {
+    const tempKeywordArr = state.collection.data.collection_keywords.map((keywordObj) => keywordObj.keyword);
+    setKeywordArr(tempKeywordArr);
+  }, []);
 
   return (
-    <Modal
-      size="sm" show={state.photospot.show} onHide={handleClose} centered>
+    <Modal show={state.photospot.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>콜렉션 수정하기</Modal.Title>
       </Modal.Header>
@@ -32,22 +36,24 @@ const CollectionModifyModal = () => {
 
             <WholeBox>
               <KeywordBox>
-                {keyword.map((keywordTag, index) => {
-                  return (
-                    <KeywordTag key={index}>
-                      <KeywordTagText>{keywordTag}</KeywordTagText>
-                      <KeywordButton onClick={deleteKeywordTag}>X</KeywordButton>
-                    </KeywordTag>
-                  )
-                })}
+                {
+                  keywordArr.map((keywordArr_one, i) => {
+                    return (
+                      <KeywordTag key={i}>
+                        <KeywordTagText>{keywordArr_one}</KeywordTagText>
+                        <div className="keywordBtn" onClick={(e)=>{deleteKeywordArr(e)}}>X</div>
+                      </KeywordTag>
+                    )
+                  })
+                }
                 <KeywordInput
                   type='text'
                   placeholder='태그 작성 후 Enter 입력'
-                  tabIndex={2}
-                  onChange={e => setKeywordTag(e.target.value)}
-                  value={keywordTag}
+                  // tabIndex={2}
+                  onChange={(e)=>{setInputKeyword(e.target.value)}}
+                  value={inputKeyword}
                   onKeyUp={pressEnterHandler} 
-                  onKeyDown={pressEnterHandler} 
+                  style={{ width: '100%' }}
                 />
               </KeywordBox>
             </WholeBox>
@@ -63,24 +69,26 @@ const CollectionModifyModal = () => {
   );
 
   function pressEnterHandler(e) {
-    if(e.target.value.length !== 0 && e.key === 'Enter') {
-      e.preventDefault()
-    submitKeywordTag();
+    if (e.target.value.length !== 0 && e.key === "Enter") {
+      if (keywordArr.length >= 5) {
+        alert('키워드는 다섯개 까지 등록 가능합니다.');
+        return;
+      }
+      addKeywordArr();
     }
   }
 
-  function submitKeywordTag() {
-    let updatedKeyword = [...keyword]
-    updatedKeyword.push(keywordTag)
-    setKeyword(prev => [...new Set ([...prev, keywordTag])])
-    setKeywordTag('')
+  function addKeywordArr() {
+    if (keywordArr.indexOf(inputKeyword) < 0) {
+      setKeywordArr((prev) => [...prev, inputKeyword]);
+    }
+    setInputKeyword('');
   }
 
-  function deleteKeywordTag(e) {
-    e.preventDefault()
-    const deleteKeywordTag = e.target.parentElement.firstChild.innerText
-    const filteredKeyword = keyword.filter(keywordTag => keywordTag !== deleteKeywordTag)
-    setKeyword(filteredKeyword)
+  function deleteKeywordArr(e) {
+    const targetKeyword = e.target.parentElement.firstChild.innerText;
+    const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword );
+    setKeywordArr(newKeywordArr);
   }
 
   function modifyCollection() {
@@ -91,7 +99,7 @@ const CollectionModifyModal = () => {
     let modifyCollection = {...state.collection.data}
     if (title) { modifyCollection.title = title }
     if (description) { modifyCollection.description = description }
-    if (keyword) { modifyCollection.keyword = keyword }
+    if (keywordArr) { modifyCollection.keyword = keywordArr }
     
     dispatch(setCollection(modifyCollection))
     apiAxios.put(`/api/collections/${state.collection.data.id}`, {
@@ -104,7 +112,9 @@ const CollectionModifyModal = () => {
         dispatch(setCollection({...state.collection.data, 
           title: modifyCollection.title, 
           description: modifyCollection.description, 
-          collection_keywords: modifyCollection.keyword.map(text=> ({keyword: text, userId: state.collection.data.userId, 
+          collection_keywords: modifyCollection.keyword.map(text=> ({
+            keyword: text, 
+            userId: state.collection.data.userId, 
             collectionId: state.collection.data.collectionId}))}
           ))
       })
@@ -163,18 +173,6 @@ const KeywordTag = styled.div`
 `
 
 const KeywordTagText = styled.span``
-
-const KeywordButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 15px;
-  height: 15px;
-  margin-left: 5px;
-  background-color: white;
-  border-radius: 50%;
-  color: grey;
-`
 
 const KeywordInput = styled.input`
   display: inline-flex;
