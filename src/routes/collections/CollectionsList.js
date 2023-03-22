@@ -81,7 +81,7 @@ const CollectionsList = () => {
             collections.map((collection, i) => (
             <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
               <Card border="dark">
-                  <Card.Header><b>{collection.title}</b></Card.Header>
+                  <Card.Header className="collectionTitle"><b>{collection.title}</b></Card.Header>
                   <Card.Body style={{ height: "10rem" }}>
                   <Card.Title className='collectionDescription'>{collection.description}</Card.Title>
                   <Card.Text className="tagList">
