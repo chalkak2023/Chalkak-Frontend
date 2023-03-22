@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from '../../store/modal.slice';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import apiAxios from '../../utils/api-axios';
 import jwt_decode from "jwt-decode";
 import { setLogin, setUser } from "../../store/user.slice";
@@ -15,11 +15,27 @@ function AuthSignupModal() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verifyToken, setVerifyToken] = useState('');
   const sendingStatus = ['대기', '메일 보내는 중...', '메일 발송 완료']
+  const [submitDisabled, setSubmitDisabled] = useState(false);
 
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
 
   const handleClose = () => dispatch(setShow(false));
+
+  useEffect(() => {
+    const disabled =
+      !isVerified ||
+      typeof username !== "string" ||
+      username.trim().length === 0 ||
+      username.trim().length > 16 ||
+      typeof password !== "string" ||
+      password.trim().length === 0 ||
+      typeof confirmPassword !== "string" ||
+      confirmPassword.trim().length === 0 ||
+      password !== confirmPassword;
+
+    setSubmitDisabled(disabled);
+  }, [isVerified, username, password, confirmPassword]);
 
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
@@ -47,7 +63,7 @@ function AuthSignupModal() {
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button disabled={!isVerified || !username || !password || password !== confirmPassword} variant="primary" onClick={()=>{ register(); }}>회원가입</Button>
+        <Button disabled={submitDisabled} variant="primary" onClick={()=>{ register(); }}>회원가입</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signin');}}>이미 가입하셨다면?</Button>
       </div>
     </Modal>
