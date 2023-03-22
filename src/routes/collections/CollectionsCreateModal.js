@@ -83,7 +83,7 @@ function CollectionsCreateModal(props) {
 
   function createCollection() {
     apiAxios
-      .post("/api/collections", { title, description, keyword: keywordArr })
+      .post("/api/collections", { title, description, keywords: keywordArr })
       .then((response) => {
         const statusCode = response.status;
         if (statusCode === 201) {

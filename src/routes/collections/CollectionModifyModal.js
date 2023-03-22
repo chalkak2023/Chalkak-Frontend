@@ -99,21 +99,21 @@ const CollectionModifyModal = () => {
     let modifyCollection = {...state.collection.data}
     if (title) { modifyCollection.title = title }
     if (description) { modifyCollection.description = description }
-    if (keywordArr) { modifyCollection.keyword = keywordArr }
+    if (keywordArr) { modifyCollection.keywords = keywordArr }
     
     dispatch(setCollection(modifyCollection))
     apiAxios.put(`/api/collections/${state.collection.data.id}`, {
         title: modifyCollection.title,
         description: modifyCollection.description,
-        keyword: modifyCollection.keyword
+        keywords: modifyCollection.keywords
       })
       .then(() => {
         dispatch(setShow(false));
         dispatch(setCollection({...state.collection.data, 
           title: modifyCollection.title, 
           description: modifyCollection.description, 
-          collection_keywords: modifyCollection.keyword.map(text=> ({
-            keyword: text, 
+          collection_keywords: modifyCollection.keywords.map(text=> ({
+            keywords: text, 
             userId: state.collection.data.userId, 
             collectionId: state.collection.data.collectionId}))}
           ))
