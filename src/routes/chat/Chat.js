@@ -208,6 +208,7 @@ const ChatContainer = () => {
   }
 
   function leaveRoom(roomId) {
+    let result = true;
     const chatObj = {
       roomId,
       userId: state.user.data.id,
@@ -215,10 +216,11 @@ const ChatContainer = () => {
     }
     socket.emit('leave-room', chatObj, (res) => {
       if (!res.success) {
+        result = false;
         console.log(`채팅방 퇴장 오류`);
       }
-      return res.success;
     });
+    return result;
   };
 
   function getMeetups() {
@@ -237,7 +239,7 @@ const ChatContainer = () => {
   function exitChat(chatId) {
     if (window.confirm(`정말 나가시겠습니까?\n나가면 채팅방에 다시 들어올 수 없습니다.`)) {
       if (!leaveRoom(chatId)) {
-        console.log('채팅방 완전 퇴장 오류');
+        return console.log('채팅방 퇴장 오류로 인한 완전 퇴장 중단');
       }
       apiAxios
       .delete(`/api/chats/${chatId}`)
