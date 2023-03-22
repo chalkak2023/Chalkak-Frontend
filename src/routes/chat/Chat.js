@@ -12,6 +12,7 @@ const ChatContainer = () => {
   const [chats, setChats] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [selectedRoom, setSelectedRoom] = useState(-1);
+  const [numberOfSelectedRoom, setNumberOfSelectedRoom] = useState(0);
   const chatContainerEl = useRef(null);
 
   let state = useSelector((state)=> state );
@@ -28,8 +29,9 @@ const ChatContainer = () => {
     const messageHandler = (chat) => {
       setChats((prevChats) => [...prevChats, chat]);
     }
-    const alertHandler = (chat) => {
+    const alertHandler = (chat, num) => {
       setChats((prevChats) => [...prevChats, chat]);
+      setNumberOfSelectedRoom(num);
     }
     socket.on('message', messageHandler);
     socket.on('alert', alertHandler);
@@ -76,7 +78,9 @@ const ChatContainer = () => {
 
         {/* 오른쪽 채팅 섹션 시작 */}
         <div className="chat_box">
-
+          { selectedRoom > -1 ?
+            <p>접속인원: {numberOfSelectedRoom}</p>: ''
+          }
           {/* 채팅창 시작 */}
           <div className="chat_history" ref={chatContainerEl}>
             { selectedRoom > -1 ?
@@ -161,6 +165,9 @@ const ChatContainer = () => {
   };
 
   function selectRoom(e, meetupId) {
+    if (meetupId === selectedRoom) {
+      return console.log('이미 접속한 채팅방입니다.');
+    }
     const clickedItem = e.currentTarget;
     // 접속해있던 채팅방 퇴장
     const items = document.querySelectorAll('.meetups_box_body_item');
@@ -194,6 +201,7 @@ const ChatContainer = () => {
         return console.log(`채팅방 접속 불가! :: ${res.payload}`);
       }
     });
+    setNumberOfSelectedRoom(1);
   }
 
   function leaveRoom(roomId) {
