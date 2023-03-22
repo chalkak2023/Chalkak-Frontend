@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import apiAxios from '../../utils/api-axios';
 import Loading from '../components/loading/Loading';
 import {setShow, setModalName} from '../../store/modal.slice';
-import {setPhoto} from '../../store/photo.slice';
+import photo, {setPhoto} from '../../store/photo.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoDetailModal from './PhotoDetailModal';
 
@@ -15,9 +15,23 @@ const PhotoList = () => {
   let state = useSelector((state)=> state );
   const dispatch = useDispatch();
 
+  const target = useRef(null);
+  const page = useRef(1);
+
   useEffect(() => {
-    getAllPhoto();
+    observer.observe(target.current);
+    return () => observer.disconnect();
   }, []);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      if (loading) return;
+
+      getAllPhoto(page.current);
+      page.current += 1;
+    });
+  });
 
   return (
     <>
@@ -39,7 +53,7 @@ const PhotoList = () => {
             <h3>데이터가 없습니다.</h3>
           }
         </Row>
-        {/* <div id="scrollEnd" style={{ height: "1px" }} ref={target}></div> */}
+        <div id="scrollEnd" style={{ height: "1px" }} ref={target}></div>
       </Container>
     </>
   )
@@ -56,19 +70,25 @@ const PhotoList = () => {
         }
       })
       .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
       })
       .finally(() => {
         setLoading(false);
       });
   }
 
-  function getAllPhoto() {
+  function getAllPhoto(p) {
     apiAxios
-      .get(`/api/photospots/photos`)
+      .get(`/api/photospots/photos?p=${p}`)
       .then(({ status, data }) => {
         if (status === 200) {
           const photos = data;
-          setPhotos(photos);
+          if (photos.length === 0) {
+            document.querySelector('#scrollEnd').hidden = true;
+          } else {
+            setPhotos((prev) => [...prev, ...photos]);
+          }
         }
       })
       .catch((e) => {
