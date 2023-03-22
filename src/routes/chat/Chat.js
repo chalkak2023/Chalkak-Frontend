@@ -104,7 +104,11 @@ const ChatContainer = () => {
                 } else if ('alert' in chat) {
                   const alert = chat.alert;
                   return (
-                    <div key={i}>알림: {alert.message}</div>
+                    <div className="alert_msg" key={i}>
+                      <div className="alert_msg_content">
+                        <p>{alert.message}</p>
+                      </div>
+                    </div>
                   )
                 }
             }) }
