@@ -3,6 +3,8 @@ import { setModalName, setShow } from '../../store/modal.slice';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useState } from "react";
 import apiAxios from '../../utils/api-axios';
+import jwt_decode from "jwt-decode";
+import { setLogin, setUser } from "../../store/user.slice";
 
 function AuthSignupModal() {
   const [isSending, setIsSending] = useState(0);
@@ -112,9 +114,31 @@ function AuthSignupModal() {
         console.log("status code: " + statusCode);
         if (statusCode === 201) {
           alert(response.data.message);
-          handleClose()
+          handleClose();
+          login();
           setIsSending(0);
           setIsVerified(false);
+        }
+      })
+      .catch((e) => {
+        console.log("axios 통신실패");
+        alert(e.response?.data.message);
+      });
+  }
+
+  function login() {
+    apiAxios
+      .post(`/api/auth/signin`, { email, password })
+      .then((response) => {
+        const statusCode = response.status;
+        // console.log('status code: ' + statusCode);
+        if (statusCode === 200) {
+          const accessToken = response.data.accessToken;
+
+          const userInfo = jwt_decode(accessToken);
+          dispatch(setUser(userInfo));
+          dispatch(setLogin(true));
+          handleClose();
         }
       })
       .catch((e) => {
