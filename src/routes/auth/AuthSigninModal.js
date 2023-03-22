@@ -64,8 +64,6 @@ function AuthSigninModal() {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
-          alert(response.data.message);
-
           const accessToken = response.data.accessToken;
 
           const userInfo = jwt_decode(accessToken);
