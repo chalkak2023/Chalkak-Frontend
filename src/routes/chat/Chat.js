@@ -70,7 +70,10 @@ const ChatContainer = () => {
                   <p>{meetup.content}</p>
                   <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={()=>{exitChat()}}>나가기</Button>
                 </div>
-              )) : ''
+              )) : 
+              <div className="meetups_box_body_item">
+                <h5>참여한 함께찍어요 모임이 모집 마감되면<br/>모임 참여 인원들과 여기서 채팅하실 수 있습니다.</h5>
+              </div>
             }
           </div>
         </div>
@@ -79,7 +82,8 @@ const ChatContainer = () => {
         {/* 오른쪽 채팅 섹션 시작 */}
         <div className="chat_box">
           { selectedRoom > -1 ?
-            <p>접속인원: {numberOfSelectedRoom}</p>: ''
+            <p className="chat_header">접속인원: {numberOfSelectedRoom}</p> : 
+            <p className="chat_header">채팅방을 선택해주세요.</p>
           }
           {/* 채팅창 시작 */}
           <div className="chat_history" ref={chatContainerEl}>
