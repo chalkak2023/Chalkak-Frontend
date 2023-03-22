@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from "../../store/modal.slice";
 import { Button, Modal, Form, InputGroup, Stack } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { setUser, setLogin } from '../../store/user.slice';
 import KakaoLoginImage from './kakao_login.png'
@@ -11,6 +11,7 @@ import apiAxios from '../../utils/api-axios';
 function AuthSigninModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitDisabled, setSubmitDisabled] = useState(false);
 
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
@@ -19,6 +20,16 @@ function AuthSigninModal() {
 
   const naverLoginUri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&state=chalkak&client_id=${process.env.REACT_APP_NAVER_LOGIN_CLIENT_ID}&redirect_uri=${window.location.origin}/login/naver`;
   const kakaoLoginUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_LOGIN_CLIENT_ID}&redirect_uri=${window.location.origin}/login/kakao`;
+
+  useEffect(() => {
+    const disabled =
+      typeof email !== "string" ||
+      email.trim().length === 0 ||
+      typeof password !== "string" ||
+      password.trim().length === 0
+
+    setSubmitDisabled(disabled);
+  }, [email, password]);
 
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
@@ -38,7 +49,7 @@ function AuthSigninModal() {
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button variant="primary" onClick={() => {login()}}>로그인</Button>
+        <Button variant="primary" disabled={submitDisabled} onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
         <Stack direction="horizontal" gap={1} className="mb-2">
           <div onClick={() => socialLogin(naverLoginUri, "naver")} style={{cursor: 'pointer', width: '50%', padding: 0}}>
@@ -64,8 +75,6 @@ function AuthSigninModal() {
         const statusCode = response.status;
         // console.log('status code: ' + statusCode);
         if (statusCode === 200) {
-          alert(response.data.message);
-
           const accessToken = response.data.accessToken;
 
           const userInfo = jwt_decode(accessToken);
