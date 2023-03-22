@@ -68,7 +68,7 @@ const ChatContainer = () => {
                 <div className="meetups_box_body_item" key={i} onClick={(e) => {selectRoom(e, meetup.id)}}>
                   <h5>{meetup.title} <span>약속시간: {new Date(meetup.schedule).toLocaleString()}</span></h5>
                   <p>{meetup.content}</p>
-                  <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={()=>{exitChat()}}>나가기</Button>
+                  <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={()=>{exitChat(meetup.id)}}>나가기</Button>
                 </div>
               )) : 
               <div className="meetups_box_body_item">
@@ -205,7 +205,6 @@ const ChatContainer = () => {
         return console.log(`채팅방 접속 불가! :: ${res.payload}`);
       }
     });
-    setNumberOfSelectedRoom(1);
   }
 
   function leaveRoom(roomId) {
@@ -216,8 +215,9 @@ const ChatContainer = () => {
     }
     socket.emit('leave-room', chatObj, (res) => {
       if (!res.success) {
-        return console.log(`채팅방 퇴장 오류`);
+        console.log(`채팅방 퇴장 오류`);
       }
+      return res.success;
     });
   };
 
@@ -234,11 +234,34 @@ const ChatContainer = () => {
       });
   }
 
-  function exitChat() {
-    setSelectedRoom(-1);
-    setChats([]);
+  function exitChat(chatId) {
     if (window.confirm(`정말 나가시겠습니까?\n나가면 채팅방에 다시 들어올 수 없습니다.`)) {
-      alert('준비중');
+      if (!leaveRoom(chatId)) {
+        console.log('채팅방 완전 퇴장 오류');
+      }
+      apiAxios
+      .delete(`/api/chats/${chatId}`)
+      .then(({ status }) => {
+        if (status === 200) {
+          // 선택된 채팅방 초기화
+          setSelectedRoom(-1);
+          // 선택된 채팅창 접속자 수 초기화
+          setNumberOfSelectedRoom(0);
+          // 채팅 초기화
+          setChats([]);
+          // 채팅방 목록 초기화
+          getMeetups();
+          // 선택된 채팅방 css 초기화
+          const items = document.querySelectorAll('.meetups_box_body_item');
+          items.forEach(item => {
+            item.classList.remove('active');
+          });
+        }
+      })
+      .catch((err) => {
+        console.log('axios 통신실패');
+        console.log(err);
+      });
     }
   }
 };
