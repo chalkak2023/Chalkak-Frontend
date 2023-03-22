@@ -27,7 +27,6 @@ function AuthSignupModal() {
       !isVerified ||
       typeof username !== "string" ||
       username.trim().length === 0 ||
-      username.trim().length > 16 ||
       typeof password !== "string" ||
       password.trim().length === 0 ||
       typeof confirmPassword !== "string" ||
