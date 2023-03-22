@@ -12,6 +12,18 @@ body > div.fade.recommendModal.modal.show > div > div {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
+.showCollection {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  padding: 5px 10px 5px 10px;
+
+  color: white;
+  background-color: #000000ac;
+  border-radius: 5px;
+}
+
 .userPhoto {
   max-height: 500px;
   object-fit: contain;
