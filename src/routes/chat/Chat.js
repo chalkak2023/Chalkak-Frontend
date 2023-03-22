@@ -122,7 +122,7 @@ const ChatContainer = () => {
             <input type="text" placeholder="메시지를 입력하세요" 
               value={inputMessage} 
               onChange={(e)=>{setInputMessage(e.target.value);}} 
-              // onKeyUp={pressEnterHandler}
+              onKeyDown={(e)=>pressEnterHandler(e)}
               disabled={selectedRoom < 0}
             />
             <Button className="chatSendBtn" size="sm" onClick={sendMessage} disabled={selectedRoom < 0}>보내기</Button>
@@ -133,12 +133,12 @@ const ChatContainer = () => {
     </>
   )
 
-  // 엔터 입력 시 두 번 실행되는 문제로 일단 보류
-  // function pressEnterHandler(e) {
-  //   if (e.key === "Enter") {
-  //     sendMessage();
-  //   }
-  // }
+  function pressEnterHandler(e) {
+    if (e.isComposing || e.keyCode === 229) return; 
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  }
 
   function sendMessage() {
     if (!inputMessage) {
