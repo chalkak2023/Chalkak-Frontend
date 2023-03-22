@@ -103,6 +103,14 @@ function AuthSignupModal() {
       alert('이메일 인증이 필요합니다.');
       return;
     }
+    if (typeof username !== 'string' || username.trim().length === 0) {
+      alert('닉네임은 반드시 입력해야합니다.')
+      return;
+    }
+    if (username.trim().length > 16) {
+      alert('닉네임은 16글자 이내여야합니다.')
+      return ;
+    }
     if (password !== confirmPassword) {
       alert('비밀번호가 비밀번호 확인과 다릅니다.')
       return;
