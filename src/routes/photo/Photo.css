@@ -1,0 +1,39 @@
+.photo > img {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+}
+
+.recommendModal {
+  background-color: #000000dc;
+}
+
+body > div.fade.recommendModal.modal.show > div > div {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.userPhoto {
+  max-height: 500px;
+  object-fit: contain;
+}
+
+.modal-content > h3 {
+  margin-top: 100px !important;
+}
+.recommendBox {
+  height: 150px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.recommendBox > img {
+  height: 100%;
+}
+
+.recommendBox > img:not(:last-child) {
+  margin-right: 20px;
+}
