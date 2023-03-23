@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Carousel, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import apiAxios from '../../utils/api-axios';
 
 const MainCarousel = () => {
   const [photos, setPhotos] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getRandomPhoto();
   }, []);
@@ -17,7 +18,7 @@ const MainCarousel = () => {
           {
             photos.length > 0 ?
             photos.map((photo, i) => (
-                <Carousel.Item key={i}>
+                <Carousel.Item key={i} onClick={() => {navigate(`/collection/${photo.photospot.collection.id}/photospot-view`)}}>
                   <div className='imgBox' style={{ backgroundColor: 'transparent' }}>
                     <img className="d-block w-100" src={photo.image} alt={i}/>
                   </div>
