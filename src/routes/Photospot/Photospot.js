@@ -132,19 +132,23 @@ const Photospot = () => {
   }
 
   function myLocation() {
+    alert('PC의 경우 위치가 부정확할 수 있습니다.');
     setLoading(true);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude; // 위도
-        const lng = position.coords.longitude; // 경도
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const lat = position.coords.latitude; // 위도
+          const lng = position.coords.longitude; // 경도
 
-        const locPosition = new kakao.maps.LatLng(lat, lng);
-        kakaoMap.setCenter(locPosition);
-        setLoading(false);
-      }, function (err) {
-        alert("위치 엑세스가 거부되었습니다.");
-        setLoading(false);
-      });
+          const locPosition = new kakao.maps.LatLng(lat, lng);
+          kakaoMap.setCenter(locPosition);
+          setLoading(false);
+        },
+        function (err) {
+          alert('위치 엑세스가 거부되었습니다.');
+          setLoading(false);
+        }
+      );
     }
   }
 
