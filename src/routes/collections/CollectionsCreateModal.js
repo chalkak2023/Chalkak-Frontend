@@ -5,16 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import styled from "styled-components";
 import apiAxios from '../../utils/api-axios';
+import './Collection.css';
 
 function CollectionsCreateModal(props) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [keywordTag, setKeywordTag] = useState('')
-  const [keyword, setKeyword] = useState([])
   let state = useSelector((state)=> state);
   let dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClose = () => dispatch(setShow(false));
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [keywordArr, setKeywordArr] = useState([]);
+  const [inputKeyword, setInputKeyword] = useState('');
 
   return (
     <Modal show={state.modal.show} dialogClassName="modal-90w" onHide={handleClose} centered>
@@ -24,29 +25,30 @@ function CollectionsCreateModal(props) {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-            <Form.Control className='mb-2' type="text" placeholder='제목' autoFocus onChange={(e) => { setTitle(e.target.value); }}/>
-            <Form.Control className='mb-2' as="textarea" rows={2} placeholder='내용' onChange={(e) => { setDescription(e.target.value); }}/>
-            <WholeBox>
+            <Form.Control id="title" className='mb-2' type="text" placeholder='제목' autoFocus onChange={(e) => { setTitle(e.target.value); }}/>
+            <Form.Control id="description" className='mb-2' as="textarea" rows={2} placeholder='내용' onChange={(e) => { setDescription(e.target.value); }}/>
+            <div style={{ width: '100%' }}>
               <KeywordBox>
-                {keyword.map((keywordTag, index) => {
-                  return (
-                    <KeywordTag key={index}>
-                      <KeywordTagText>{keywordTag}</KeywordTagText>
-                      <KeywordButton onClick={deleteKeywordTag}>X</KeywordButton>
-                    </KeywordTag>
-                  )
-                })}
+                {
+                  keywordArr.map((keywordArr_one, i) => {
+                    return (
+                      <KeywordTag key={i}>
+                        <KeywordTagText>{keywordArr_one}</KeywordTagText>
+                        <div className="keywordBtn" onClick={(e)=>{deleteKeywordArr(e)}}>X</div>
+                      </KeywordTag>
+                    )
+                  })
+                }
                 <KeywordInput
                   type='text'
                   placeholder='태그 작성 후 Enter 입력'
-                  tabIndex={2}
-                  onChange={e => setKeywordTag(e.target.value)}
-                  value={keywordTag}
+                  onChange={(e)=>{setInputKeyword(e.target.value)}}
+                  value={inputKeyword}
                   onKeyUp={pressEnterHandler} 
-                  onKeyDown={pressEnterHandler} 
+                  style={{ width: '100%' }}
                 />
               </KeywordBox>
-            </WholeBox>
+            </div>
           </Form.Group>
         </Form>
         <Button variant="primary" onClick={()=>{ createCollection(); }} style={{ width: '100%' }}>등록하기</Button>
@@ -56,30 +58,36 @@ function CollectionsCreateModal(props) {
 
   function pressEnterHandler(e) {
     if (e.target.value.length !== 0 && e.key === "Enter") {
-      e.preventDefault();
-      submitKeywordTag();
+      if (e.target.value.length > 8) {
+        alert('키워드는 8글자 이하로 입력해주세요.');
+        return false;
+      } else if (keywordArr.length >= 6) {
+        alert('키워드는 6개까지 등록 가능합니다.');
+        return false;
+      } 
+      addKeywordArr();
     }
   }
 
-  function submitKeywordTag() {
-    let updatedKeyword = [...keyword];
-    updatedKeyword.push(keywordTag);
-    setKeyword((prev) => [...new Set([...prev, keywordTag])]);
-    setKeywordTag("");
+  function addKeywordArr() {
+    if (keywordArr.indexOf(inputKeyword) < 0) {
+      setKeywordArr((prev) => [...prev, inputKeyword.replace(',', '')]);
+    }
+    setInputKeyword('');
   }
 
-  function deleteKeywordTag(e) {
-    e.preventDefault();
-    const deleteKeywordTag = e.target.parentElement.firstChild.innerText;
-    const filteredKeyword = keyword.filter(
-      (keywordTag) => keywordTag !== deleteKeywordTag
-    );
-    setKeyword(filteredKeyword);
+  function deleteKeywordArr(e) {
+    const targetKeyword = e.target.parentElement.firstChild.innerText;
+    const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword );
+    setKeywordArr(newKeywordArr);
   }
 
   function createCollection() {
+    if (!inputValidator()) {
+      return;
+    }
     apiAxios
-      .post("/api/collections", { title, description, keyword })
+      .post("/api/collections", { title, description, keyword: keywordArr })
       .then((response) => {
         const statusCode = response.status;
         if (statusCode === 201) {
@@ -92,13 +100,32 @@ function CollectionsCreateModal(props) {
         console.log(e);
       });
   }
-}
+
+  function inputValidator() {
+    if (title.length === 0) {
+      alert('제목을 입력해주세요.');
+      document.querySelector('#title').focus();
+      return false;
+    } else if (title.length > 20) {
+      alert('제목은 20글자 이하로 입력해주세요.');
+      document.querySelector('#title').focus();
+      return false;
+    } else if (description.length === 0) {
+      alert('내용을 입력해주세요.');
+      document.querySelector('#description').focus();
+      return false;
+    } else if (description.length > 60) {
+      alert('내용은 60글자 이하로 입력해주세요.');
+      document.querySelector('#description').focus();
+      return false;
+    } else if (keywordArr.length === 0) {
+      alert('키워드를 입력해주세요.');
+      return false;  
+    } return true;
+  }
+};
 
 export default CollectionsCreateModal;
-
-const WholeBox = styled.div`
-  width: 100%;
-`
 
 const KeywordBox = styled.div`
   display: flex;
@@ -126,18 +153,6 @@ const KeywordTag = styled.div`
 `
 
 const KeywordTagText = styled.span``
-
-const KeywordButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 15px;
-  height: 15px;
-  margin-left: 5px;
-  background-color: white;
-  border-radius: 50%;
-  color: grey;
-`
 
 const KeywordInput = styled.input`
   display: inline-flex;

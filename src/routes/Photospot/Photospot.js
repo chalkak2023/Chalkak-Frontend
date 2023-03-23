@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Card, InputGroup } from 'react-bootstrap';
+import { Button, Form, Card, InputGroup, ToastContainer, Toast } from 'react-bootstrap';
 import PhotospotCreateModal from './PhotospotCreateModal';
 import PhotospotModifyModal from './PhotospotModifyModal';
 import CollectionModifyModal from '../collections/CollectionModifyModal'
@@ -23,6 +23,9 @@ const Photospot = () => {
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const [showTip, setShowTip] = useState(true);
+  const toggleShowTip = () => setShowTip(!showTip);
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -160,6 +163,17 @@ const Photospot = () => {
 
   return (
     <>
+      <ToastContainer className="p-3" position="middle-center">
+        <Toast show={showTip} onClose={toggleShowTip}>
+          <Toast.Header>
+          {/* <Toast.Header style={{ backgroundColor: '#0584BB' }}> */}
+            <strong className="me-auto">사용 팁!</strong>
+            {/* <strong className="me-auto" style={{ color: 'white' }}>사용 팁!</strong> */}
+          </Toast.Header>
+          <Toast.Body>지도를 클릭하여 마커 생성 후 <br/>마커를 클릭해서 포토스팟을 만들 수 있습니다.</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       { loading && <Loading /> }
 
       {state.photospot.modalName === 'PhotospotCreateModal' && (<PhotospotCreateModal />)}
