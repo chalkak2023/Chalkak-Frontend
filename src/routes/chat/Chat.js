@@ -88,9 +88,8 @@ const ChatContainer = () => {
           {/* 채팅창 시작 */}
           <div className="chat_history" ref={chatContainerEl}>
             { selectedRoom > -1 ?
-              chats.map((chat, i) => {
-                if ('chatObj' in chat) {
-                  const chatObj = chat.chatObj;
+              chats.map((chatObj, i) => {
+                if (chatObj.userId !== 0) {
                   if (chatObj.userId === state.user.data.id) {
                     return (
                       <div className="outgoing_msg" key={i}>
@@ -111,12 +110,11 @@ const ChatContainer = () => {
                       </div>
                     )
                   }
-                } else if ('alert' in chat) {
-                  const alert = chat.alert;
+                } else if (chatObj.userId === 0) {
                   return (
                     <div className="alert_msg" key={i}>
                       <div className="alert_msg_content">
-                        <p>{alert.message}</p>
+                        <p>{chatObj.message}</p>
                       </div>
                     </div>
                   )
