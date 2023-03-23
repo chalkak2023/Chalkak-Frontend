@@ -159,6 +159,16 @@ const PhotospotModifyModal = () => {
   }
 
   function modifyPhotospot() {
+    if (title.length > 12) {
+      alert('제목은 12글자 이하로 입력해주세요.');
+      return;
+    }
+
+    if (description.length > 200) {
+      alert('내용은 200글자 이하로 입력해주세요.');
+      return
+    }
+
     if (!window.confirm('수정 하시겠습니까?')) {
       return;
     }
@@ -176,24 +186,6 @@ const PhotospotModifyModal = () => {
 
     let modifyTitle = state.photospot.data.title;
     let modifyDesc = state.photospot.data.description;
-    const inputImageCount = imageFiles.length;
-    if (title.length > 12) {
-      alert('제목은 12글자 이하로 입력해주세요.');
-      return;
-    }
-
-    if (description.length > 200) {
-      alert('내용은 200글자 이하로 입력해주세요.');
-      return
-    }
-
-    if(!window.confirm('수정 하시겠습니까?')) {
-      return;
-    }
-
-    if (title) {
-      modifyTitle = title;
-    }
 
     if (title === modifyTitle && !isDescChanged && !inputImageCount && !deletePhotosCount) {
       alert('변경한 내용이 없습니다.');
@@ -225,6 +217,14 @@ const PhotospotModifyModal = () => {
       setIsDescChanged(false);
       setIsTitleChanged(false);
       return;
+    }
+
+    if (title) {
+      modifyTitle = title;
+    }
+
+    if (description) {
+      modifyDesc = description;
     }
 
     const formData = new FormData();
