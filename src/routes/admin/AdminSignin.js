@@ -15,7 +15,7 @@ function AdminSignin() {
 
   return (
     <div className="position-absolute top-50 start-50 translate-middle bg-white rounded p-4" style={{minWidth: '300px'}}>
-      <h4 className="text-center mb-4">관리자 로그인</h4>
+      <h4 className="text-center mb-4">찰칵 관리자 로그인</h4>
       <Form>
         <Form.Group className="d-grid gap-2 m-2">
           <InputGroup>
@@ -25,7 +25,7 @@ function AdminSignin() {
             <Form.Control id="password" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
           </InputGroup>
           <Button variant="primary" onClick={() => {login()}}>로그인</Button>
-          <Button variant="outline-dark" onClick={() => {navigate('/')}}>관리자 페이지에서 나가기</Button>
+          <Button variant="outline-dark" onClick={() => {navigate('/')}}>찰칵 사이트로 이동</Button>
         </Form.Group>
       </Form>
     </div>
