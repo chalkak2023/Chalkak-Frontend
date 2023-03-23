@@ -38,7 +38,6 @@ function PhotoDetailModal() {
 
 
   async function detailPhoto(photo) {
-    console.log(photo);
     apiAxios
       .get(`/api/photospots/photos/${photo.id}`)
       .then(({ status, data }) => {
@@ -48,6 +47,8 @@ function PhotoDetailModal() {
         }
       })
       .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
       })
   }
 }

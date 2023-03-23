@@ -3,7 +3,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import apiAxios from '../../utils/api-axios';
 import Loading from '../components/loading/Loading';
 import {setShow, setModalName} from '../../store/modal.slice';
-import photo, {setPhoto} from '../../store/photo.slice';
+import {setPhoto} from '../../store/photo.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoDetailModal from './PhotoDetailModal';
 

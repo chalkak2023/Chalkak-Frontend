@@ -20,8 +20,10 @@ body > div.fade.recommendModal.modal.show > div > div {
   padding: 5px 10px 5px 10px;
 
   color: white;
-  background-color: #000000ac;
+  background-color: #00425e;
   border-radius: 5px;
+
+  cursor: pointer;
 }
 
 .userPhoto {
