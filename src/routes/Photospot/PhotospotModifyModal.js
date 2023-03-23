@@ -55,7 +55,7 @@ const PhotospotModifyModal = () => {
         <Carousel activeIndex={index} onSelect={handleSelect}>
           {state.photospot.data.photos.map((photo) => (
             <Carousel.Item key={photo.id} className='photoItem'>
-              <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>❌</div>
+              <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>사진삭제</div>
               <div className='imgBox'>
               <img className="d-block w-100" src={photo.image} />
               </div>
