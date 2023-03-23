@@ -1,19 +1,34 @@
 import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import AdminSignin from "../routes/admin/AdminSignin";
 import AdminHeader from "../routes/components/AdminHeader";
 
 function AdminPage({ MainComponent }) {
   const admin = useSelector((state) => state.admin);
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (!admin.loginState) {
+      navigate('/admin')
+    }
+  }, [admin.loginState])
 
   return (
     <>
-      <AdminHeader />
-      <main className="mt-4">
-        <Container>
-          {admin.loginState ? <MainComponent /> : <p>로그인이 필요합니다.</p>}
-        </Container>
-      </main>
+      {admin.loginState ? (
+        <>
+          <AdminHeader />
+          <main className="mt-4">
+            <Container>
+              <MainComponent />
+            </Container>
+          </main>
+        </>
+      ) : (
+        <AdminSignin />
+      )}
     </>
   );
 }
