@@ -14,6 +14,13 @@ const ChatContainer = () => {
   const [selectedRoom, setSelectedRoom] = useState(-1);
   const [numberOfSelectedRoom, setNumberOfSelectedRoom] = useState(0);
   const chatContainerEl = useRef(null);
+  const localeOptions = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric', 
+    hour: 'numeric', 
+    minute: 'numeric' 
+  };
 
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
@@ -38,7 +45,9 @@ const ChatContainer = () => {
     
     return () => {
       dispatch(setIsFooterOn(true));
+      leaveRoom(selectedRoom);
       socket.off('message', messageHandler);
+      socket.off('alert', alertHandler);
     };
   }, []);
 
@@ -66,9 +75,9 @@ const ChatContainer = () => {
               meetups.length > 0 ?
               meetups.map((meetup, i) => (
                 <div className="meetups_box_body_item" key={i} onClick={(e) => {selectRoom(e, meetup.id)}}>
-                  <h5>{meetup.title} <span>약속시간: {new Date(meetup.schedule).toLocaleString()}</span></h5>
+                  <h5>{meetup.title} <span>약속시간: {new Date(meetup.schedule).toLocaleString('ko-KR', localeOptions)}</span></h5>
                   <p>{meetup.content}</p>
-                  <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={()=>{exitChat(meetup.id)}}>나가기</Button>
+                  <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={(e)=>{exitChat(e, meetup.id)}}>나가기</Button>
                 </div>
               )) : 
               <div className="meetups_box_body_item">
@@ -95,7 +104,7 @@ const ChatContainer = () => {
                       <div className="outgoing_msg" key={i}>
                         <div className="outgoing_msg_content">
                           <p>{chatObj.message}</p>
-                          <span className="msg_date">{new Date(chatObj.createdAt).toLocaleString()}</span>
+                          <span className="msg_date">{new Date(chatObj.createdAt).toLocaleString('ko-KR', localeOptions)}</span>
                         </div>
                       </div>
                     )
@@ -105,7 +114,7 @@ const ChatContainer = () => {
                         <div className='incoming_msg_writer'>{chatObj.username}: </div>
                         <div className="incoming_msg_content">
                           <p>{chatObj.message}</p>
-                          <span className="msg_date">{new Date(chatObj.createdAt).toLocaleString()}</span>
+                          <span className="msg_date">{new Date(chatObj.createdAt).toLocaleString('ko-KR', localeOptions)}</span>
                         </div>
                       </div>
                     )
@@ -166,7 +175,7 @@ const ChatContainer = () => {
     });
   };
 
-  function selectRoom(e, meetupId) {
+  async function selectRoom(e, meetupId) {
     if (meetupId === selectedRoom) {
       return console.log('이미 접속한 채팅방입니다.');
     }
@@ -182,13 +191,26 @@ const ChatContainer = () => {
       leaveRoom(selectedRoom);
     }
 
+    // 선택한 채팅방 채팅 가져오기
+    await getChats(meetupId);
+
     // 선택한 채팅방 접속
     clickedItem.classList.add('active');
     setSelectedRoom(meetupId);
     joinRoom(meetupId);
+  }
 
-    // 채팅창 초기화
-    setChats([]);
+  async function getChats(roomId) {
+    apiAxios
+    .get(`/api/chats/${roomId}`)
+    .then(({ status, data }) => {
+      if (status === 200) {
+        setChats(data);
+      }
+    }).catch((e) => {
+      console.log('axios 통신실패');
+      console.log(e);
+    });
   }
 
   function joinRoom(roomId) {
@@ -234,7 +256,9 @@ const ChatContainer = () => {
       });
   }
 
-  function exitChat(chatId) {
+  function exitChat(e, chatId) {
+    e.stopPropagation();
+
     if (window.confirm(`정말 나가시겠습니까?\n나가면 채팅방에 다시 들어올 수 없습니다.`)) {
       if (!leaveRoom(chatId)) {
         return console.log('채팅방 퇴장 오류로 인한 완전 퇴장 중단');

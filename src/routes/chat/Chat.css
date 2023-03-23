@@ -123,6 +123,10 @@
   margin: 8px 0 0;
 }
 
+.outgoing_msg_content > .msg_date {
+  text-align: right;
+}
+
 /* 알림 메시지 */
 .alert_msg {
   text-align: center;
