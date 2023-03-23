@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form, Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -24,13 +24,27 @@ const PhotospotModifyModal = () => {
     setIndex(selectedIndex);
   };
 
-
   const handleClose = () => {
     dispatch(setShow(false))
     setIsPhoto(true);
     setIsPhotoCount(true);
     setDeletePhotos([]);
   };
+
+  const handleBackButton = () => {
+    dispatch(setShow(false))
+    setIsPhoto(true);
+    setIsPhotoCount(true);
+    setDeletePhotos([]);
+    setIsDescChanged(false);
+    setIsTitleChanged(false);
+    setTitle('');
+    setDescription('');
+  }
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleBackButton);
+  }, []);
 
   return (
     <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
