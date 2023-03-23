@@ -7,6 +7,7 @@ import { setUser, setLogin } from '../../store/user.slice';
 import KakaoLoginImage from './kakao_login.png'
 import NaverLoginImage from './naver_login.png'
 import apiAxios from '../../utils/api-axios';
+import { useNavigate } from "react-router-dom";
 
 function AuthSigninModal() {
   const [email, setEmail] = useState("");
@@ -14,6 +15,7 @@ function AuthSigninModal() {
   const [submitDisabled, setSubmitDisabled] = useState(false);
 
   let state = useSelector((state) => state);
+  let navigate = useNavigate();
   let dispatch = useDispatch();
 
   const handleClose = () => dispatch(setShow(false));
@@ -81,6 +83,7 @@ function AuthSigninModal() {
           dispatch(setUser(userInfo));
           dispatch(setLogin(true));
           handleClose();
+          navigate('/');
         }
       })
       .catch((e) => {

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import apiAxios from '../../utils/api-axios';
 import jwt_decode from "jwt-decode";
 import { setLogin, setUser } from "../../store/user.slice";
+import { useNavigate } from "react-router-dom";
 
 function AuthSignupModal() {
   const [isSending, setIsSending] = useState(0);
@@ -18,6 +19,7 @@ function AuthSignupModal() {
   const [submitDisabled, setSubmitDisabled] = useState(false);
 
   let state = useSelector((state)=> state );
+  let navigate = useNavigate();
   let dispatch = useDispatch();
 
   const handleClose = () => dispatch(setShow(false));
@@ -162,6 +164,7 @@ function AuthSignupModal() {
           dispatch(setUser(userInfo));
           dispatch(setLogin(true));
           handleClose();
+          navigate('/');
         }
       })
       .catch((e) => {
