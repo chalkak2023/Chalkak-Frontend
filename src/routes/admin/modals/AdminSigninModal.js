@@ -51,8 +51,7 @@ function AdminSigninModal() {
       .then(({status, data: body}) => {
         if (status === 200) {
           alert("로그인 완료");
-
-          const { accessToken } = body.data
+          const { accessToken } = body.jwtData
           const adminInfo = jwt_decode(accessToken);
           dispatch(setAdmin(adminInfo));
           dispatch(setAdminLogin(true));
