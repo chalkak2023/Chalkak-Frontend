@@ -37,7 +37,10 @@ const ChatContainer = () => {
       setChats((prevChats) => [...prevChats, chat]);
     }
     const alertHandler = (chat, num) => {
-      setChats((prevChats) => [...prevChats, chat]);
+      const targetUsername = chat.message.split('님')[0];
+      if (targetUsername !== state.user.data.username) {
+        setChats((prevChats) => [...prevChats, chat]);
+      }
       setNumberOfSelectedRoom(num);
     }
     socket.on('message', messageHandler);
