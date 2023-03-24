@@ -6,6 +6,7 @@ import Loading from "../components/loading/Loading";
 import { useNavigate } from "react-router-dom";
 import CollectionsCreateModal from "./CollectionsCreateModal";
 import apiAxios from "../../utils/api-axios";
+import './Collection.css';
 
 const CollectionsList = () => {
   let state = useSelector((state) => state);
@@ -80,13 +81,13 @@ const CollectionsList = () => {
             collections.map((collection, i) => (
             <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
               <Card border="dark">
-                  <Card.Header><b>{collection.title}</b></Card.Header>
+                  <Card.Header className="collectionTitle"><b>{collection.title}</b></Card.Header>
                   <Card.Body style={{ height: "10rem" }}>
-                  <Card.Title>{collection.description}</Card.Title>
-                  <Card.Text className="TagList">
+                  <Card.Title className='collectionDescription'>{collection.description}</Card.Title>
+                  <Card.Text className="tagList">
                     { 
                       collection.collection_keywords.map((obj, i) => 
-                        i < 5 ? 
+                        i < 6 ? 
                         <Badge bg="secondary" className="tagKeyword" key={i}>{ obj.keyword }</Badge> : 
                         ''
                       )

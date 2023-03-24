@@ -19,6 +19,7 @@ import Service from './routes/service/Service'
 import NotFound from './routes/NotFound';
 import Chat from './routes/chat/Chat';
 import './App.css';
+import PhotoList from './routes/photo/PhotoList';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/admin/faqs" element={<AdminPage MainComponent={AdminFAQ} />}></Route>
         <Route path="/admin/accounts" element={<AdminPage MainComponent={AdminAccount} />}></Route>
         <Route path="/service" element={<UserPage MainComponent={Service} />}></Route>
+        <Route path="/photos" element={<UserPage MainComponent={PhotoList} />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </div>

@@ -3,6 +3,7 @@ import { Row, Col, Card, Container, Stack, Button, Badge } from 'react-bootstrap
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiAxios from '../../utils/api-axios';
+import './Main.css';
 
 const MainCollections = () => {
   let state = useSelector((state) => state);
@@ -27,13 +28,13 @@ const MainCollections = () => {
             collections.map((collection, i) => (
               <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
                 <Card border="dark">
-                    <Card.Header>{collection.title}</Card.Header>
+                    <Card.Header className="collectionTitle">{collection.title}</Card.Header>
                     <Card.Body style={{ height: "10rem" }}>
-                    <Card.Title>{collection.description}</Card.Title>
-                    <Card.Text className="TagList">
+                    <Card.Title className="collectionDescription">{collection.description}</Card.Title>
+                    <Card.Text className="tagList">
                       { 
                         collection.collection_keywords.map((obj, i) => 
-                          i < 5 ? 
+                          i < 6 ? 
                           <Badge bg="secondary" className="tagKeyword" key={i}>{ obj.keyword }</Badge> : 
                           ''
                         )
