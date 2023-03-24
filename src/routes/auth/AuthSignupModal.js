@@ -56,9 +56,9 @@ function AuthSignupModal() {
               <Button disabled={isVerified} variant={isVerified ? 'secondary' : 'outline-success'} onClick={()=>{ confirmEmail(); }}>인증번호 확인</Button>
             </InputGroup>
             {isVerified ? <Form.Text>메일 인증이 완료되었습니다.</Form.Text> : ''}
-            <Form.Control id="nickname" className='mb-2' name="nickname" type="text" placeholder='닉네임' autoFocus onKeyUp={(e) => {enterRegister(e)}} onChange={(e) => { setUsername(e.target.value); }} />
-            <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onKeyUp={(e) => {enterRegister(e)}} onChange={(e) => { setPassword(e.target.value); }} />
-            <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocus onKeyUp={(e) => {enterRegister(e)}} onChange={(e) => { setConfirmPassword(e.target.value); }} />
+            <Form.Control id="nickname" className='mb-2' name="nickname" type="text" placeholder='닉네임' autoFocus onKeyUp={enterRegister} onChange={(e) => { setUsername(e.target.value); }} />
+            <Form.Control id="password" className='mb-2' name="password" type="password" placeholder='비밀번호' autoFocus onKeyUp={enterRegister} onChange={(e) => { setPassword(e.target.value); }} />
+            <Form.Control id="confirm_password" className='mb-2' name="confirm_password" type="password" placeholder='비밀번호확인' autoFocus onKeyUp={enterRegister} onChange={(e) => { setConfirmPassword(e.target.value); }} />
             <Form.Text>패스워드는 소문자, 숫자, 특수문자를 모두 포함하는 8글자 이상의 문자열이어야합니다.</Form.Text>
           </Form.Group>
         </Form>

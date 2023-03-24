@@ -19,7 +19,7 @@ function AdminSignin() {
       <Form>
         <Form.Group className="d-grid gap-2 m-2">
           <InputGroup>
-            <Form.Control id="account" name="email" type="email" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
+            <Form.Control id="account" name="account" type="text" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
           </InputGroup>
           <InputGroup>
             <Form.Control id="password" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
@@ -45,8 +45,6 @@ function AdminSignin() {
       .post(`/admin/auth/signin`, { account, password })
       .then(({status, data: body}) => {
         if (status === 200) {
-          alert("로그인 완료");
-
           const { accessToken } = body.data
           const adminInfo = jwt_decode(accessToken);
           dispatch(setAdmin(adminInfo));

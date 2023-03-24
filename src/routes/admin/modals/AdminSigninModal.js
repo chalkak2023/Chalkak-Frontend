@@ -24,7 +24,7 @@ function AdminSigninModal() {
         <Form>
           <Form.Group className="mb-3">
             <InputGroup className="mb-2">
-              <Form.Control id="account" name="email" type="email" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
+              <Form.Control id="account" name="account" type="text" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
             </InputGroup>
             <Form.Control id="password" className="mb-2" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
           </Form.Group>
@@ -50,8 +50,6 @@ function AdminSigninModal() {
       .post(`/admin/auth/signin`, { account, password })
       .then(({status, data: body}) => {
         if (status === 200) {
-          alert("로그인 완료");
-
           const { accessToken } = body.data
           const adminInfo = jwt_decode(accessToken);
           dispatch(setAdmin(adminInfo));
