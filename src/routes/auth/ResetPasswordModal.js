@@ -15,7 +15,7 @@ function ResetPasswordModal() {
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>비밀번호 찾기</Modal.Title>
+        <Modal.Title>비밀번호 재설정</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
