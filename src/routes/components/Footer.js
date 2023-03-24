@@ -14,7 +14,7 @@ const Footer = () => {
         </a>
 
         <ul className="nav col-md-4 justify-content-end">
-          <li className="nav-item"><a style={{ color: 'white', cursor: 'pointer' }} onClick={()=>{ navigate('/admin'); }} className="nav-link px-2">관리자페이지</a></li>
+          <li className="nav-item"><a style={{ color: 'white', cursor: 'pointer' }} onClick={()=>{ navigate('/service'); }} className="nav-link px-2">서비스 이용안내</a></li>
         </ul>
       </footer>
     </>
