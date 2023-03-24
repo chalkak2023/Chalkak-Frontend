@@ -37,10 +37,9 @@ function ResetPasswordModal() {
       .post("/api/auth/emailverification/reset-password", { email })
       .then((response) => {
         const statusCode = response.status;
-        console.log("status code: " + statusCode);
         if (statusCode === 201) {
-          alert(`비밀번호 재설정 링크를 ${email}로 보냈습니다.`);
           handleClose();
+          alert(`비밀번호 재설정 링크를 ${email}로 보냈습니다.`);
         }
       })
       .catch((e) => {
