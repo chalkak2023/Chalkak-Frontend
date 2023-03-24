@@ -56,6 +56,16 @@ const PhotospotCreateModal = () => {
       return;
     }
 
+    if (title.length > 12) {
+      alert('제목은 12글자 이하로 입력해주세요.');
+      return;
+    }
+
+    if (description.length > 200) {
+      alert('내용은 200글자 이하로 입력해주세요.');
+      return
+    }
+
     if (imageFiles.length > 5) {
       setIsPhotoCount(false)
       return

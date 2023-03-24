@@ -81,12 +81,37 @@ function MeetupsDetailModal(props) {
     }
   }
 
+  function closeMeetupAndSwitchToChat() {
+    if (window.confirm('정말 모임의 모집을 마감하시겠습니까?')) {
+      const meetupId = state.meetup.data.id;
+      apiAxios
+        .post(`/api/meetups/${meetupId}/chat`)
+        .then(({ status }) => {
+          if (status === 201) {
+            handleClose();
+            // props.getMeetupDetail(meetupId);
+            props.resetMeetups();
+            alert('성공적으로 모집 마감 되었습니다.\n채팅 메뉴에서 마감된 모임 참여 인원들과 채팅을 할 수 있습니다.');
+          }
+        })
+        .catch((e) => {
+          console.log('axios 통신실패');
+          console.log(e);
+        });
+    }
+  }
+
   function getMeetupActionBtn() {
     if (Object.keys(state.user.data).length === 0) {
       return;
     }
     if (state.user.data.id === state.meetup.data.userId) {
-      return <Button variant="outline-danger" onClick={()=>{deleteMeetup()}} style={{ width: '100%' }}>삭제하기</Button>
+      return (
+        <>
+          <Button variant="outline-danger mb-2" onClick={()=>{deleteMeetup()}} style={{ width: '100%' }}>삭제하기</Button>
+          <Button variant="outline-success" onClick={()=>{closeMeetupAndSwitchToChat()}} style={{ width: '100%' }}>모집마감</Button>
+        </>
+      )
     } else {
       const findResult = state.meetup.data.joins.find((join) => {
         return join.userId === state.user.data.id;

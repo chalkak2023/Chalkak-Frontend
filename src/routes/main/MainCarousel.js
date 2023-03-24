@@ -17,13 +17,13 @@ const MainCarousel = () => {
           {
             photos.length > 0 ?
             photos.map((photo, i) => (
-                <Carousel.Item key={i}>
+                <Carousel.Item className='mainCarousel' key={i}>
                   <div className='imgBox' style={{ backgroundColor: 'transparent' }}>
                     <img className="d-block w-100" src={photo.image} alt={i}/>
                   </div>
                 </Carousel.Item>
             )) :
-            <h3>등록된 포토스팟이 없습니다.</h3>
+            <h3 style={{ backgroundColor: 'transparent' }}>등록된 포토스팟이 없습니다.</h3>
           }
         </Carousel>
       </Container>
