@@ -17,6 +17,7 @@ import AdminPhotospot from './routes/admin/AdminPhotospot';
 import OauthLoginRedirect from './routes/oauth/OauthLoginRedirect';
 import Service from './routes/service/Service'
 import NotFound from './routes/NotFound';
+import Chat from './routes/chat/Chat';
 import './App.css';
 import PhotoList from './routes/photo/PhotoList';
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/collection/:collectionId/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>
         <Route path="/login/:provider" element={<OauthLoginRedirect />}></Route>
         <Route path="/collections" element={<UserPage MainComponent={CollectionsList} />}></Route>
+        <Route path="/chat" element={<UserPage MainComponent={Chat} />}></Route>
         <Route path="/admin" element={<AdminPage MainComponent={AdminMain} />}></Route>
         <Route path="/admin/users" element={<AdminPage MainComponent={AdminUser} />}></Route>
         <Route path="/admin/collections" element={<AdminPage MainComponent={AdminCollection} />}></Route>
