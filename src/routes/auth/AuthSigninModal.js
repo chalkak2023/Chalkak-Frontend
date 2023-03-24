@@ -53,6 +53,7 @@ function AuthSigninModal() {
       <div className="d-grid gap-2 m-2">
         <Button variant="primary" disabled={submitDisabled} onClick={() => {login()}}>로그인</Button>
         <Button variant="outline-dark" onClick={()=>{handleClose();showModal('signup');}}>아직 회원가입을 안하셨다면?</Button>
+        <Button variant="outline-dark" onClick={()=>{handleClose();showModal('reset-password');}}>비밀번호가 생각이 안 난다면?</Button>
         <Stack direction="horizontal" gap={1} className="mb-2">
           <div onClick={() => socialLogin(naverLoginUri, "naver")} style={{cursor: 'pointer', width: '50%', padding: 0}}>
             <img src={NaverLoginImage} alt="네이버 로그인 버튼" style={{ width: '100%', height: '38px' }}/>
