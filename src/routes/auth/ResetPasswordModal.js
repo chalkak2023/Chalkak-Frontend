@@ -33,8 +33,9 @@ function ResetPasswordModal() {
   )
 
   function sendEmail() {
+    console.log(process.env)
     apiAxios
-      .post("/api/auth/emailverification/reset-password", { email })
+      .post("/api/auth/emailverification/reset-password", { email, url: process.env.REACT_APP_URL })
       .then((response) => {
         const statusCode = response.status;
         if (statusCode === 201) {
