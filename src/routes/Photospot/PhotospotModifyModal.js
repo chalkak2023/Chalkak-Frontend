@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Form, Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -9,9 +9,12 @@ const PhotospotModifyModal = () => {
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageFiles, setImageFiles] = useState([]);
+  const [isTitleChanged, setIsTitleChanged] = useState(false);
+  const [isDescChanged, setIsDescChanged] = useState(false);
   const [isPhotoCount, setIsPhotoCount] = useState(true);
   const [isPhoto, setIsPhoto] = useState(true);
   const [index, setIndex] = useState(0);
@@ -21,13 +24,27 @@ const PhotospotModifyModal = () => {
     setIndex(selectedIndex);
   };
 
-
   const handleClose = () => {
     dispatch(setShow(false))
     setIsPhoto(true);
     setIsPhotoCount(true);
     setDeletePhotos([]);
   };
+
+  const handleBackButton = () => {
+    dispatch(setShow(false))
+    setIsPhoto(true);
+    setIsPhotoCount(true);
+    setDeletePhotos([]);
+    setIsDescChanged(false);
+    setIsTitleChanged(false);
+    setTitle('');
+    setDescription('');
+  }
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleBackButton);
+  }, []);
 
   return (
     <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>
@@ -38,7 +55,7 @@ const PhotospotModifyModal = () => {
         <Carousel activeIndex={index} onSelect={handleSelect}>
           {state.photospot.data.photos.map((photo) => (
             <Carousel.Item key={photo.id} className='photoItem'>
-              <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>❌</div>
+              <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>사진삭제</div>
               <div className='imgBox'>
               <img className="d-block w-100" src={photo.image} />
               </div>
@@ -53,9 +70,7 @@ const PhotospotModifyModal = () => {
               type="text"
               defaultValue={state.photospot.data.title}
               placeholder="Title"
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
+              onChange={handleTitleChange}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicDescription">
@@ -65,9 +80,7 @@ const PhotospotModifyModal = () => {
               rows={3}
               defaultValue={state.photospot.data.description}
               placeholder="Description"
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
+              onChange={handleDescChange}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicImageFile">
@@ -116,6 +129,17 @@ const PhotospotModifyModal = () => {
     </Modal>
   );
 
+  function handleTitleChange(e) {
+    setTitle(e.target.value);
+    setIsTitleChanged(true);
+  }
+
+  function handleDescChange(e) {
+    setDescription(e.target.value);
+    setIsDescChanged(true);
+  }
+
+
   function deletePhoto(id) {
     if (state.photospot.data.photos.length === 1) {
       setIsPhoto(false);
@@ -135,11 +159,6 @@ const PhotospotModifyModal = () => {
   }
 
   function modifyPhotospot() {
-    
-
-    let modifyTitle = state.photospot.data.title;
-    let modifyDesc = state.photospot.data.description;
-    const inputImageCount = imageFiles.length;
     if (title.length > 12) {
       alert('제목은 12글자 이하로 입력해주세요.');
       return;
@@ -150,7 +169,53 @@ const PhotospotModifyModal = () => {
       return
     }
 
-    if(!window.confirm('수정 하시겠습니까?')) {
+    if (!window.confirm('수정 하시겠습니까?')) {
+      return;
+    }
+
+    const inputImageCount = imageFiles.length;
+    const deletePhotosCount = deletePhotos.length
+
+    if (!isTitleChanged && !isDescChanged && !inputImageCount && !deletePhotosCount) {
+      alert('변경한 내용이 없습니다.');
+      dispatch(setShow(false));
+      setIsDescChanged(false);
+      setIsTitleChanged(false);
+      return;
+    }
+
+    let modifyTitle = state.photospot.data.title;
+    let modifyDesc = state.photospot.data.description;
+
+    if (title === modifyTitle && !isDescChanged && !inputImageCount && !deletePhotosCount) {
+      alert('변경한 내용이 없습니다.');
+      dispatch(setShow(false));
+      setIsDescChanged(false);
+      setIsTitleChanged(false);
+      return;
+    } else if (!isTitleChanged && description === modifyDesc && !inputImageCount && !deletePhotosCount) {
+      alert('변경한 내용이 없습니다.');
+      dispatch(setShow(false));
+      setIsDescChanged(false);
+      setIsTitleChanged(false);
+      return;
+    } else if (
+      title === modifyTitle &&
+      description === modifyDesc &&
+      !inputImageCount &&
+      !deletePhotosCount
+    ) {
+      alert('변경한 내용이 없습니다.');
+      dispatch(setShow(false));
+      setIsDescChanged(false);
+      setIsTitleChanged(false);
+      return;
+    }
+
+    if (Math.abs(state.photospot.data.photos.length + inputImageCount) > 5) {
+      setIsPhotoCount(false);
+      setIsDescChanged(false);
+      setIsTitleChanged(false);
       return;
     }
 
@@ -162,21 +227,19 @@ const PhotospotModifyModal = () => {
       modifyDesc = description;
     }
 
-    if (Math.abs(state.photospot.data.photos.length + inputImageCount) > 5) {
-      setIsPhotoCount(false);
-      return;
-    }
     const formData = new FormData();
-    
+
     formData.append('title', modifyTitle);
     formData.append('description', modifyDesc);
-    for (let i = 0; i < deletePhotos.length; i++) {
-      formData.append('deletePhotos[]', deletePhotos[i])
+    for (let i = 0; i < deletePhotosCount; i++) {
+      formData.append('deletePhotos[]', deletePhotos[i]);
     }
-    for (let i = 0; i < imageFiles.length; i++) {
-      formData.append('files', imageFiles[i])
+    for (let i = 0; i < inputImageCount; i++) {
+      formData.append('files', imageFiles[i]);
     }
 
+    setIsDescChanged(false);
+    setIsTitleChanged(false);
     apiAxios
       .put(
         `/api/collections/${state.collection.data.id}/photospots/${state.photospot.data.id}`,

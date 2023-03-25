@@ -171,8 +171,13 @@ body {
   position: absolute;
   z-index: 20;
 
-  right: 0;
-  padding: 5px;
+  color: white;
+  background-color: tomato;
+  border-radius: 5px;
+
+  top: 5px;
+  right: 5px;
+  padding: 3px 5px 3px 5px;
 
   cursor: pointer;
 }

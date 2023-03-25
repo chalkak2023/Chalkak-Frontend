@@ -91,6 +91,7 @@ const Photospot = () => {
   }
 
   function myLocation() {
+    alert('PC의 경우 위치가 부정확할 수 있습니다.');
     setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
