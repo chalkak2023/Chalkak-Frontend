@@ -102,7 +102,7 @@ const CollectionsList = () => {
                   <Card.Body style={{ height: "10rem" }}>
                     <Card.Title className='collectionDescription'>{collection.description}</Card.Title>
                     <Card.Text className="tagList">
-                      {collection.collection_keywords.map((obj, i) => i < 6 ?
+                      {collection.collectionKeywords.map((obj, i) => i < 6 ?
                         <Badge bg="secondary" className="tagKeyword" key={i}>{obj.keyword}</Badge> : ''
                       )}
                     </Card.Text>
