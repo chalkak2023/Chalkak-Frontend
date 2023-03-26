@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Card, Container, Stack, Button, Badge } from 'react-bootstrap';
+import { FaHeart } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiAxios from '../../utils/api-axios';
@@ -19,8 +21,8 @@ const MainCollections = () => {
     <>
       <Container style={{ marginBottom: '100px' }}>
         <Stack direction="horizontal" gap={1} className="mb-2">
-          <h2>최근 생성된 콜렉션</h2>
-          <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => { navigate('/collections'); }}>보러가기</Button>
+          <h2>TOP 콜렉션</h2>
+          <Button className="ms-auto ChalkakBtn" variant="outline-dark" onClick={() => { navigate('/collections'); }}>더 보러가기</Button>
         </Stack>
         <Row xs={1} md={3} className="g-4 mb-3">
           {
@@ -28,9 +30,25 @@ const MainCollections = () => {
               collections.map((collection, i) => (
                 <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
                   <Card border="dark">
-                    <Card.Header className="collectionTitle">{collection.title}</Card.Header>
+                    <Card.Header><b className="collectionHeader">{collection.title} ({collection.user.username}님)</b>
+                      <div className="collectionLike">
+                        {!collection.isCollectionLiked ? (
+                          <FiHeart
+                            onClick={(e) => { e.stopPropagation(); addCollectionLike(collection.id, i) }}
+                            size={18}
+                            style={{ marginRight: 10 }}
+                          />
+                        ) : (
+                          <FaHeart
+                            onClick={(e) => { e.stopPropagation(); removeCollectionLike(collection.id, i) }}
+                            size={18}
+                            style={{ color: '#fc4850', marginRight: 10 }}
+                          />
+                        )}
+                        <b>{collection.likes}</b></div>
+                    </Card.Header>
                     <Card.Body style={{ height: "10rem" }}>
-                      <Card.Title className="collectionDescription">{collection.description}</Card.Title>
+                      <Card.Title className='collectionDescription'>{collection.description}</Card.Title>
                       <Card.Text className="tagList">
                         {
                           collection.collectionKeywords.map((obj, i) =>
@@ -61,7 +79,7 @@ const MainCollections = () => {
 
   function getCollections() {
     apiAxios
-      .get(`/api/collections?p=1`)
+      .get('/api/collections/top')
       .then(({ status, data }) => {
         if (status === 200) {
           let tempArr = [];
@@ -81,6 +99,35 @@ const MainCollections = () => {
         console.log(e);
       });
   }
+
+  function addCollectionLike(collectionId, i) {
+    apiAxios
+      .post(`/api/collections/${collectionId}/like`)
+      .then(({ status }) => {
+        if (status === 201) {
+          setCollections(prev => prev.map((collection, index) => index === i ?
+            { ...collection, isCollectionLiked: true, likes: collection.likes + 1 } : collection))
+        }
+      })
+      .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
+      });
+  }
+
+  function removeCollectionLike(collectionId, i) {
+    apiAxios
+      .delete(`/api/collections/${collectionId}/like`)
+      .then(({ status }) => {
+        if (status === 200) {
+          setCollections(prev => prev.map((collection, index) => index === i ?
+            { ...collection, isCollectionLiked: false, likes: collection.likes - 1 } : collection))
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 };
 
 export default MainCollections;
