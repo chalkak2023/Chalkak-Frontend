@@ -18,32 +18,17 @@ const MeetupsList = () => {
   const [loading, setLoading] = useState(false);
   const [inputKeyword, setInputKeyword] = useState('');
   const [checkedMine, setCheckedMine] = useState(false);
-  const [tempMeetups, setTempMeetups] = useState([]);
+  const [checkedJoined, setCheckedJoined] = useState(false);
 
   const target = useRef(null);
   const page = useRef(1);
   const keyword = useRef('');
+  const meetupsType = useRef('none');
 
   useEffect(() => {
     observer.observe(target.current);
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (checkedMine) {
-      const myMeetups = meetups.filter((meetup) => {
-        return meetup.userId === state.user.data.id;
-      });
-      setTempMeetups(meetups);
-      setMeetups(myMeetups);
-      document.querySelector('#scrollEnd').hidden = true;
-    } else if (!checkedMine) {
-      setMeetups(tempMeetups);
-      setTimeout(() => {
-        document.querySelector('#scrollEnd').hidden = false;
-      }, 500);
-    }
-  }, [checkedMine])
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -70,7 +55,13 @@ const MeetupsList = () => {
         <div className="d-flex align-items-center flex-column ChalkakSearch">
           <h2 className='ChalkakH2' onClick={()=>{window.location.reload()}} style={{ cursor: 'pointer' }}>같이 찍어요</h2>
           <InputGroup className="mb-5" style={{ width: '25rem' }}>
-            <Form.Control type='text' className='searchInputForm' placeholder='키워드를 검색해보세요.' onChange={(e)=>{setInputKeyword(e.target.value)}} onKeyUp={pressEnterHandler}/>
+            <Form.Control 
+              type='text' 
+              className='searchInputForm' 
+              placeholder='키워드를 검색해보세요.' 
+              onChange={(e)=>{setInputKeyword(e.target.value)}} 
+              onKeyUp={pressEnterHandler}
+            />
             <Button className="searchInputFormBtn" onClick={goSearch}>검색</Button>
           </InputGroup>
         </div>
@@ -80,9 +71,22 @@ const MeetupsList = () => {
           {
             Object.keys(state.user.data).length > 0 ?
             <>
-              {/* <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>참여한 모임</ToggleButton>
-              <ToggleButton className={checkedMine ? 'ActiveChalkakBtn' : 'ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>내가 만든 모임</ToggleButton> */}
-              <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>나의 모임</ToggleButton>
+              <ToggleButton 
+                className={checkedJoined ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} 
+                id="toggle-check-joined" 
+                type="checkbox" 
+                variant="outline-dark" 
+                checked={checkedJoined} 
+                onChange={(e) => meetupsTypeHandler(e.currentTarget.checked, 'joined')}
+              >참여한 모임</ToggleButton>
+              <ToggleButton 
+                className={checkedMine ? 'ActiveChalkakBtn' : 'ChalkakBtn'} 
+                id="toggle-check-mine" 
+                type="checkbox" 
+                variant="outline-dark" 
+                checked={checkedMine} 
+                onChange={(e) => meetupsTypeHandler(e.currentTarget.checked, 'mine')}
+                >내가 만든 모임</ToggleButton>
               <Button className="ChalkakBtn" variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
             </> : ''
           }
@@ -132,6 +136,34 @@ const MeetupsList = () => {
     </>
   )
 
+  function meetupsTypeHandler(checked, type) {
+    document.querySelector('.searchInputForm').value = '';
+    keyword.current = '';
+    page.current = 2;
+    switch (type) {
+      case 'joined':
+        setCheckedJoined(checked);
+        setCheckedMine(false);
+        if (checked) {
+          meetupsType.current = 'joined';
+        } else {
+          meetupsType.current = 'none';
+        }
+        resetMeetups();
+        break;
+      case 'mine':
+        setCheckedMine(checked);
+        setCheckedJoined(false);
+        if (checked) {
+          meetupsType.current = 'mine';
+        } else {
+          meetupsType.current = 'none';
+        }
+        resetMeetups();
+        break;
+    }
+  }
+
   function pressEnterHandler(e) {
     if(e.key === 'Enter') {
       goSearch();
@@ -141,27 +173,25 @@ const MeetupsList = () => {
   async function goSearch() {
     keyword.current = inputKeyword;
     page.current = 2;
-    document.querySelector('#scrollEnd').hidden = false;
     resetMeetups();
   }
 
   async function resetMeetups() {
-    setCheckedMine(false);
-
     let arr = [];
     for (let i = 1; i < page.current; i++) {
-      // console.log(`page: ${i}, keyword: ${keyword.current}`);
-      const { data } = await apiAxios.get(`/api/meetups?p=${i}&keyword=${keyword.current}`);
+      const apiURI = `/api/meetups${meetupsType.current === 'none' ? '' : '/'+meetupsType.current}?p=${i}&keyword=${keyword.current}`
+      const { data } = await apiAxios.get(apiURI);
       arr = [...arr, ...data];
     }
     setMeetups(arr);
+    document.querySelector('#scrollEnd').hidden = false;
   }
 
   function getMeetups(p, k) {
     setLoading(true);
-    // console.log(`page: ${p}, keyword: ${k}`);
+    const apiURI = `/api/meetups${meetupsType.current === 'none' ? '' : '/'+meetupsType.current}?p=${p}&keyword=${keyword.current}`
     apiAxios
-      .get(`/api/meetups?p=${p}&keyword=${keyword.current}`)
+      .get(apiURI)
       .then(({ status, data }) => {
         if (status === 200) {
           const newMeetups = data;
