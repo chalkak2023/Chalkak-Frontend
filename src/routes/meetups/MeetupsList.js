@@ -80,6 +80,8 @@ const MeetupsList = () => {
           {
             Object.keys(state.user.data).length > 0 ?
             <>
+              {/* <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>참여한 모임</ToggleButton>
+              <ToggleButton className={checkedMine ? 'ActiveChalkakBtn' : 'ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>내가 만든 모임</ToggleButton> */}
               <ToggleButton className={checkedMine ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} id="toggle-check" type="checkbox" variant="outline-dark" checked={checkedMine} onChange={(e) => setCheckedMine(e.currentTarget.checked)}>나의 모임</ToggleButton>
               <Button className="ChalkakBtn" variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
             </> : ''
@@ -91,19 +93,28 @@ const MeetupsList = () => {
             meetups.length > 0 ?
             meetups.map((meetup, i) => {
               let meetupCondition = '';
-              const joinsFindResult = meetup.joins.find((join) => {
-                return join.userId === state.user.data.id;
-              })
-              if (!_.isNil(joinsFindResult)) {
-                meetupCondition = 'join';
-              } else if (meetup.joins.length === meetup.headcount) {
-                meetupCondition = 'full';
+              if (meetup.userId === state.user.data.id) {
+                meetupCondition = 'mine';
               } else {
-                meetupCondition = 'none';
+                const joinsFindResult = meetup.joins.find((join) => {
+                  return join.userId === state.user.data.id;
+                })
+                if (!_.isNil(joinsFindResult)) {
+                  meetupCondition = 'join';
+                } else if (meetup.joins.length === meetup.headcount) {
+                  meetupCondition = 'full';
+                } else {
+                  meetupCondition = 'none';
+                }
               }
               return (
                 <Col className="full" key={i} onClick={()=>{getMeetupDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
-                  <Card bg={meetupCondition === "none" ? "" : meetupCondition === "join" ? "success" : "secondary"}>
+                  <Card bg={
+                    meetupCondition === "none" ? "" : 
+                    meetupCondition === "mine" ? "warning" :
+                    meetupCondition === "join" ? "success" : 
+                    "secondary"
+                  }>
                     <Card.Header><b>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</b></Card.Header>
                     <Card.Body style={{ height: '10rem' }}>
                     <Card.Text>주최자: {meetup.user.username}</Card.Text>
