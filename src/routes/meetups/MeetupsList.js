@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -88,17 +89,30 @@ const MeetupsList = () => {
         <Row xs={1} md={3} className="g-4 mb-3">
           {
             meetups.length > 0 ?
-            meetups.map((meetup, i) => (
-              <Col key={i} onClick={()=>{getMeetupDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
-                <Card border="dark">
-                  <Card.Header><b>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</b></Card.Header>
-                  <Card.Body style={{ height: '10rem' }}>
-                  <Card.Text>주최자: {meetup.user.username}</Card.Text>
-                    <Card.Title className='meetupContent'>{meetup.content}</Card.Title>
-                  </Card.Body>
-                </Card>
-              </Col>
-            )) :
+            meetups.map((meetup, i) => {
+              let meetupCondition = '';
+              const joinsFindResult = meetup.joins.find((join) => {
+                return join.userId === state.user.data.id;
+              })
+              if (!_.isNil(joinsFindResult)) {
+                meetupCondition = 'join';
+              } else if (meetup.joins.length === meetup.headcount) {
+                meetupCondition = 'full';
+              } else {
+                meetupCondition = 'none';
+              }
+              return (
+                <Col className="full" key={i} onClick={()=>{getMeetupDetail(meetup.id)}} style={{ cursor: 'pointer' }}>
+                  <Card bg={meetupCondition === "none" ? "" : meetupCondition === "join" ? "success" : "secondary"}>
+                    <Card.Header><b>{meetup.title} ({meetup.joins.length}/{meetup.headcount})</b></Card.Header>
+                    <Card.Body style={{ height: '10rem' }}>
+                    <Card.Text>주최자: {meetup.user.username}</Card.Text>
+                      <Card.Title className='meetupContent'>{meetup.content}</Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )
+            }) :
             <h3>데이터가 없습니다.</h3>
           }
         </Row>
@@ -125,7 +139,7 @@ const MeetupsList = () => {
 
     let arr = [];
     for (let i = 1; i < page.current; i++) {
-      console.log(`page: ${i}, keyword: ${keyword.current}`);
+      // console.log(`page: ${i}, keyword: ${keyword.current}`);
       const { data } = await apiAxios.get(`/api/meetups?p=${i}&keyword=${keyword.current}`);
       arr = [...arr, ...data];
     }
@@ -134,7 +148,7 @@ const MeetupsList = () => {
 
   function getMeetups(p, k) {
     setLoading(true);
-    console.log(`page: ${p}, keyword: ${k}`);
+    // console.log(`page: ${p}, keyword: ${k}`);
     apiAxios
       .get(`/api/meetups?p=${p}&keyword=${keyword.current}`)
       .then(({ status, data }) => {

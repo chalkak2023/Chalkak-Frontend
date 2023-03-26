@@ -6,3 +6,8 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+.card {
+  border: 0;
+  box-shadow: 10px 10px 1px 0px #00425e;
+}
