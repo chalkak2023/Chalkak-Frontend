@@ -134,14 +134,14 @@ const CollectionsList = () => {
     const signinedUserId = state.user.data.id;
     const collectionListURI = `/api/collections?p=${p}&`;
 
-    if (search && checkedMine) {
-      return collectionListURI + `search=${search.current}&userId=${signinedUserId}`;
-    } else if (!search && checkedMine) {
-      return collectionListURI + `userId=${signinedUserId}`;
+    if (!search && !checkedMine) {
+      return collectionListURI;
     } else if (search && !checkedMine) {
       return collectionListURI + `search=${search.current}`;
+    } else if (!search && checkedMine) {
+      return collectionListURI + `userId=${signinedUserId}`;
     } else {
-      return collectionListURI;
+      return collectionListURI + `search=${search.current}&userId=${signinedUserId}`;
     }
   }
 
