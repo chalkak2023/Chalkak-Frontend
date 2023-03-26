@@ -51,7 +51,7 @@ const CollectionModifyModal = () => {
                 }
                 <KeywordInput
                   type='text'
-                  placeholder='태그 작성 후 Enter 입력'
+                  placeholder='태그 작성 후 Enter 또는 ,(쉼표) 입력'
                   onChange={(e) => { setInputKeyword(e.target.value) }}
                   value={inputKeyword}
                   onKeyUp={pressEnterHandler}
@@ -71,7 +71,7 @@ const CollectionModifyModal = () => {
   );
 
   function pressEnterHandler(e) {
-    if (e.target.value.length !== 0 && e.key === "Enter") {
+    if (e.target.value.length !== 0 && ['Enter', ','].includes(e.key)) {
       if (e.target.value.length > 8) {
         alert('키워드는 8글자 이하로 입력해주세요.');
         return false;
