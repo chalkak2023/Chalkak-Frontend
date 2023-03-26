@@ -11,3 +11,21 @@
   border: 0;
   box-shadow: 10px 10px 1px 0px #00425e;
 }
+
+.ChalkakBtn-custom {
+  border: 0 !important;
+  background-color: white !important;
+  box-shadow: 3px 3px 5px 0px #00425e !important;
+  color: #333 !important;
+}
+
+.ChalkakBtn-custom:hover,
+.ChalkakBtn-custom:active {
+  background-color: #198754 !important;
+}
+
+.ActiveChalkakBtn-custom {
+  border: 0 !important;
+  background-color: #198754 !important;
+  color: #333 !important;
+}

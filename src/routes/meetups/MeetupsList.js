@@ -72,7 +72,7 @@ const MeetupsList = () => {
             Object.keys(state.user.data).length > 0 ?
             <>
               <ToggleButton 
-                className={checkedJoined ? 'ms-auto ActiveChalkakBtn' : 'ms-auto ChalkakBtn'} 
+                className={checkedJoined ? 'ms-auto ActiveChalkakBtn-custom' : 'ms-auto ChalkakBtn-custom'} 
                 id="toggle-check-joined" 
                 type="checkbox" 
                 variant="outline-dark" 
@@ -86,7 +86,7 @@ const MeetupsList = () => {
                 variant="outline-dark" 
                 checked={checkedMine} 
                 onChange={(e) => meetupsTypeHandler(e.currentTarget.checked, 'mine')}
-                >내가 만든 모임</ToggleButton>
+              >내가 만든 모임</ToggleButton>
               <Button className="ChalkakBtn" variant="outline-dark" onClick={()=>{showModal('create')}}>모임 추가</Button>
             </> : ''
           }
