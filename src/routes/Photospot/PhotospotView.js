@@ -127,7 +127,7 @@ const Photospot = () => {
       <div id="map" style={{ width: '100%', height: '90vh' }}>
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
-        <Card className='collectionBox'>
+        <Card className='collectionBox' style={{ boxShadow: 'none' }}>
         <Card.Body className='collectionInfo'>
           <div>
             {
