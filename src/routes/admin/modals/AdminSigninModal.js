@@ -24,20 +24,20 @@ function AdminSigninModal() {
         <Form>
           <Form.Group className="mb-3">
             <InputGroup className="mb-2">
-              <Form.Control id="account" name="email" type="email" placeholder="관리자 계정" autoFocus onChange={(e) => {setAccount(e.target.value);}}/>
+              <Form.Control id="account" name="account" type="text" placeholder="관리자 계정" autoFocus onChange={(e) => { setAccount(e.target.value); }} />
             </InputGroup>
-            <Form.Control id="password" className="mb-2" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => {setPassword(e.target.value);}}/>
+            <Form.Control id="password" className="mb-2" name="password" type="password" placeholder="비밀번호" autoFocus onKeyUp={enterLogin} onChange={(e) => { setPassword(e.target.value); }} />
           </Form.Group>
         </Form>
       </Modal.Body>
       <div className="d-grid gap-2 m-2">
-        <Button variant="primary" onClick={() => {login()}}>로그인</Button>
+        <Button variant="primary" onClick={() => { login() }}>로그인</Button>
       </div>
     </Modal>
   );
 
   function enterLogin(e) {
-    if(e.key === 'Enter') {
+    if (e.key === 'Enter') {
       e.preventDefault();
       if (account && password) {
         login()
@@ -48,7 +48,7 @@ function AdminSigninModal() {
   function login() {
     apiAxios
       .post(`/admin/auth/signin`, { account, password })
-      .then(({status, data: body}) => {
+      .then(({ status, data: body }) => {
         if (status === 200) {
           alert("로그인 완료");
           const { accessToken } = body.jwtData

@@ -19,9 +19,13 @@ const CollectionModifyModal = () => {
   const [inputKeyword, setInputKeyword] = useState('');
 
   useEffect(() => {
-    const tempKeywordArr = state.collection.data.collection_keywords.map((keywordObj) => keywordObj.keyword);
-    setKeywordArr(tempKeywordArr);
-  }, []);
+    if (state.collection.data.collection_keywords) {
+      const tempKeywordArr = state.collection.data.collection_keywords.map((keywordObj) => keywordObj.keyword);
+      setKeywordArr(tempKeywordArr);
+    }
+    setTitle(state.collection.data.title);
+    setDescription(state.collection.data.description);
+  }, [state.collection.data]);
 
   return (
     <Modal show={state.photospot.show} onHide={handleClose} centered>
@@ -31,9 +35,8 @@ const CollectionModifyModal = () => {
       <Modal.Body>
         <Form>
         <Form.Group className="mb-3">
-            <Form.Control className='mb-2' type="text" placeholder='제목' defaultValue={state.collection.data.title} autoFocus onChange={(e) => { setTitle(e.target.value); }}/>
-            <Form.Control className='mb-2' as="textarea" rows={2} placeholder='내용' defaultValue={state.collection.data.description} onChange={(e) => { setDescription(e.target.value); }}/>
-
+        <Form.Control id="title" className='mb-2' type="text" placeholder='제목' defaultValue={state.collection.data.title} autoFocus onChange={(e) => { setTitle(e.target.value);}}/>
+            <Form.Control id="description" className='mb-2' as="textarea" rows={2} placeholder='내용' defaultValue={state.collection.data.description} onChange={(e) => { setDescription(e.target.value);}}/>
             <WholeBox>
               <KeywordBox>
                 {
@@ -49,7 +52,6 @@ const CollectionModifyModal = () => {
                 <KeywordInput
                   type='text'
                   placeholder='태그 작성 후 Enter 입력'
-                  // tabIndex={2}
                   onChange={(e)=>{setInputKeyword(e.target.value)}}
                   value={inputKeyword}
                   onKeyUp={pressEnterHandler} 
@@ -70,17 +72,20 @@ const CollectionModifyModal = () => {
 
   function pressEnterHandler(e) {
     if (e.target.value.length !== 0 && e.key === "Enter") {
-      if (keywordArr.length >= 5) {
-        alert('키워드는 다섯개 까지 등록 가능합니다.');
-        return;
-      }
+      if (e.target.value.length > 8) {
+        alert('키워드는 8글자 이하로 입력해주세요.');
+        return false;
+      } else if (keywordArr.length >= 6) {
+        alert('키워드는 6개까지 등록 가능합니다.');
+        return false;
+      } 
       addKeywordArr();
     }
   }
 
   function addKeywordArr() {
     if (keywordArr.indexOf(inputKeyword) < 0) {
-      setKeywordArr((prev) => [...prev, inputKeyword]);
+      setKeywordArr((prev) => [...prev, inputKeyword.replace(',', '')]);
     }
     setInputKeyword('');
   }
@@ -92,40 +97,33 @@ const CollectionModifyModal = () => {
   }
 
   function modifyCollection() {
-    if(!window.confirm('수정 하시겠습니까?')) {
+    if (!inputValidator()) {
       return;
     }
-
-    let modifyCollection = {...state.collection.data}
-    if (title) { modifyCollection.title = title }
-    if (description) { modifyCollection.description = description }
-    if (keywordArr) { modifyCollection.keyword = keywordArr }
+    if(!window.confirm('수정하시겠습니까?')) {
+      return;
+    }
     
-    dispatch(setCollection(modifyCollection))
     apiAxios.put(`/api/collections/${state.collection.data.id}`, {
-        title: modifyCollection.title,
-        description: modifyCollection.description,
-        keyword: modifyCollection.keyword
+      title, description, keyword: keywordArr
       })
       .then(() => {
         dispatch(setShow(false));
         dispatch(setCollection({...state.collection.data, 
-          title: modifyCollection.title, 
-          description: modifyCollection.description, 
-          collection_keywords: modifyCollection.keyword.map(text=> ({
-            keyword: text, 
-            userId: state.collection.data.userId, 
-            collectionId: state.collection.data.collectionId}))}
-          ))
+          title, description, collection_keywords: keywordArr.map(text=> ({
+          keyword: text, 
+          userId: state.collection.data.userId, 
+          collectionId: state.collection.data.collectionId}))}
+        ))
       })
       .catch(() => {
-        alert('콜렉션 수정을 실패 하셨습니다.');
+        alert('콜렉션 수정에 실패하셨습니다.');
         dispatch(setShow(false));
       });
     } 
 
   function deleteCollection() {
-    if(!window.confirm('삭제 하시겠습니까?')) {
+    if(!window.confirm('삭제하시겠습니까?')) {
       return;
     }
 
@@ -138,10 +136,32 @@ const CollectionModifyModal = () => {
         navigate(`/api/collections/${state.collection.data.id}`);
       });
     }
+
+    function inputValidator() {
+      if (title.length === 0) {
+        alert('제목을 입력해주세요.');
+        document.querySelector('#title').focus();
+        return false;
+      } else if (title.length > 20) {
+        alert('제목은 20글자 이하로 입력해주세요.');
+        document.querySelector('#title').focus();
+        return false;
+      } else if (description.length === 0) {
+        alert('내용을 입력해주세요.');
+        document.querySelector('#description').focus();
+        return false;
+      } else if (description.length > 60) {
+        alert('내용은 60글자 이하로 입력해주세요.');
+        document.querySelector('#description').focus();
+        return false;
+      } else if (keywordArr.length === 0) {
+        alert('키워드를 입력해주세요.');
+        return false;  
+      } return true;
+    }
   };
 
 export default CollectionModifyModal;
-
 
 const WholeBox = styled.div`
   width: 100%;
