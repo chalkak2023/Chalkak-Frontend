@@ -105,7 +105,7 @@ const CollectionModifyModal = () => {
     }
 
     apiAxios.put(`/api/collections/${state.collection.data.id}`, {
-      title, description, keyword: keywordArr
+      title, description, keywords: keywordArr
     })
       .then(() => {
         dispatch(setShow(false));
