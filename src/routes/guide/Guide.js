@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ServiceMainData } from './ServiceMainData';
-import ServiceFaq from './ServiceFaq';
-import ServiceTermsOfUse from './ServiceTermsOfUse';
-import ServicePrivacyPolicy from './ServicePrivacyPolicy';
+import { GuideMainData } from './GuideMainData';
+import GuideFaq from './GuideFaq';
+import GuideTermsOfUse from './GuideTermsOfUse';
+import GuidePrivacyPolicy from './GuidePrivacyPolicy';
 
-const Service = () => {
+const Guide = () => {
   const [content, setContent] = useState('Faq');
 
   const handleClickButton = e => {
     const { name } = e.target;
     setContent(name);
   };
-  
+
   const selectComponent = {
-    Faq: <ServiceFaq />,
-    TermsOfUse: <ServiceTermsOfUse />,
-    PrivacyPolicy: <ServicePrivacyPolicy />,
+    Faq: <GuideFaq />,
+    TermsOfUse: <GuideTermsOfUse />,
+    PrivacyPolicy: <GuidePrivacyPolicy />,
   };
 
   return (
     <div>
       <Container>
-        {ServiceMainData.map(data => {
+        {GuideMainData.map(data => {
           return (
             <Button onClick={handleClickButton} name={data.name} key={data.id}>
               {data.text}
@@ -35,7 +35,7 @@ const Service = () => {
   );
 };
 
-export default Service;
+export default Guide;
 
 const Container = styled.div`
 text-align: center;

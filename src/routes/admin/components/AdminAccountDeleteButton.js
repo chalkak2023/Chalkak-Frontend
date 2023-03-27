@@ -1,13 +1,16 @@
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import apiAxios from "../../../utils/api-axios";
-// import { showModal } from "../../../store/modal.slice";
+
 
 const AdminAccountDeleteButtons = ({ id, order, entity, changeList }) => {
   const navigate = useNavigate();
+  let state = useSelector((state) => state);
+
   return (
     <>
-      {entity.account !== "master" ? (
+      {entity.account !== "master" && state.admin.data.account === "master" ? (
         <Button variant="danger" onClick={(e) => {e.stopPropagation(); deleteAccount(id)}}>
           삭제
         </Button>
@@ -28,10 +31,10 @@ const AdminAccountDeleteButtons = ({ id, order, entity, changeList }) => {
       })
       .catch((err) => {
          if (err.response.status === 401) {
-          navigate('/admin');
+          navigate('/admin/accounts');
         }
        if (err.response) {
-          alert("해당 관리자 계정을 삭제하는데 실패했습니다.");
+          alert("해당 권한이 없습니다.");
         }
       });
   }

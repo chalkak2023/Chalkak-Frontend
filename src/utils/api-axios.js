@@ -14,7 +14,7 @@ apiAxios.interceptors.response.use(
       setLoginCookie(res.data)
     }
     if (res.status === 200 && config.method === 'post' && config.url === '/admin/auth/signin') {
-      setAdminLoginCookie(res.data.data)
+      setAdminLoginCookie(res.data.jwtData)
     }
     if (res.status === 200 && config.method === 'post' && config.url === '/api/auth/signout') {
       clearLoginCookie();
@@ -60,7 +60,7 @@ apiAxios.interceptors.response.use(
       if (!res) {
         return Promise.reject(err);
       }
-      setAdminLoginCookie(res.data.data)
+      setAdminLoginCookie(res.data.jwtData)
     } else {
       const res = await apiAxios.get(refreshUrl);
 
