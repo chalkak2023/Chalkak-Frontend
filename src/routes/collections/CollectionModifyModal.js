@@ -37,126 +37,131 @@ const CollectionModifyModal = () => {
           <Form.Group className="mb-3">
             <Form.Control id="title" className='mb-2' type="text" placeholder='제목을 입력해주세요' defaultValue={state.collection.data.title} autoFocus onChange={(e) => { setTitle(e.target.value); }} />
             <Form.Control id="description" className='mb-2' as="textarea" rows={3} placeholder='콜렉션에 대한 간단한 설명을 입력해주세요' defaultValue={state.collection.data.description} onChange={(e) => { setDescription(e.target.value); }} />
-            <KeywordTag key={i}>
-              <KeywordTagText>{keywordArr_one}</KeywordTagText>
-              <div className="keywordBtn" onClick={(e) => { deleteKeywordArr(e) }}>X</div>
-            </KeywordTag>
-            )
+            <WholeBox>
+              <KeywordBox>
+                {
+                  keywordArr.map((keywordArr_one, i) => {
+                    return (
+                      <KeywordTag key={i}>
+                        <KeywordTagText>{keywordArr_one}</KeywordTagText>
+                        <div className="keywordBtn" onClick={(e) => { deleteKeywordArr(e) }}>X</div>
+                      </KeywordTag>
+                    )
                   })
                 }
-            <KeywordInput
-              type='text'
-              placeholder='태그 작성 후 Enter 또는 ,(쉼표) 입력'
-              onChange={(e) => { setInputKeyword(e.target.value) }}
-              value={inputKeyword}
-              onKeyUp={pressEnterHandler}
-              style={{ width: '100%' }}
-            />
-          </KeywordBox>
-        </WholeBox>
+                <KeywordInput
+                  type='text'
+                  placeholder='태그 작성 후 Enter 또는 ,(쉼표) 입력'
+                  onChange={(e) => { setInputKeyword(e.target.value) }}
+                  value={inputKeyword}
+                  onKeyUp={pressEnterHandler}
+                  style={{ width: '100%' }}
+                />
+              </KeywordBox>
+            </WholeBox>
 
-      </Form.Group>
-      <div className='PhotospotBtnGroup'>
-        <Button variant="primary" onClick={() => { deleteCollection(); }}>삭제</Button>
-        <Button variant="primary" onClick={() => { modifyCollection(); }}>수정</Button>
-      </div>
-    </Form>
-      </Modal.Body >
-    </Modal >
+          </Form.Group>
+          <div className='PhotospotBtnGroup'>
+            <Button variant="primary" onClick={() => { deleteCollection(); }}>삭제</Button>
+            <Button variant="primary" onClick={() => { modifyCollection(); }}>수정</Button>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 
-function pressEnterHandler(e) {
-  if (e.target.value.length !== 0 && ['Enter', ','].includes(e.key)) {
-    if (e.target.value.length > 8) {
-      alert('키워드는 8자 이하로 입력해주세요.');
-      return false;
-    } else if (keywordArr.length >= 6) {
-      alert('키워드는 6개까지 등록 가능합니다.');
-      return false;
-    }
-    addKeywordArr();
-  }
-}
-
-function addKeywordArr() {
-  if (keywordArr.indexOf(inputKeyword) < 0) {
-    setKeywordArr((prev) => [...prev, inputKeyword.replace(',', '')]);
-  }
-  setInputKeyword('');
-}
-
-function deleteKeywordArr(e) {
-  const targetKeyword = e.target.parentElement.firstChild.innerText;
-  const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword);
-  setKeywordArr(newKeywordArr);
-}
-
-function modifyCollection() {
-  if (!inputValidator()) {
-    return;
-  }
-  if (!window.confirm('수정하시겠습니까?')) {
-    return;
-  }
-
-  apiAxios.put(`/api/collections/${state.collection.data.id}`, {
-    title, description, keyword: keywordArr
-  })
-    .then(() => {
-      dispatch(setShow(false));
-      dispatch(setCollection({
-        ...state.collection.data,
-        title, description, collectionKeywords: keywordArr.map(text => ({
-          keyword: text,
-          userId: state.collection.data.userId,
-          collectionId: state.collection.data.collectionId
-        }))
+  function pressEnterHandler(e) {
+    if (e.target.value.length !== 0 && ['Enter', ','].includes(e.key)) {
+      if (e.target.value.length > 8) {
+        alert('키워드는 8자 이하로 입력해주세요.');
+        return false;
+      } else if (keywordArr.length >= 6) {
+        alert('키워드는 6개까지 등록 가능합니다.');
+        return false;
       }
-      ))
-    })
-    .catch(() => {
-      alert('콜렉션 수정에 실패하셨습니다.');
-      dispatch(setShow(false));
-    });
-}
-
-function deleteCollection() {
-  if (!window.confirm('삭제하시겠습니까?')) {
-    return;
+      addKeywordArr();
+    }
   }
 
-  apiAxios.delete(`/api/collections/${state.collection.data.id}`)
-    .then(() => {
-      dispatch(setShow(false));
-      window.location.href = '/collections';
-    })
-    .catch(() => {
-      navigate(`/api/collections/${state.collection.data.id}`);
-    });
-}
+  function addKeywordArr() {
+    if (keywordArr.indexOf(inputKeyword) < 0) {
+      setKeywordArr((prev) => [...prev, inputKeyword.replace(',', '')]);
+    }
+    setInputKeyword('');
+  }
 
-function inputValidator() {
-  if (title.length === 0) {
-    alert('제목을 입력해주세요.');
-    document.querySelector('#title').focus();
-    return false;
-  } else if (title.length > 20) {
-    alert('제목은 20자 이하로 입력해주세요.');
-    document.querySelector('#title').focus();
-    return false;
-  } else if (description.length === 0) {
-    alert('내용을 입력해주세요.');
-    document.querySelector('#description').focus();
-    return false;
-  } else if (description.length > 100) {
-    alert('내용은 100자 이하로 입력해주세요.');
-    document.querySelector('#description').focus();
-    return false;
-  } else if (keywordArr.length === 0) {
-    alert('키워드를 입력해주세요.');
-    return false;
-  } return true;
-}
+  function deleteKeywordArr(e) {
+    const targetKeyword = e.target.parentElement.firstChild.innerText;
+    const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword);
+    setKeywordArr(newKeywordArr);
+  }
+
+  function modifyCollection() {
+    if (!inputValidator()) {
+      return;
+    }
+    if (!window.confirm('수정하시겠습니까?')) {
+      return;
+    }
+
+    apiAxios.put(`/api/collections/${state.collection.data.id}`, {
+      title, description, keyword: keywordArr
+    })
+      .then(() => {
+        dispatch(setShow(false));
+        dispatch(setCollection({
+          ...state.collection.data,
+          title, description, collectionKeywords: keywordArr.map(text => ({
+            keyword: text,
+            userId: state.collection.data.userId,
+            collectionId: state.collection.data.collectionId
+          }))
+        }
+        ))
+      })
+      .catch(() => {
+        alert('콜렉션 수정에 실패하셨습니다.');
+        dispatch(setShow(false));
+      });
+  }
+
+  function deleteCollection() {
+    if (!window.confirm('삭제하시겠습니까?')) {
+      return;
+    }
+
+    apiAxios.delete(`/api/collections/${state.collection.data.id}`)
+      .then(() => {
+        dispatch(setShow(false));
+        window.location.href = '/collections';
+      })
+      .catch(() => {
+        navigate(`/api/collections/${state.collection.data.id}`);
+      });
+  }
+
+  function inputValidator() {
+    if (title.length === 0) {
+      alert('제목을 입력해주세요.');
+      document.querySelector('#title').focus();
+      return false;
+    } else if (title.length > 20) {
+      alert('제목은 20자 이하로 입력해주세요.');
+      document.querySelector('#title').focus();
+      return false;
+    } else if (description.length === 0) {
+      alert('내용을 입력해주세요.');
+      document.querySelector('#description').focus();
+      return false;
+    } else if (description.length > 100) {
+      alert('내용은 100자 이하로 입력해주세요.');
+      document.querySelector('#description').focus();
+      return false;
+    } else if (keywordArr.length === 0) {
+      alert('키워드를 입력해주세요.');
+      return false;
+    } return true;
+  }
 };
 
 export default CollectionModifyModal;
