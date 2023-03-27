@@ -25,8 +25,8 @@ function CollectionsCreateModal(props) {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-            <Form.Control id="title" className='mb-2' type="text" placeholder='제목' autoFocus onChange={(e) => { setTitle(e.target.value); }} />
-            <Form.Control id="description" className='mb-2' as="textarea" rows={2} placeholder='내용' onChange={(e) => { setDescription(e.target.value); }} />
+            <Form.Control id="title" className='mb-2' type="text" placeholder='제목을 입력해주세요' autoFocus onChange={(e) => { setTitle(e.target.value); }} />
+            <Form.Control id="description" className='mb-2' as="textarea" rows={3} placeholder='콜렉션에 대한 간단한 설명을 입력해주세요' onChange={(e) => { setDescription(e.target.value); }} />
             <div style={{ width: '100%' }}>
               <KeywordBox>
                 {
@@ -59,7 +59,7 @@ function CollectionsCreateModal(props) {
   function pressEnterHandler(e) {
     if (e.target.value.length !== 0 && ['Enter', ','].includes(e.key)) {
       if (e.target.value.length > 8) {
-        alert('키워드는 8글자 이하로 입력해주세요.');
+        alert('키워드는 8자 이하로 입력해주세요.');
         return false;
       } else if (keywordArr.length >= 6) {
         alert('키워드는 6개까지 등록 가능합니다.');
@@ -107,15 +107,15 @@ function CollectionsCreateModal(props) {
       document.querySelector('#title').focus();
       return false;
     } else if (title.length > 20) {
-      alert('제목은 20글자 이하로 입력해주세요.');
+      alert('제목은 20자 이하로 입력해주세요.');
       document.querySelector('#title').focus();
       return false;
     } else if (description.length === 0) {
       alert('내용을 입력해주세요.');
       document.querySelector('#description').focus();
       return false;
-    } else if (description.length > 60) {
-      alert('내용은 60글자 이하로 입력해주세요.');
+    } else if (description.length > 100) {
+      alert('내용은 100자 이하로 입력해주세요.');
       document.querySelector('#description').focus();
       return false;
     } else if (keywordArr.length === 0) {
