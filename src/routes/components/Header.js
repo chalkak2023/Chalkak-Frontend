@@ -13,6 +13,7 @@ import { clearLoginCookie } from '../../utils/controlCookie';
 import { ReactComponent as Reservation } from './Hamburger_icon.svg';
 import './Header.css'
 import { setIsFooterOn } from '../../store/footer.slice';
+import ResetPasswordModal from '../auth/ResetPasswordModal';
 
 const Header = () => {
   let state = useSelector((state)=> state );
@@ -44,6 +45,7 @@ const Header = () => {
       { state.modal.modalName === 'signin' && <AuthSigninModal /> }
       { state.modal.modalName === 'signup' && <AuthSignupModal /> }
       { state.modal.modalName === 'change-password' && <ChangePasswordModal /> }
+      { state.modal.modalName === 'reset-password' && <ResetPasswordModal /> }
 
       <Navbar style={{ position: 'sticky', top: '0px', backgroundColor: '#0584BB', zIndex: '100' }}>
         <Container fluid style={{ paddingRight: '0' }}>

@@ -15,7 +15,8 @@ import UserPage from './pages/UserPage'
 import AdminMain from './routes/admin/AdminMain';
 import AdminPhotospot from './routes/admin/AdminPhotospot';
 import OauthLoginRedirect from './routes/oauth/OauthLoginRedirect';
-import Service from './routes/service/Service'
+import Guide from './routes/guide/Guide'
+import ResetPassword from './routes/auth/ResetPassword';
 import NotFound from './routes/NotFound';
 import Chat from './routes/chat/Chat';
 import './App.css';
@@ -29,7 +30,7 @@ function App() {
         <Route path="/" element={<UserPage MainComponent={Main} />}></Route>
         <Route path="/meetups" element={<UserPage MainComponent={MeetupsList} />}></Route>
         <Route path="/collection/:collectionId/photospot" element={<UserPage MainComponent={Auth(Photospot)} />}></Route>
-        <Route path="/collection/:collectionId/photospot-view" element={<UserPage MainComponent={PhotospotView}/>}></Route>
+        <Route path="/collection/:collectionId/photospot-view" element={<UserPage MainComponent={PhotospotView} />}></Route>
         <Route path="/login/:provider" element={<OauthLoginRedirect />}></Route>
         <Route path="/collections" element={<UserPage MainComponent={CollectionsList} />}></Route>
         <Route path="/chat" element={<UserPage MainComponent={Chat} />}></Route>
@@ -40,8 +41,9 @@ function App() {
         <Route path="/admin/meetups" element={<AdminPage MainComponent={AdminMeetup} />}></Route>
         <Route path="/admin/faqs" element={<AdminPage MainComponent={AdminFAQ} />}></Route>
         <Route path="/admin/accounts" element={<AdminPage MainComponent={AdminAccount} />}></Route>
-        <Route path="/service" element={<UserPage MainComponent={Service} />}></Route>
+        <Route path="/guide" element={<UserPage MainComponent={Guide} />}></Route>
         <Route path="/photos" element={<UserPage MainComponent={PhotoList} />}></Route>
+        <Route path="/reset-password" element={<ResetPassword />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </div>

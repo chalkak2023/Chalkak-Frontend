@@ -27,10 +27,6 @@ function CollectionsCreateModal(props) {
           <Form.Group className="mb-3">
             <Form.Control id="title" className='mb-2' type="text" placeholder='제목을 입력해주세요' autoFocus onChange={(e) => { setTitle(e.target.value); }} />
             <Form.Control id="description" className='mb-2' as="textarea" rows={3} placeholder='콜렉션에 대한 간단한 설명을 입력해주세요' onChange={(e) => { setDescription(e.target.value); }} />
-            <div style={{ width: '100%' }}>
-              <KeywordBox>
-                {
-                  keywordArr.map((keywordArr_one, i) => {
                     return (
                       <KeywordTag key={i}>
                         <KeywordTagText>{keywordArr_one}</KeywordTagText>
@@ -52,8 +48,8 @@ function CollectionsCreateModal(props) {
           </Form.Group>
         </Form>
         <Button variant="primary" onClick={() => { createCollection(); }} style={{ width: '100%' }}>등록하기</Button>
-      </Modal.Body>
-    </Modal>
+      </Modal.Body >
+    </Modal >
   )
 
   function pressEnterHandler(e) {

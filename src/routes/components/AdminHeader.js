@@ -63,7 +63,7 @@ const AdminHeader = () => {
             <Button className="header-link" variant="link" active={location.pathname === '/admin/faqs'} onClick={() => navigate("/admin/faqs")}>자주찾는질문 관리</Button>
             <Button className="header-link" variant="link" active={location.pathname === '/admin/accounts'} onClick={() => navigate("/admin/accounts")}>관리자 계정관리</Button>
           </div>
-          <div>
+          <div class="d-flex gap-2">
             {state.admin.loginState ? (
               <Button variant="dark" onClick={signout}>로그아웃</Button>
               ) : (

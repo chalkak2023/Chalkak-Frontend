@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import CollectionsCreateModal from "./CollectionsCreateModal";
 import apiAxios from "../../utils/api-axios";
 import './Collection.css';
+import './Collection.css';
 
 const CollectionsList = () => {
   let state = useSelector((state) => state);

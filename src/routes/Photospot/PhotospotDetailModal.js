@@ -4,12 +4,21 @@ import { Button, Carousel, Modal } from 'react-bootstrap';
 import {
   setShow,
 } from '../../store/photospot.slice';
+import { useEffect } from "react";
 
 function PhotospotDetailModal() {
   const handleClose = () => dispatch(setShow(false));
 
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
+
+  const handleBackButton = () => {
+    dispatch(setShow(false))
+  }
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleBackButton);
+  }, []);
 
   return (
     <Modal size="lg" show={state.photospot.show} onHide={handleClose} centered>

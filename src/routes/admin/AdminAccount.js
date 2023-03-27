@@ -52,7 +52,13 @@ const AdminAccount = () => {
             <h2>
               # {keyword.current === "" ? "전체" : keyword.current} {total > 0 ? ` (${total})` : ""}
             </h2>
-          <Button className="ChalkakBtn" variant="primary" onClick={adminSignup}>관리자계정 등록</Button>
+            <>
+              {state.admin.data.account === "master" ? (
+              <Button className="ChalkakBtn" variant="primary" onClick={adminSignup}>관리자계정 등록</Button>
+              ) : (
+                ""
+              )}
+            </>
           </div>
           <AdminTable header={header} data={data} original={original} changeList={changeList} TableButtons={[AdminAccountDeleteButtons]} />
           <PaginationButtonList current={page} total={total} lastPage={lastPage} changePage={setPage} />
