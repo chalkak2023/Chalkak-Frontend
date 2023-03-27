@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Container, InputGroup, Form, Row, Col, Card, Stack, ToggleButton, Badge } from "react-bootstrap";
 import { FaHeart } from 'react-icons/fa';
-import { FiHeart } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux";
 import { setModalName, setShow } from "../../store/modal.slice";
 import Loading from "../components/loading/Loading";
 import { useNavigate } from "react-router-dom";
 import CollectionsCreateModal from "./CollectionsCreateModal";
 import apiAxios from "../../utils/api-axios";
-import './Collection.css';
 import './Collection.css';
 
 const CollectionsList = () => {
@@ -83,22 +81,12 @@ const CollectionsList = () => {
             collections.map((collection, i) => (
               <Col key={i} onClick={() => { photospot(collection.id) }} style={{ cursor: "pointer" }}>
                 <Card border="dark">
-                  <Card.Header><b className="collectionHeader">{collection.title} ({collection.user.username}님)</b>
+                  <Card.Header>
+                    <b className="collectionHeader">{collection.title} ({collection.user.username}님)</b>
                     <div className="collectionLike">
-                      {!collection.isCollectionLiked ? (
-                        <FiHeart
-                          onClick={(e) => { e.stopPropagation(); addCollectionLike(collection.id, i) }}
-                          size={18}
-                          style={{ marginRight: 10 }}
-                        />
-                      ) : (
-                        <FaHeart
-                          onClick={(e) => { e.stopPropagation(); removeCollectionLike(collection.id, i) }}
-                          size={18}
-                          style={{ color: '#fc4850', marginRight: 10 }}
-                        />
-                      )}
-                      <b>{collection.likes}</b></div>
+                      <FaHeart size={18} style={{ color: '#fc4850', marginRight: 10 }}/>
+                      <b>{collection.likes}</b>
+                    </div>
                   </Card.Header>
                   <Card.Body style={{ height: "10rem" }}>
                     <Card.Title className='collectionDescription'>{collection.description}</Card.Title>
@@ -187,35 +175,6 @@ const CollectionsList = () => {
         setLoading(false);
       })
   }
-
-  function addCollectionLike(collectionId, i) {
-    apiAxios
-      .post(`/api/collections/${collectionId}/like`)
-      .then(({ status }) => {
-        if (status === 201) {
-          setCollections(prev => prev.map((collection, index) => index === i ?
-            { ...collection, isCollectionLiked: true, likes: collection.likes + 1 } : collection))
-        }
-      })
-      .catch((e) => {
-        console.log('axios 통신실패');
-        console.log(e);
-      });
-  }
-
-  function removeCollectionLike(collectionId, i) {
-    apiAxios
-      .delete(`/api/collections/${collectionId}/like`)
-      .then(({ status }) => {
-        if (status === 200) {
-          setCollections(prev => prev.map((collection, index) => index === i ?
-            { ...collection, isCollectionLiked: false, likes: collection.likes - 1 } : collection))
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
 
   function showModal(modalName) {
     dispatch(setModalName(modalName));
