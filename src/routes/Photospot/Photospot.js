@@ -11,6 +11,7 @@ import Loading from '../components/loading/Loading';
 import { setModalName, setShow, setLat, setLng, setPhotospot } from '../../store/photospot.slice';
 import { setCollection } from '../../store/collection.slice';
 import { setIsFooterOn } from '../../store/footer.slice';
+import { setPhotospotTipShow } from "../../store/photospotTip.slice";
 import './Photospot.css'
 import { FaHeart } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
@@ -27,8 +28,7 @@ const Photospot = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const [showTip, setShowTip] = useState(true);
-  const toggleShowTip = () => setShowTip(!showTip);
+  const toggleShowTip = () => dispatch(setPhotospotTipShow(false));
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -173,11 +173,9 @@ const Photospot = () => {
   return (
     <>
       <ToastContainer className="p-3" position="middle-center">
-        <Toast show={showTip} onClose={toggleShowTip}>
+        <Toast show={state.photospotTip.show} onClose={toggleShowTip}>
           <Toast.Header>
-          {/* <Toast.Header style={{ backgroundColor: '#0584BB' }}> */}
             <strong className="me-auto">사용 팁!</strong>
-            {/* <strong className="me-auto" style={{ color: 'white' }}>사용 팁!</strong> */}
           </Toast.Header>
           <Toast.Body>지도를 클릭하여 마커 생성 후 <br/>마커를 클릭해서 포토스팟을 만들 수 있습니다.</Toast.Body>
         </Toast>
