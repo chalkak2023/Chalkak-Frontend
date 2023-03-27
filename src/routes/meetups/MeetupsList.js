@@ -58,7 +58,7 @@ const MeetupsList = () => {
             <Form.Control 
               type='text' 
               className='searchInputForm' 
-              placeholder='키워드를 검색해보세요.' 
+              placeholder='제목 또는 내용을 검색해보세요.' 
               onChange={(e)=>{setInputKeyword(e.target.value)}} 
               onKeyUp={pressEnterHandler}
             />
