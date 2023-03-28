@@ -1,6 +1,6 @@
 import './Chat.css';
 import { useEffect, useRef, useState } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, OverlayTrigger, Tooltip, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsFooterOn } from '../../store/footer.slice';
 import { io } from 'socket.io-client';
@@ -80,7 +80,19 @@ const ChatContainer = () => {
                 <div className="meetups_box_body_item" key={i} onClick={(e) => {selectRoom(e, meetup.id)}}>
                   <h5>{meetup.title} <span>약속시간: {new Date(meetup.schedule).toLocaleString('ko-KR', localeOptions)}</span></h5>
                   <p>{meetup.content}</p>
-                  <Button className="chatExitBtn" variant="danger" size="sm" style={{ float: 'right' }} onClick={(e)=>{exitChat(e, meetup.id)}}>나가기</Button>
+                  <Row className="me-1" style={{ width: '70px', float: 'right' }}>
+                    <OverlayTrigger
+                      placement="left"
+                      overlay={
+                        <Tooltip id="tooltip-left">
+                          { meetup.joins.map((join, i) => <div key={i}>{join.user.username}</div>) }
+                        </Tooltip>
+                      }
+                    >
+                      <Button variant="outline-dark" size="sm">멤버</Button>
+                    </OverlayTrigger>
+                    <Button className="chatExitBtn" variant="danger" size="sm" onClick={(e)=>{exitChat(e, meetup.id)}}>나가기</Button>
+                  </Row>
                 </div>
               )) : 
               <div className="meetups_box_body_item">

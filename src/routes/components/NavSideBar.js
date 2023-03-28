@@ -48,6 +48,7 @@ const NavSideBar = () => {
         alert("로그아웃 완료");
         dispatch(setUser({}));
         dispatch(setLogin(false));
+        navigate('/');
       })
       .catch((err) => {
         alert("로그인된 상태가 아닙니다.");
