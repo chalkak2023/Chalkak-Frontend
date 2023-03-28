@@ -10,13 +10,17 @@
   color: grey;
 }
 
-.collectionTitle {
+.collectionHeader {
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.collectionLike {
+  text-align: right;
 }
 
 .collectionDescription {
@@ -26,6 +30,13 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 18px;
+}
+
+.cardControls {
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
 }
 
 .tagList {

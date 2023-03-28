@@ -8,7 +8,7 @@ import apiAxios from '../../utils/api-axios';
 import './Collection.css';
 
 function CollectionsCreateModal(props) {
-  let state = useSelector((state)=> state);
+  let state = useSelector((state) => state);
   let dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClose = () => dispatch(setShow(false));
@@ -23,10 +23,11 @@ function CollectionsCreateModal(props) {
         <Modal.Title>콜렉션 등록</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+
         <Form>
           <Form.Group className="mb-3">
-            <Form.Control id="title" className='mb-2' type="text" placeholder='제목' autoFocus onChange={(e) => { setTitle(e.target.value); }}/>
-            <Form.Control id="description" className='mb-2' as="textarea" rows={2} placeholder='내용' onChange={(e) => { setDescription(e.target.value); }}/>
+            <Form.Control id="title" className='mb-2' type="text" placeholder='제목을 입력해주세요' autoFocus onChange={(e) => { setTitle(e.target.value); }} />
+            <Form.Control id="description" className='mb-2' as="textarea" rows={3} placeholder='콜렉션에 대한 간단한 설명을 입력해주세요' onChange={(e) => { setDescription(e.target.value); }} />
             <div style={{ width: '100%' }}>
               <KeywordBox>
                 {
@@ -34,37 +35,37 @@ function CollectionsCreateModal(props) {
                     return (
                       <KeywordTag key={i}>
                         <KeywordTagText>{keywordArr_one}</KeywordTagText>
-                        <div className="keywordBtn" onClick={(e)=>{deleteKeywordArr(e)}}>X</div>
+                        <div className="keywordBtn" onClick={(e) => { deleteKeywordArr(e) }}>X</div>
                       </KeywordTag>
                     )
                   })
                 }
                 <KeywordInput
                   type='text'
-                  placeholder='태그 작성 후 Enter 입력'
-                  onChange={(e)=>{setInputKeyword(e.target.value)}}
+                  placeholder='태그 작성 후 Enter 또는 ,(쉼표) 입력'
+                  onChange={(e) => { setInputKeyword(e.target.value) }}
                   value={inputKeyword}
-                  onKeyUp={pressEnterHandler} 
+                  onKeyUp={pressEnterHandler}
                   style={{ width: '100%' }}
                 />
               </KeywordBox>
             </div>
           </Form.Group>
         </Form>
-        <Button variant="primary" onClick={()=>{ createCollection(); }} style={{ width: '100%' }}>등록하기</Button>
-      </Modal.Body>
-    </Modal>
+        <Button variant="primary" onClick={() => { createCollection(); }} style={{ width: '100%' }}>등록하기</Button>
+      </Modal.Body >
+    </Modal >
   )
 
   function pressEnterHandler(e) {
-    if (e.target.value.length !== 0 && e.key === "Enter") {
+    if (e.target.value.length !== 0 && ['Enter', ','].includes(e.key)) {
       if (e.target.value.length > 8) {
-        alert('키워드는 8글자 이하로 입력해주세요.');
+        alert('키워드는 8자 이하로 입력해주세요.');
         return false;
       } else if (keywordArr.length >= 6) {
         alert('키워드는 6개까지 등록 가능합니다.');
         return false;
-      } 
+      }
       addKeywordArr();
     }
   }
@@ -78,7 +79,7 @@ function CollectionsCreateModal(props) {
 
   function deleteKeywordArr(e) {
     const targetKeyword = e.target.parentElement.firstChild.innerText;
-    const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword );
+    const newKeywordArr = keywordArr.filter((x) => x !== targetKeyword);
     setKeywordArr(newKeywordArr);
   }
 
@@ -87,7 +88,7 @@ function CollectionsCreateModal(props) {
       return;
     }
     apiAxios
-      .post("/api/collections", { title, description, keyword: keywordArr })
+      .post("/api/collections", { title, description, keywords: keywordArr })
       .then((response) => {
         const statusCode = response.status;
         if (statusCode === 201) {
@@ -107,20 +108,20 @@ function CollectionsCreateModal(props) {
       document.querySelector('#title').focus();
       return false;
     } else if (title.length > 20) {
-      alert('제목은 20글자 이하로 입력해주세요.');
+      alert('제목은 20자 이하로 입력해주세요.');
       document.querySelector('#title').focus();
       return false;
     } else if (description.length === 0) {
       alert('내용을 입력해주세요.');
       document.querySelector('#description').focus();
       return false;
-    } else if (description.length > 60) {
-      alert('내용은 60글자 이하로 입력해주세요.');
+    } else if (description.length > 100) {
+      alert('내용은 100자 이하로 입력해주세요.');
       document.querySelector('#description').focus();
       return false;
     } else if (keywordArr.length === 0) {
       alert('키워드를 입력해주세요.');
-      return false;  
+      return false;
     } return true;
   }
 };

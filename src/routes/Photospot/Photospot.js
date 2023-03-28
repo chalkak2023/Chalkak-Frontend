@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Card, InputGroup, ToastContainer, Toast } from 'react-bootstrap';
@@ -10,7 +11,10 @@ import Loading from '../components/loading/Loading';
 import { setModalName, setShow, setLat, setLng, setPhotospot } from '../../store/photospot.slice';
 import { setCollection } from '../../store/collection.slice';
 import { setIsFooterOn } from '../../store/footer.slice';
+import { setPhotospotTipShow } from "../../store/photospotTip.slice";
 import './Photospot.css'
+import { FaHeart } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
 
 const Photospot = () => {
   const { collectionId } = useParams()
@@ -24,8 +28,7 @@ const Photospot = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const [showTip, setShowTip] = useState(true);
-  const toggleShowTip = () => setShowTip(!showTip);
+  const toggleShowTip = () => dispatch(setPhotospotTipShow(false));
 
   async function setKakaoMapping() {
     const container = document.getElementById('map');
@@ -170,11 +173,9 @@ const Photospot = () => {
   return (
     <>
       <ToastContainer className="p-3" position="middle-center">
-        <Toast show={showTip} onClose={toggleShowTip}>
+        <Toast show={state.photospotTip.show} onClose={toggleShowTip}>
           <Toast.Header>
-          {/* <Toast.Header style={{ backgroundColor: '#0584BB' }}> */}
             <strong className="me-auto">사용 팁!</strong>
-            {/* <strong className="me-auto" style={{ color: 'white' }}>사용 팁!</strong> */}
           </Toast.Header>
           <Toast.Body>지도를 클릭하여 마커 생성 후 <br/>마커를 클릭해서 포토스팟을 만들 수 있습니다.</Toast.Body>
         </Toast>
@@ -200,8 +201,16 @@ const Photospot = () => {
         </Form>
         <div className='myLocation' onClick={()=>{myLocation()}}>나의 위치</div>
 
-        <Card className='collectionBox'>
+        <Card className='collectionBox' style={{ boxShadow: 'none' }}>
           <Card.Body className='collectionInfo'>
+            <div>
+              {
+                !_.isNil(state.collection.data.collectionLikes?.find((cl) => cl.userId === state.user.data.id)) ?
+                <FaHeart onClick={removeCollectionLike} size={18} style={{ cursor: 'pointer', color: '#fc4850', marginRight: 10 }}/> :
+                <FiHeart onClick={addCollectionLike} size={18} style={{ cursor: 'pointer', marginRight: 10 }}/>
+              }
+              <b>{state.collection.data.collectionLikes?.length}</b>
+            </div>
             <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
               <Button variant="light" style={{backgroundColor: '#7e7e7e', color: 'white'}} onClick={() => {collectionModify('CollectionModifyModal')}}>수정</Button>
           </Card.Body>
@@ -227,6 +236,47 @@ const Photospot = () => {
       </div>
     </>
   );
+
+  function addCollectionLike() {
+    apiAxios
+      .post(`/api/collections/${collectionId}/like`)
+      .then(({ status }) => {
+        if (status === 201) {
+          getPhotospots();
+        }
+      })
+      .catch((e) => {
+        console.log('axios 통신실패');
+        console.log(e);
+      });
+  }
+
+  function removeCollectionLike() {
+    apiAxios
+      .delete(`/api/collections/${collectionId}/like`)
+      .then(({ status }) => {
+        if (status === 200) {
+          getPhotospots();
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  async function getPhotospots() {
+    apiAxios
+      .get(`/api/collections/${collectionId}`)
+      .then(({ status, data }) => {
+        if (status === 200) {
+          dispatch(setCollection(data));
+        }
+      })
+      .catch((err) => {
+        alert('해당 콜렉션을 찾을 수 없습니다.');
+        navigate('/collections');
+      });
+  }
 
   function clickMarker(modalName, lat, lng) {
     dispatch(setLat(lat));

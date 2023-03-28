@@ -19,19 +19,19 @@ const adminEnvironments = {
     ],
   },
   collection: {
-    ko: '콜렉션', 
+    ko: '콜렉션',
     getItemPath: '/admin/collections',
     header: ["ID", "콜렉션명", "한줄 소개", "키워드", "등록일자", "삭제"],
     transform: [
       (data) => data.id, // ID
       (data) => data.title, // 콜렉션명
       (data) => data.description, // 한줄 소개
-      (data) => data.collection_keywords?.map(obj => obj.keyword).join(', ') || "", // 키워드
+      (data) => data.collectionKeywords?.map(obj => obj.keyword).join(', ') || "", // 키워드
       (data) => new Date(data.createdAt).toLocaleString(), // 등록일자
     ],
   },
   photospot: {
-    ko: '포토스팟', 
+    ko: '포토스팟',
     getItemPath: (collectionId) => `/admin/${collectionId}/photospots`,
     header: ["ID", "포토스팟명", "한줄 소개", "등록일자", "삭제"],
     transform: [
@@ -42,7 +42,7 @@ const adminEnvironments = {
     ],
   },
   faq: {
-    ko: '자주찾는질문', 
+    ko: '자주찾는질문',
     getItemPath: '/admin/faq',
     header: ["ID", "제목", "최초등록일시"],
     transform: [
@@ -52,7 +52,7 @@ const adminEnvironments = {
     ],
   },
   meetup: {
-    ko: '모임', 
+    ko: '모임',
     getItemPath: '/admin/meetups',
     header: [
       "ID",
@@ -75,11 +75,11 @@ const adminEnvironments = {
     ],
   },
   user: {
-    ko: '유저', 
+    ko: '유저',
     getItemPath: '/admin/users',
     header: [
       "ID",
-      "이메일·소셜ID",,
+      "이메일·소셜ID", ,
       "닉네임",
       "가입일시",
       "가입 형태",

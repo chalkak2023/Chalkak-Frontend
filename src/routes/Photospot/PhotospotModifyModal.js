@@ -9,7 +9,7 @@ const PhotospotModifyModal = () => {
   let state = useSelector((state) => state);
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageFiles, setImageFiles] = useState([]);
@@ -55,9 +55,9 @@ const PhotospotModifyModal = () => {
         <Carousel activeIndex={index} onSelect={handleSelect}>
           {state.photospot.data.photos.map((photo) => (
             <Carousel.Item key={photo.id} className='photoItem'>
-              <div className='deletePhoto' onClick={() => {deletePhoto(photo.id);}}>사진삭제</div>
+              <div className='deletePhoto' onClick={() => { deletePhoto(photo.id); }}>사진삭제</div>
               <div className='imgBox'>
-              <img className="d-block w-100" src={photo.image} />
+                <img className="d-block w-100" src={photo.image} />
               </div>
             </Carousel.Item>
           ))}
@@ -84,14 +84,14 @@ const PhotospotModifyModal = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicImageFile">
-            <Form.Label>사진 <span style={{color: 'lightgray', fontSize: '12px'}}>- 최대 {Math.abs(5 - state.photospot.data.photos.length)}장을 첨부할 수 있습니다.</span></Form.Label>
+            <Form.Label>사진 <span style={{ color: 'lightgray', fontSize: '12px' }}>- 최대 {Math.abs(5 - state.photospot.data.photos.length)}장을 첨부할 수 있습니다.</span></Form.Label>
             <Form.Control
               type="file"
               placeholder="Image"
               onChange={(e) => {
                 setImageFiles(e.target.files);
               }}
-              accept="image/png, image/jpeg, image/jpg" multiple/>
+              accept="image/png, image/jpeg, image/jpg" multiple />
           </Form.Group>
           <div
             className="photoCount"
@@ -107,22 +107,22 @@ const PhotospotModifyModal = () => {
             1장 이상의 사진은 있어야합니다.
           </div>
           <div className='PhotospotBtnGroup'>
-          <Button
-            variant="primary"
-            onClick={() => {
-              deletePhotospot();
-            }}
-          >
-            삭제
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              modifyPhotospot();
-            }}
-          >
-            수정
-          </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                deletePhotospot();
+              }}
+            >
+              삭제
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                modifyPhotospot();
+              }}
+            >
+              수정
+            </Button>
           </div>
         </Form>
       </Modal.Body>
@@ -256,7 +256,7 @@ const PhotospotModifyModal = () => {
   }
 
   function deletePhotospot() {
-    if(!window.confirm('삭제 하시겠습니까?')) {
+    if (!window.confirm('삭제 하시겠습니까?')) {
       return;
     }
 

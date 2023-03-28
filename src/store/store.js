@@ -12,6 +12,7 @@ import nav from './nav.slice';
 import collection from "./collection.slice";
 import footer from "./footer.slice";
 import photo from './photo.slice';
+import photospotTip from './photospotTip.slice';
 import  { createStateSyncMiddleware , initStateWithPrevTab } from "redux-state-sync" ;
 
 const reduxStateSyncConfig = {
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   collection: collection.reducer,
   footer: footer.reducer,
   photo: photo.reducer,
+  photospotTip: photospotTip.reducer,
 });
 
 const persistConfig = {
