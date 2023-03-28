@@ -131,11 +131,11 @@ const Photospot = () => {
         <Card.Body className='collectionInfo'>
           <div>
             {
-              !_.isNil(state.collection.data.collectionLikes.find((cl) => cl.userId === state.user.data.id)) ?
+              !_.isNil(state.collection.data.collectionLikes?.find((cl) => cl.userId === state.user.data.id)) ?
               <FaHeart onClick={removeCollectionLike} size={18} style={{ cursor: 'pointer', color: '#fc4850', marginRight: 10 }}/> :
               <FiHeart onClick={addCollectionLike} size={18} style={{ cursor: 'pointer', marginRight: 10 }}/>
             }
-            <b>{state.collection.data.collectionLikes.length}</b>
+            <b>{state.collection.data.collectionLikes?.length}</b>
           </div>
           <Card.Title className='collectionTitle textOverflow'>{state.collection.data.title}</Card.Title>
         </Card.Body>
