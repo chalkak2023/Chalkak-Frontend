@@ -1,13 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setShow } from '../../store/modal.slice';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import apiAxios from '../../utils/api-axios';
 
 function MeetupsDetailModal(props) {
-  const handleClose = () => dispatch(setShow(false));
-
+  const localeOptions = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric', 
+    hour: 'numeric', 
+    minute: 'numeric' 
+  };
+  
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
+
+  const handleClose = () => dispatch(setShow(false));
 
   return (
     <Modal size="sm" show={state.modal.show} onHide={handleClose} centered>
@@ -18,8 +26,19 @@ function MeetupsDetailModal(props) {
         <p>주최자: {state.meetup.data.user.username}</p>
         <p>{state.meetup.data.content}</p>
         <p>장소: {state.meetup.data.place}</p>
-        <p>날짜/시간: {new Date(state.meetup.data.schedule).toLocaleString()}</p>
-        <p>참여인원: {state.meetup.data.joins.length}/{state.meetup.data.headcount}</p>
+        <p>날짜시간: {new Date(state.meetup.data.schedule).toLocaleString('ko-KR', localeOptions)}</p>
+        <OverlayTrigger
+          placement="left"
+          overlay={
+            <Tooltip id="tooltip-left">
+              { state.meetup.data.joins.map((join, i) => <div key={i}>{join.user.username}</div>) }
+            </Tooltip>
+          }
+        >
+          <Button variant="outline-dark mb-2" style={{ width: '100%' }}>
+            참여인원: {state.meetup.data.joins.length}/{state.meetup.data.headcount}
+          </Button>
+        </OverlayTrigger>
         {getMeetupActionBtn()}        
       </Modal.Body>
     </Modal>
