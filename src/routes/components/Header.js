@@ -30,8 +30,9 @@ const Header = () => {
       signoutTimeout = setTimeout(() => {
         alert('오랫동안 활동을 하지 않아 로그아웃되었습니다.')
         dispatch(setLogin(false));
-        dispatch(setUser({}))
-        clearLoginCookie()
+        dispatch(setUser({}));
+        clearLoginCookie();
+        navigate('/');
       }, (state.user.data.iat + 60 * 60 * 3) * 1000 - Date.now());
     }
 
