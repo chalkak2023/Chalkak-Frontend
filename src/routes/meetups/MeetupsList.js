@@ -222,7 +222,7 @@ const MeetupsList = () => {
         }
       })
       .catch(({response}) => {
-        if (response.data.statusCode) {
+        if (response.data.statusCode === 404) {
           alert('해당 모임이 더 이상 존재하지 않습니다.');
           resetMeetups();
         } else {
