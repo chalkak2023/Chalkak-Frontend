@@ -221,9 +221,14 @@ const MeetupsList = () => {
           dispatch(setShow(true));
         }
       })
-      .catch((e) => {
-        console.log('axios 통신실패');
-        console.log(e);
+      .catch(({response}) => {
+        if (response.data.statusCode) {
+          alert('해당 모임이 더 이상 존재하지 않습니다.');
+          resetMeetups();
+        } else {
+          console.log('axios 통신실패');
+          console.log(response);
+        }
       });
   }
 
