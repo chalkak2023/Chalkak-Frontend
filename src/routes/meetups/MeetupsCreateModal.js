@@ -92,8 +92,8 @@ function MeetupsCreateModal(props) {
       alert('장소를 입력해주세요.');
       document.querySelector('#place').focus();
       return false;
-    } else if (place.length > 8) {
-      alert('장소는 8글자 이하로 입력해주세요.');
+    } else if (place.length > 20) {
+      alert('장소는 20글자 이하로 입력해주세요.');
       document.querySelector('#place').focus();
       return false;
     } else if (scheduleDate.length === 0) {
