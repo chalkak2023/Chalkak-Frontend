@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsFooterOn } from '../../store/footer.slice';
 import { io } from 'socket.io-client';
 import apiAxios from '../../utils/api-axios';
+import { useNavigate } from 'react-router-dom';
 
 const socket = io(`${process.env.REACT_APP_SERVER_ADDRESS}/chat`);
 const ChatContainer = () => {
@@ -24,14 +25,20 @@ const ChatContainer = () => {
 
   let state = useSelector((state)=> state );
   let dispatch = useDispatch();
+  let navigate = useNavigate();
 
   useEffect(() => {
-    // footer 제거
-    dispatch(setIsFooterOn(false));
-
-    // 채팅방 목록 세팅
-    getMeetups();
-
+    if (Object.keys(state.user.data).length === 0) {
+      alert('잘못된 접근입니다.');
+      return navigate('/');
+    } else {
+      // footer 제거
+      dispatch(setIsFooterOn(false));
+  
+      // 채팅방 목록 세팅
+      getMeetups();
+    }
+    
     // socket.io 메시지 핸들러 세팅
     const messageHandler = (chat) => {
       setChats((prevChats) => [...prevChats, chat]);
