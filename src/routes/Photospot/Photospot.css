@@ -1,0 +1,287 @@
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  position: relative;
+}
+
+.keywordSearch {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  z-index: 10;
+}
+
+.searchInputForm-2 {
+  background-color: white;
+  box-shadow: 3px 3px 5px 0px #333;
+  color: #333;
+}
+
+.searchInputFormBtn-2 {
+  border: 0 !important;
+  background-color: #7e7e7e !important;
+  box-shadow: 3px 3px 5px 0px #333 !important;
+  color: #fff !important;
+}
+
+.photospotList {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  z-index: 10;
+
+  width: 400px;
+  max-height: 90%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.photospotBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 350px;
+  height: 100px;
+}
+
+.detailBox {
+  width: 100%;
+  
+}
+
+.detailBox > img {
+  display: block;
+
+  width: 600px;
+  margin: 0 auto;
+}
+
+.photospotList {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+}
+
+.photospot.card {
+  width: 400px;
+  height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 20px;
+
+  background-color: white;
+}
+
+.imageSize {
+  object-fit: contain;
+
+  width: 100%;
+  height: 100%;
+}
+
+.customoverlay {
+  position: relative;
+  width: 150px;
+  bottom: 65px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  border-bottom: 2px solid #ddd;
+
+  text-align: center;
+}
+
+.customoverlay .title {
+  display: block;
+  width: 150px;
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 10px 5px;
+}
+
+.customoverlay:nth-of-type(n) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+
+.customoverlay:after {
+  content: '';
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: -12px;
+  width: 22px;
+  height: 12px;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png');
+}
+
+.textOverflow {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.photospotEmpty {
+  color: tomato;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.collectionBox.card {
+  width: 400px;
+  height: 65px;
+
+  position: absolute;
+
+  top: 10px;
+  right: 20px;
+  z-index: 10;
+}
+
+.collectionInfo.card-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 5px;
+}
+
+.collectionTitle.card-title.h5 {
+  margin: 0;
+}
+.photoCount {
+  color: tomato;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.deletePhoto {
+  position: absolute;
+  z-index: 20;
+
+  color: white;
+  background-color: tomato;
+  border-radius: 5px;
+
+  top: 5px;
+  right: 5px;
+  padding: 3px 5px 3px 5px;
+
+  cursor: pointer;
+}
+
+.addPhoto {
+  font-size: 16px;
+
+  position: absolute;
+  z-index: 20;
+
+  right: 30px;
+  padding: 5px;
+
+  cursor: pointer;
+}
+
+.myLocation {
+  border-radius: 5px;
+  background-color: #ffffffe9;
+  border: solid 1px rgb(220, 220, 220);
+  padding: 10px;
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  z-index: 10;
+  cursor: pointer;
+  font-weight: bold;
+
+}
+
+.imgBox {
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.imgBox > .w-100 {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbBox {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+
+span.tagKeyword.badge.bg-secondary {
+  padding: 5px 10px 5px 10px;
+  margin-left: 3px;
+  background-color: #7e7e7e !important;
+  /* border-radius: 0px; */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.PhotospotBtnGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.PhotospotBtnGroup > .btn {
+  width: 50%;
+}
+
+.PhotospotBtnGroup > .btn:nth-child(1) {
+  margin-right: 20px;
+  background-color: tomato;
+  border-color: tomato;
+}
+
+.PhotospotBtnGroup > .btn:nth-child(1):hover,
+.PhotospotBtnGroup > .btn:nth-child(1):active {
+  margin-right: 20px;
+  background-color: rgb(209, 81, 59);
+  border-color: rgb(209, 81, 59);
+}
+
+
+.photospotCreateBtn {
+  width: 100%;
+}
+
+.photospotDesc {
+  width: 100%;
+
+}
+
+.description {
+  font-size: 20px;
+  margin-top: 15px;
+  min-height: 100px;
+}

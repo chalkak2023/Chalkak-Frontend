@@ -1,0 +1,166 @@
+.chat_container {
+  background-color: white;
+  /* clear: both; */
+  overflow: hidden;
+  padding: 12px;
+}
+
+/* 왼쪽 섹션 시작 */
+.meetups_box {
+  /* background: #f8f8f8 none repeat scroll 0 0; */
+  float: left;
+  overflow: hidden;
+  width: 40%; 
+}
+.meetups_box_header { 
+  padding:10px 0 10px 0; 
+  overflow:hidden; 
+  border-bottom:1px solid #c4c4c4;
+  color: #0584BB;
+  margin: auto;
+}
+.meetups_box_body { 
+  height: 505px; 
+  overflow-y: scroll;
+}
+
+.meetups_box_body_item {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 10px;
+  overflow:hidden; 
+  clear:both;
+  width: 100%; 
+  height: 97px;
+  cursor: pointer;
+}
+.meetups_box_body_item:hover {
+  background-color: #ebebeb;
+}
+
+.meetups_box_body_item h5 { 
+  font-size:15px; 
+  color:#464646; 
+  margin:0 0 8px 0;
+}
+.meetups_box_body_item h5 span { 
+  font-size:13px; 
+  float:right;
+}
+.meetups_box_body_item p { 
+  width: 70%;
+  float: left;
+  font-size:14px; 
+  color:#989898; 
+  margin:auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.active { 
+  background:#ebebeb; 
+}
+/* 왼쪽 섹션 끝 */
+
+/* 오른쪽 섹션 시작 */
+.chat_box {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 60%;
+}
+.chat_header {
+  margin-bottom: 0;
+}
+.chat_history {
+  height: 475px;
+  overflow-y: auto;
+}
+
+/* 상대 메시지 */
+.incoming_msg_writer {
+  font-size: 15px;
+  color: #464646;
+}
+.incoming_msg_content {
+  display: inline-block;
+  vertical-align: top;
+  width: 55%;
+}
+.incoming_msg_content p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+
+/* 내 메시지 */
+.outgoing_msg { 
+  overflow:hidden; 
+  margin:13px 0 13px; 
+}
+.outgoing_msg_content {
+  float: right;
+  width: 55%;
+}
+.outgoing_msg_content p {
+  background: #0584BB none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  width:100%;
+}
+
+.msg_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+.outgoing_msg_content > .msg_date {
+  text-align: right;
+}
+
+/* 알림 메시지 */
+.alert_msg {
+  text-align: center;
+}
+.alert_msg_content {
+  display: inline-block;
+  vertical-align: top;
+  width: 70%;
+  margin:13px 0 13px; 
+}
+.alert_msg_content p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+
+/* 채팅 입력 */
+.write_msg { 
+  border-top: 1px solid #c4c4c4;
+  position: relative; 
+}
+.write_msg input {
+  /* background: rgba(0, 0, 0, 0) none repeat scroll 0 0; */
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 43px;
+  width: 100%;
+}
+.chatSendBtn {
+  position: absolute;
+  right: 4px;
+  top: 6px;
+}
